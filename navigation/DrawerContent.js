@@ -45,15 +45,15 @@ export const DrawerContent = (props) => {
     }
 
     const getProfilePic = () => {
-        if(user !== undefined && user !== null){
-            if(user.photoUrl !== null&& user.photoUrl !== undefined){
+        if (user !== undefined && user !== null) {
+            if (user.photoUrl !== null && user.photoUrl !== undefined) {
                 return user.photoUrl;
-            }else
-            return `https://graph.facebook.com/${user.id}/picture?type=small&width=250&height=250`
+            } else
+                return `https://graph.facebook.com/${user.id}/picture?type=small&width=250&height=250`
         }
         else
-        return 'https://t3.ftcdn.net/jpg/03/46/83/96/240_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
-     }
+            return 'https://t3.ftcdn.net/jpg/03/46/83/96/240_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
+    }
 
     useEffect(() => {
         getUserAsyncStorage();
@@ -85,7 +85,7 @@ export const DrawerContent = (props) => {
                                 />
                             )}
                             label="ההזמנות שלי"
-                            onPress={() => {console.log('user',user)}}
+                            onPress={() => { console.log('user', user) }}
                         />
                         <DrawerItem
                             icon={({ color, size }) => (
