@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, ScrollView, KeyboardAvoidingView, SafeAreaView,Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, Button, SafeAreaView, Dimensions } from 'react-native';
 import colors from '../utility/colors';
 import { FoodFindContext } from '../context';
 import Header from '../Components/Header';
@@ -7,14 +7,14 @@ import { Searchbar } from 'react-native-paper';
 import BusinessCard from '../Components/BusinessCard'
 
 const Home = ({ navigation }) => {
-    const windowwidth= Dimensions.get('window').width
-    const { user, menuDrawer, setMenuDrawer } = React.useContext(FoodFindContext);
+    const windowwidth = Dimensions.get('window').width
+    const { user } = React.useContext(FoodFindContext);
     const [searchQuery, setSearchQuery] = React.useState('');
     const onChangeSearch = query => setSearchQuery(query);
 
-    
 
-    const renderItem = ({ item }) => <BusinessCard/>;
+
+    const renderItem = ({ item }) => <BusinessCard />;
     // const Item = ({ title }) => (
     //     <View style={styles.item}>
     //         <Text style={styles.title}>{title}</Text>
@@ -47,15 +47,11 @@ const Home = ({ navigation }) => {
         },
     ];
 
-
+    console.log(user);
     return (
         <View style={styles.container}>
-
             <Header />
-            {/* <KeyboardAvoidingView
-                behavior='padding'
-                style={{ flex: 0.8 }}
-            > */}
+            
             {/* <Searchbar
 
                     placeholder='חפש'
@@ -63,11 +59,9 @@ const Home = ({ navigation }) => {
                     value={searchQuery}
                     icon='magnify'
                 /> */}
-            {/* </KeyboardAvoidingView> */}
+
             <View style={styles.containerBody}>
-                {/* <ScrollView style={styles.scrollView}> */}
-                    <FlatList style={{alignSelf:'center'}}  data={DATA} renderItem={renderItem} keyExtractor={DATA.id} />
-                {/* </ScrollView> */}
+                <FlatList style={{ alignSelf: 'center' }} data={DATA} renderItem={renderItem} keyExtractor={DATA.id} />
             </View>
 
         </View>
@@ -86,7 +80,7 @@ const styles = StyleSheet.create({
         flex: 9,
         backgroundColor: colors.white,
         fontSize: 30,
-        
+
     },
     // item: {
     //     backgroundColor: '#035fff',

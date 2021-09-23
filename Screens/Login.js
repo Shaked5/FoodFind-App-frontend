@@ -34,12 +34,11 @@ export const Login = ({ navigation }) => {
         permissions,
         declinedPermissions,
       } = await Facebook.logInWithReadPermissionsAsync({
-        permissions: ['public_profile'],
+        permissions: ['public_profile', 'email'],
       });
       if (type === 'success') {
-        // Get the user's name using Facebook's Graph API
-        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-
+        // Get the user's name and email using Facebook's Graph API
+        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email`);
         setUser(await response.json())
         storeAsyncStorageData('user', user)
         navigation.navigate('Home');
@@ -108,7 +107,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundApp,
     flexDirection: 'row',
     width: '100%',
-    height: '14%',
+    height: '12%',
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: "#000",
@@ -122,7 +121,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   ImageFoodfind: {
-    marginTop: '10%',
+    marginTop: '6%',
 
   },
   title: {
@@ -143,6 +142,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'white',
     marginTop: '15%',
+    backgroundColor: '#f2f2f2'
 
   },
 
