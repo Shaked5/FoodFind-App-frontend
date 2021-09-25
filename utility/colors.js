@@ -4,5 +4,6 @@ export default{
     white: "#fff",
     danger: "#D62828", //red
     facebookBlue: "#4867aa",
+    businessCard: "#cccccc",
     
 };
