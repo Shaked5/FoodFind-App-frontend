@@ -6,13 +6,14 @@ import {useNavigation } from '@react-navigation/native';
 import { FoodFindContext } from '../context';
 import { retrieveAsyncStorageData, removeAsyncStorageData } from '../utility/storage';
 
-import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome, Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 
 export const DrawerContent = (props) => {
     const { user, setUser, isDarkTheme, setIsDarkTheme } = React.useContext(FoodFindContext);
+    const [currentTime,setCurrentTime] = useState(new Date().toLocaleString());
     const navigation = useNavigation();
 
     const scheme = useColorScheme();
@@ -63,11 +64,20 @@ export const DrawerContent = (props) => {
         getUserAsyncStorage();
     }, []);
 
+    useEffect(() => {
+        let secTimer = setInterval( () => {
+          setCurrentTime(new Date().toLocaleString())
+        },1000)
+    
+        return () => clearInterval(secTimer);
+    }, []);
+
 
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
+                    <Text>{currentTime}</Text>
                     <View style={styles.userInfoSection}>
                         <View style={styles.containerProfile}>
                             <Avatar.Image source={{ uri: getProfilePic() }}
@@ -81,6 +91,16 @@ export const DrawerContent = (props) => {
 
                     </View>
                     <Drawer.Section style={styles.drawerSection}>
+                        <DrawerItem 
+                         icon={({ color, size }) => (
+                            <Ionicons name="home-outline"
+                                size={size}
+                                color={color}
+                            />
+                        )}
+                        label="ראשי"
+                        onPress={() => navigation.navigate('Home') }
+                    />
                         <DrawerItem
                             icon={({ color, size }) => (
                                 <MaterialIcons name="insert-invitation"
@@ -89,7 +109,7 @@ export const DrawerContent = (props) => {
                                 />
                             )}
                             label="ההזמנות שלי"
-                            onPress={() => navigation.navigate('UserOrders')}
+                            onPress={() => {user? navigation.navigate('UserOrders'): navigation.navigate('Login') }}
                         />
                         <DrawerItem
                             icon={({ color, size }) => (
