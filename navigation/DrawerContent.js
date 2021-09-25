@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Alert, useColorScheme } from 'react-native';
 import { Avatar, Title, Caption, Paragraph, Drawer, Text, TouchableOpacity, Switch, TouchableRipple } from 'react-native-paper';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import {useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { FoodFindContext } from '../context';
 import { retrieveAsyncStorageData, removeAsyncStorageData } from '../utility/storage';
 
@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const DrawerContent = (props) => {
     const { user, setUser, isDarkTheme, setIsDarkTheme } = React.useContext(FoodFindContext);
-    const [currentTime,setCurrentTime] = useState(new Date().toLocaleString());
+    const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
     const navigation = useNavigation();
 
     const scheme = useColorScheme();
@@ -65,10 +65,10 @@ export const DrawerContent = (props) => {
     }, []);
 
     useEffect(() => {
-        let secTimer = setInterval( () => {
-          setCurrentTime(new Date().toLocaleString())
-        },1000)
-    
+        let secTimer = setInterval(() => {
+            setCurrentTime(new Date().toLocaleString())
+        }, 1000)
+
         return () => clearInterval(secTimer);
     }, []);
 
@@ -77,7 +77,9 @@ export const DrawerContent = (props) => {
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
-                    <Text>{currentTime}</Text>
+                    <View style={styles.timeView}>
+                        <Text>{currentTime}</Text>
+                    </View>
                     <View style={styles.userInfoSection}>
                         <View style={styles.containerProfile}>
                             <Avatar.Image source={{ uri: getProfilePic() }}
@@ -91,16 +93,16 @@ export const DrawerContent = (props) => {
 
                     </View>
                     <Drawer.Section style={styles.drawerSection}>
-                        <DrawerItem 
-                         icon={({ color, size }) => (
-                            <Ionicons name="home-outline"
-                                size={size}
-                                color={color}
-                            />
-                        )}
-                        label="ראשי"
-                        onPress={() => navigation.navigate('Home') }
-                    />
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Ionicons name="home-outline"
+                                    size={size}
+                                    color={color}
+                                />
+                            )}
+                            label="ראשי"
+                            onPress={() => navigation.navigate('Home')}
+                        />
                         <DrawerItem
                             icon={({ color, size }) => (
                                 <MaterialIcons name="insert-invitation"
@@ -109,7 +111,7 @@ export const DrawerContent = (props) => {
                                 />
                             )}
                             label="ההזמנות שלי"
-                            onPress={() => {user? navigation.navigate('UserOrders'): navigation.navigate('Login') }}
+                            onPress={() => { user ? navigation.navigate('UserOrders') : navigation.navigate('Login') }}
                         />
                         <DrawerItem
                             icon={({ color, size }) => (
@@ -165,6 +167,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
 
+    },
+    timeView: {
+        justifyContent: 'center', alignItems: 'center', marginBottom: 15
     },
     containerUserTitle: {
         flexDirection: 'column',
