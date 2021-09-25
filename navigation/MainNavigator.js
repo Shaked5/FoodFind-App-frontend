@@ -4,6 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 // import { NavigationContainer } from '@react-navigation/native';
 import Home from '../Screens/Home';
 import Login from '../Screens/Login';
+import UserOrders from '../Screens/UserOrders';
 import {DrawerContent} from './DrawerContent';
 import { Drawer } from 'react-native-paper';
 
@@ -40,6 +41,7 @@ export const MainNavigator = (navigation, route) => {
             >
                 <Drawer.Screen name='Home' component={Home} options={{ headerShown: false }} />
                 <Drawer.Screen name='Login' component={Login} options={{ headerShown: false }} />
+                <Drawer.Screen name='UserOrders' component={UserOrders} options={{ headerShown: false }} />
             </Drawer.Navigator>
            
             {/* {stam ? StackAuthentication : StackLoggedIn} */}

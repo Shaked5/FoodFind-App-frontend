@@ -2,14 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Alert, useColorScheme } from 'react-native';
 import { Avatar, Title, Caption, Paragraph, Drawer, Text, TouchableOpacity, Switch, TouchableRipple } from 'react-native-paper';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import {useNavigation } from '@react-navigation/native';
 import { FoodFindContext } from '../context';
 import { retrieveAsyncStorageData, removeAsyncStorageData } from '../utility/storage';
 
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+
+
 export const DrawerContent = (props) => {
     const { user, setUser, isDarkTheme, setIsDarkTheme } = React.useContext(FoodFindContext);
+    const navigation = useNavigation();
 
     const scheme = useColorScheme();
 
@@ -85,7 +89,7 @@ export const DrawerContent = (props) => {
                                 />
                             )}
                             label="ההזמנות שלי"
-                            onPress={() => { console.log('user', user) }}
+                            onPress={() => navigation.navigate('UserOrders')}
                         />
                         <DrawerItem
                             icon={({ color, size }) => (
