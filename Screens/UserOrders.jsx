@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
     flatListView: {
         flex: 8,
         width: windowWidth,
-        
         alignItems: "center",
     },
 });
