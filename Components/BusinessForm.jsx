@@ -35,18 +35,6 @@ const BusinessForm = () => {
   });
   const [image, setImage] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== "web") {
-        const { status } =
-          await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== "granted") {
-          alert("אנא אפשר גישה על מנת להעלות תמונה");
-        }
-      }
-    })();
-  }, []);
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -62,15 +50,30 @@ const BusinessForm = () => {
     }
   };
 
+  const HandleUploadImage = () => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("אנא אפשר גישה על מנת להעלות תמונה");
+        }
+      }
+    })();
+    pickImage();
+  };
+
   return (
     <ScrollView style={styles.businessForm}>
-        <View style={{flex:1,alignItems:'center',marginBottom:'10%'}}>
-            <Text style={{fontSize:15,fontWeight:'bold'}}>הרשם עוד היום כבעל עסק אצלנו!</Text>
-        </View>
+      <View style={{ flex: 1, alignItems: "center", marginBottom: "10%" }}>
+        <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+          הרשם עוד היום כבעל עסק אצלנו!
+        </Text>
+      </View>
       <Text>אימייל</Text>
       <View style={styles.action}>
         <AntDesign name="user" size={24} color="black" />
-        <TextInput placeholder={user.email} style={styles.textInput} />
+        <TextInput  style={styles.textInput} />
         <Feather name="check-circle" color="green" size={20} />
       </View>
       <Text>סיסמא</Text>
@@ -95,7 +98,7 @@ const BusinessForm = () => {
       <Text>טלפון עסק</Text>
       <View style={styles.action}>
         <AntDesign name="phone" size={24} color="black" />
-        <TextInput keyboardType='numeric' style={styles.textInput} />
+        <TextInput keyboardType="numeric" style={styles.textInput} />
       </View>
       <Text>כתובת עסק</Text>
       <View style={styles.action}>
@@ -126,9 +129,7 @@ const BusinessForm = () => {
       <TouchableOpacity style={styles.signUpBtn}>
         <Text style={styles.btnTxt}>הרשם</Text>
       </TouchableOpacity>
-      <View style={{margin:30}}/>
-
-    
+      <View style={{ margin: 30 }} />
     </ScrollView>
   );
 };
