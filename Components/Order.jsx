@@ -10,6 +10,8 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 
 import colors from "../utility/colors";
+
+const windowWidth = Dimensions.get("window").width;
 const Order = () => {
   return (
     <TouchableOpacity>
@@ -61,7 +63,7 @@ export default Order;
 const styles = StyleSheet.create({
   mainView: {
     flex: 1,
-    width: 380,
+    width: windowWidth*0.95,
     marginTop: 15,
     justifyContent: "center",
     alignItems: "center",

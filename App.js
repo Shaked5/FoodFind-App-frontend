@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet, useColorScheme } from 'react-native';
+import { StyleSheet, useColorScheme, I18nManager } from 'react-native';
 import { FoodFindProvider } from './context';
 import Login from './Screens/Login'
 import MainNavigator from './navigation/MainNavigator'
@@ -10,8 +10,12 @@ import { DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { FoodFindContext } from './context';
 
 
+
+
 export default function App() {
   const { isDarkTheme } = React.useContext(FoodFindContext);
+  I18nManager.forceRTL(true);
+  I18nManager.allowRTL(true);
 
   const MyDarkTheme = {
     dark: true,
