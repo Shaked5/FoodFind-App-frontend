@@ -19,6 +19,7 @@ export const Login = ({ navigation }) => {
   const [userFacebook, setUserFacebook] = useState('')
   const config = {
     androidClientId: '749131361216-0hfddk09s5thaondf0l1kdj82kco8m41.apps.googleusercontent.com',
+    iosClientId: '749131361216-mf1lpcnvjm91vl04r3do4srlmvru3dhu.apps.googleusercontent.com',
   }
 
 

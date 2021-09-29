@@ -18,6 +18,7 @@ import {
   MaterialIcons,
   FontAwesome,
 } from "@expo/vector-icons";
+import * as Animatable from 'react-native-animatable';
 import colors from "../utility/colors";
 import { FoodFindContext } from "../context";
 
@@ -26,14 +27,53 @@ import * as ImagePicker from "expo-image-picker";
 const windowWidth = Dimensions.get("window").width;
 
 const BusinessForm = () => {
+
   const { user } = React.useContext(FoodFindContext);
   const [data, setData] = useState({
     email: "",
     password: "",
+    businessName: "",
+    businnesIdentity: "",
+    businessPhone: "",
+    businessAddress: "",
+    businessDesc: "",
+    businessImg: "",
+    isValidPass:false,
     checkTextChange: false,
     secureTextEntry: true,
   });
   const [image, setImage] = useState(null);
+
+  const emailTextInputChange = (val) => {
+    if (val.length !== 0) {
+      setData({
+        ...data,
+        email: val,
+        checkTextChange: true,
+      });
+    }
+    else {
+      setData({
+        ...data,
+        email: val,
+        checkTextChange: false,
+      })
+    }
+  }
+
+  const handlePasswordChange = (val) => {
+    setData({
+      ...data,
+      password: val,
+    })
+  }
+
+  const updateSecureTextEntry = (val) => {
+    setData({
+      ...data,
+      secureTextEntry: !data.secureTextEntry
+    })
+  }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -58,9 +98,11 @@ const BusinessForm = () => {
         if (status !== "granted") {
           alert("אנא אפשר גישה על מנת להעלות תמונה");
         }
+        else {
+          pickImage();
+        }
       }
     })();
-    pickImage();
   };
 
   return (
@@ -73,8 +115,15 @@ const BusinessForm = () => {
       <Text>אימייל</Text>
       <View style={styles.action}>
         <AntDesign name="user" size={24} color="black" />
-        <TextInput  style={styles.textInput} />
-        <Feather name="check-circle" color="green" size={20} />
+        <TextInput style={styles.textInput} onChangeText={(val) => emailTextInputChange(val)} />
+        {data.checkTextChange ?
+          <Animatable.View
+            animation='fadeOut'
+
+          >
+            <Feather name="check-circle" color="green" size={20} />
+          </Animatable.View>
+          : null}
       </View>
       <Text>סיסמא</Text>
       <View style={styles.action}>
@@ -82,8 +131,19 @@ const BusinessForm = () => {
         <TextInput
           secureTextEntry={data.secureTextEntry}
           style={styles.textInput}
+          pattern={[
+            '^.{8,}$', // min 8 chars
+            '(?=.*\\d)', // number required
+            '(?=.*[A-Z])', // uppercase letter
+          ]}
         />
-        <Feather name="eye-off" color="green" size={20} />
+        <TouchableOpacity onPress={updateSecureTextEntry}>
+          {data.secureTextEntry ?
+            <Feather name="eye-off" color="green" size={20} />
+            :
+            <Feather name="eye" color="green" size={20} />}
+        </TouchableOpacity>
+
       </View>
       <Text>שם עסק</Text>
       <View style={styles.action}>
@@ -120,7 +180,7 @@ const BusinessForm = () => {
         }}
       >
         <Text>תמונת עסק</Text>
-        <FontAwesome onPress={pickImage} name="image" size={40} color="black" />
+        <FontAwesome onPress={HandleUploadImage} name="image" size={40} color="black" />
         {image && (
           <Image source={{ uri: image }} style={{ width: 300, height: 200 }} />
         )}

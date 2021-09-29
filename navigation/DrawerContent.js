@@ -119,7 +119,7 @@ export const DrawerContent = (props) => {
                                     size={size} color={color} />
                             )}
                             label="הרשם כבעל עסק"
-                            onPress={() => { user ? navigation.navigate('BusinessRegister') : navigation.navigate('login') }}
+                            onPress={() => { user ? navigation.navigate('BusinessRegister') : navigation.navigate('Login') }}
                         />
                     </Drawer.Section>
                     <Drawer.Section title="העדפות">
