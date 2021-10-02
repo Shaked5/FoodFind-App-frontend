@@ -7,6 +7,7 @@ import * as Google from "expo-google-app-auth";
 import * as Facebook from 'expo-facebook';
 import { storeAsyncStorageData } from '../utility/storage';
 import FoodFindLogo from '../assets/foodFindLogoSmall.png';
+import {insertNewUser} from '../api/UserController'
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -17,6 +18,12 @@ export const Login = ({ navigation }) => {
 
   const { user, setUser } = React.useContext(FoodFindContext);
   const [userFacebook, setUserFacebook] = useState('')
+  const [data,setData]=React.useState({
+    name:'',
+    email: '',
+    pushToken:'',
+  })
+
   const config = {
     androidClientId: '749131361216-0hfddk09s5thaondf0l1kdj82kco8m41.apps.googleusercontent.com',
     iosClientId: '749131361216-mf1lpcnvjm91vl04r3do4srlmvru3dhu.apps.googleusercontent.com',
@@ -54,8 +61,16 @@ export const Login = ({ navigation }) => {
   const signInWithGoogleAsync = async () => {
     try {
       const { type, accessToken, user } = await Google.logInAsync(config);
-
+      // setData({
+      //   name:user.name,
+      //   email: user.email,
+      //   pushToken:user.id,
+      // })
       if (type === 'success') {
+        // const ifUserExist = await insertNewUser(data)
+        // if(ifUserExist==="Conflict"){
+        //   alert('email already exist')
+        // }
         setUser(user);
         storeAsyncStorageData('user', user)
         // setTimeout(() => {
@@ -70,7 +85,7 @@ export const Login = ({ navigation }) => {
       console.log(e);
     }
   }
-
+console.log(data);
   return (
     <View style={styles.mainWrraper} width={windowWidth} height={windowHeight}>
       <View style={styles.header}>

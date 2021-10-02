@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   View,
   Text,
@@ -21,6 +21,7 @@ import {
 import * as Animatable from 'react-native-animatable';
 import colors from "../utility/colors";
 import { FoodFindContext } from "../context";
+import { emailValid, passValid } from '../utility/validations';
 
 import * as ImagePicker from "expo-image-picker";
 
@@ -38,7 +39,7 @@ const BusinessForm = () => {
     businessAddress: "",
     businessDesc: "",
     businessImg: "",
-    isValidPass:false,
+    isValidPass: true,
     checkTextChange: false,
     secureTextEntry: true,
   });
@@ -62,10 +63,20 @@ const BusinessForm = () => {
   }
 
   const handlePasswordChange = (val) => {
-    setData({
-      ...data,
-      password: val,
-    })
+    if (passValid(val))
+      setData({
+        ...data,
+        password: val,
+        isValidPass: true,
+      })
+    else {
+      setData({
+        ...data,
+        password:val,
+        isValidPass: false
+      })
+
+    }
   }
 
   const updateSecureTextEntry = (val) => {
@@ -104,8 +115,9 @@ const BusinessForm = () => {
       }
     })();
   };
-
+console.log(data.isValidPass);
   return (
+    // <KeyboardAwareScrollView contentContainerStyle={styles.businessForm}>
     <ScrollView style={styles.businessForm}>
       <View style={{ flex: 1, alignItems: "center", marginBottom: "10%" }}>
         <Text style={{ fontSize: 15, fontWeight: "bold" }}>
@@ -115,10 +127,12 @@ const BusinessForm = () => {
       <Text>אימייל</Text>
       <View style={styles.action}>
         <AntDesign name="user" size={24} color="black" />
-        <TextInput style={styles.textInput} onChangeText={(val) => emailTextInputChange(val)} />
+        <TextInput style={styles.textInput}
+          onChangeText={(val) => emailTextInputChange(val)}
+        />
         {data.checkTextChange ?
           <Animatable.View
-            animation='fadeOut'
+            animation='bounceIn'
 
           >
             <Feather name="check-circle" color="green" size={20} />
@@ -131,11 +145,8 @@ const BusinessForm = () => {
         <TextInput
           secureTextEntry={data.secureTextEntry}
           style={styles.textInput}
-          pattern={[
-            '^.{8,}$', // min 8 chars
-            '(?=.*\\d)', // number required
-            '(?=.*[A-Z])', // uppercase letter
-          ]}
+          onChangeText={(val) => handlePasswordChange(val)}
+          onEndEditing={()=>{if(data.password.length===0)setData({...data,isValidPass:true});}}
         />
         <TouchableOpacity onPress={updateSecureTextEntry}>
           {data.secureTextEntry ?
@@ -143,8 +154,12 @@ const BusinessForm = () => {
             :
             <Feather name="eye" color="green" size={20} />}
         </TouchableOpacity>
-
       </View>
+      {data.isValidPass ? null :
+        <Animatable.View animation="fadeInLeft" duration={100}>
+          <Text style={styles.errorMsg}>password must be 8 characters</Text>
+        </Animatable.View>
+      }
       <Text>שם עסק</Text>
       <View style={styles.action}>
         <AntDesign name="user" size={24} color="black" />
@@ -191,6 +206,7 @@ const BusinessForm = () => {
       </TouchableOpacity>
       <View style={{ margin: 30 }} />
     </ScrollView>
+    // </KeyboardAwareScrollView>
   );
 };
 
@@ -235,5 +251,9 @@ const styles = StyleSheet.create({
   btnTxt: {
     fontWeight: "bold",
     fontSize: 20,
+  },
+  errorMsg: {
+    color: '#FF0000',
+    fontSize: 14,
   },
 });
