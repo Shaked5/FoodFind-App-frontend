@@ -40,25 +40,40 @@ const BusinessForm = () => {
     businessDesc: "",
     businessImg: "",
     isValidPass: true,
-    checkTextChange: false,
+    isValidEmail:false,
     secureTextEntry: true,
   });
   const [image, setImage] = useState(null);
 
-  const emailTextInputChange = (val) => {
-    if (val.length !== 0) {
+  // const emailTextInputChange = (val) => {
+  //   if (val.length !== 0) {
+  //     setData({
+  //       ...data,
+  //       email: val,
+  //       checkTextChange: true,
+  //     });
+  //   }
+  //   else {
+  //     setData({
+  //       ...data,
+  //       email: val,
+  //       checkTextChange: false,
+  //     })
+  //   }
+  // }
+
+  const handleEmailChange=(val) => {
+    if(emailValid(val)){
       setData({
         ...data,
-        email: val,
-        checkTextChange: true,
-      });
-    }
-    else {
-      setData({
-        ...data,
-        email: val,
-        checkTextChange: false,
+        isValidEmail:true,
       })
+    }
+    else{
+        setData({
+          ...data,
+        isValidEmail:false,
+        })
     }
   }
 
@@ -115,7 +130,7 @@ const BusinessForm = () => {
       }
     })();
   };
-console.log(data.isValidPass);
+console.log(data.isValidEmail);
   return (
     // <KeyboardAwareScrollView contentContainerStyle={styles.businessForm}>
     <ScrollView style={styles.businessForm}>
@@ -128,9 +143,11 @@ console.log(data.isValidPass);
       <View style={styles.action}>
         <AntDesign name="user" size={24} color="black" />
         <TextInput style={styles.textInput}
-          onChangeText={(val) => emailTextInputChange(val)}
-        />
-        {data.checkTextChange ?
+          // onChangeText={(val) => emailTextInputChange(val)}
+          onChangeText={(val)=> handleEmailChange(val)}
+           />
+        
+        {data.isValidEmail ?
           <Animatable.View
             animation='bounceIn'
 
@@ -139,6 +156,11 @@ console.log(data.isValidPass);
           </Animatable.View>
           : null}
       </View>
+      {data.isValidEmail && data.email==="" ? null:
+      <Animatable.View animation="fadeInLeft" duration={100}>
+          <Text style={styles.errorMsg}>incorrect email</Text>
+        </Animatable.View>
+        }
       <Text>סיסמא</Text>
       <View style={styles.action}>
         <AntDesign name="lock" size={24} color="black" />

@@ -14,25 +14,47 @@ export const getAllUsers = async () => {
 };
 
 export const insertNewUser = async (user) => {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             const res = await fetch('http://10.100.102.19:44302/api/InsertNewUser', {
+//                 method: 'POST',
+//                 headers: {
+//                     "content-type": "application/json",
+//                     "accept": "application/json",
+//                     "Access-Control-Allow-Origin": "*"
+//                 },
+//                 body: JSON.stringify(user)
+//             })
+//             console.log(`url`, res);
+//             const data = await res.json();
+//             console.log('data=', data)
+//             resolve(data)
+//         }
+//         catch (error) {
+//             reject(error)
+//         }
+//     })
+// }
     const req = {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
+            "content-Type": "application/json",
+            "accept": "application/json",
+            
         },
         body: JSON.stringify(user),
     };
-    const value = await fetch('https://localhost:44302/api/InsertNewUser', req)
+    const value = await fetch('https:// 192.168.137.1:44302/api/InsertNewUser', req)
         .then((res) => {
+            console.log(res);
             if (res.status === 200) {
-                console.log(res.json)
-                return res.json();
+                return res.json;
             }
             else if (res.status === 409) return "Conflict";
             return null;
         })
         .catch((ex) => {
-            console.error("insertNewUser ex", ex.Message);
+            console.error("error insert user", ex);
             return null;
         });
     return value;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {getAllUsers} from '../api/UserController';
 import {
   View,
   Text,
@@ -28,6 +29,7 @@ const Home = ({ navigation }) => {
   //         <Text style={styles.title}>{title}</Text>
   //     </View>
   // );
+
 
   const DATA = [
     {
@@ -85,7 +87,8 @@ const Home = ({ navigation }) => {
     
   ];
 
-  console.log(user);
+  // console.log(user);
+  
   return (
     <View style={styles.container}>
         <View style={styles.headerView}>

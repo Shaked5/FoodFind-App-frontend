@@ -61,16 +61,18 @@ export const Login = ({ navigation }) => {
   const signInWithGoogleAsync = async () => {
     try {
       const { type, accessToken, user } = await Google.logInAsync(config);
-      // setData({
-      //   name:user.name,
-      //   email: user.email,
-      //   pushToken:user.id,
-      // })
+      setData({
+        name:user.name,
+        email: user.email,
+        pushToken:user.id,
+      })
       if (type === 'success') {
-        // const ifUserExist = await insertNewUser(data)
-        // if(ifUserExist==="Conflict"){
-        //   alert('email already exist')
-        // }
+        const ifUserExist = await insertNewUser(data)
+        if(ifUserExist==="Conflict"){
+          console.log('email already exist');
+        }
+      
+        console.log('yess');
         setUser(user);
         storeAsyncStorageData('user', user)
         // setTimeout(() => {

@@ -1,6 +1,6 @@
 export const emailValid = (email) => {
-    const regEx = /^[a-zA-Z0-9._$!%^]{3,}@{1}[a-zA-Z]{2,20}[.]{1,}[a-zA-Z]{2,10}$/;
-    return email.match(regEx);
+    const regEx =/^[a-zA-Z0-9._$!%^]{3,}@{1}[a-zA-Z]{2,20}[.]{1,}[a-zA-Z]{2,10}$/.test(email);
+    return regEx;
   };
   
   export const passValid = (password) => {
