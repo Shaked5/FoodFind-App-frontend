@@ -9,13 +9,16 @@ import {useNavigation, DrawerActions } from '@react-navigation/native';
 
 const Header = () => {
     const navigation = useNavigation();
+    const {user} = React.useContext(FoodFindContext);
 
 
     return (
         <View style={styles.header}>
             <MaterialCommunityIcons style={styles.menuIcon} name="menu" onPress={() => navigation.dispatch(DrawerActions.openDrawer())} size={28} color="black" />
             <Image source={FoodFindLogo} style={styles.txtFoodFindHeader} width={180} height={70} />
+            {user? <View style={{marginLeft:50}}/>:
             <Ionicons onPress={() => navigation.navigate('Login')} style={styles.contactIcon} name="person" size={28} color="black" />
+        }
         </View>
     )
 }
