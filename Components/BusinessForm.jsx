@@ -22,7 +22,7 @@ import * as Animatable from 'react-native-animatable';
 import colors from "../utility/colors";
 import { FoodFindContext } from "../context";
 import { emailValid, passValid } from '../utility/validations';
-
+import { insertBusinessUser } from "../api/BusinessUsersController";
 import * as ImagePicker from "expo-image-picker";
 
 const windowWidth = Dimensions.get("window").width;
@@ -31,16 +31,16 @@ const BusinessForm = () => {
 
   const { user } = React.useContext(FoodFindContext);
   const [data, setData] = useState({
-    email: "",
+    email: user.email,
     password: "",
     businessName: "",
-    businnesIdentity: "",
+    businessLicense: "",
     businessPhone: "",
     businessAddress: "",
-    businessDesc: "",
+    businessDescription: "",
     businessImg: "",
     isValidPass: true,
-    isValidEmail:false,
+    isValidEmail: false,
     secureTextEntry: true,
   });
   const [image, setImage] = useState(null);
@@ -62,18 +62,18 @@ const BusinessForm = () => {
   //   }
   // }
 
-  const handleEmailChange=(val) => {
-    if(emailValid(val)){
+  const handleEmailChange = (val) => {
+    if (emailValid(val)) {
       setData({
         ...data,
-        isValidEmail:true,
+        isValidEmail: true,
       })
     }
-    else{
-        setData({
-          ...data,
-        isValidEmail:false,
-        })
+    else {
+      setData({
+        ...data,
+        isValidEmail: false,
+      })
     }
   }
 
@@ -87,7 +87,7 @@ const BusinessForm = () => {
     else {
       setData({
         ...data,
-        password:val,
+        password: val,
         isValidPass: false
       })
 
@@ -113,6 +113,7 @@ const BusinessForm = () => {
 
     if (!result.cancelled) {
       setImage(result.uri);
+
     }
   };
 
@@ -130,7 +131,28 @@ const BusinessForm = () => {
       }
     })();
   };
-console.log(data.isValidEmail);
+
+  handleRegisterBusinessUser = async() => {
+    console.log('data', data);
+    if (user.userID !== null && data.isValidPass )
+      var businessUser =await insertBusinessUser({
+        userID: user.userID, password: data.password,businessName: data.businessName,
+        businessEmail: user.email, businessPhone: data.businessPhone,businessLicense:data.businessLicense,
+        businessAddress: data.businessAddress,
+        businessLogo: image.uri,menuImage:null, businessDescription: data.businessDesc
+      })
+    console.log('businessUser', businessUser);
+    if (businessUser !== null && businessUser !== undefined) {
+      alert('נרשמת בהצלחה!!!')
+    }
+    else {
+      alert("אחד או יותר מהשדות אינם נכונים")
+      return;
+    }
+  }
+  console.log('userID:', user.userID)
+  console.log('user', user);
+  console.log(data.isValidEmail);
   return (
     // <KeyboardAwareScrollView contentContainerStyle={styles.businessForm}>
     <ScrollView style={styles.businessForm}>
@@ -144,9 +166,10 @@ console.log(data.isValidEmail);
         <AntDesign name="user" size={24} color="black" />
         <TextInput style={styles.textInput}
           // onChangeText={(val) => emailTextInputChange(val)}
-          onChangeText={(val)=> handleEmailChange(val)}
-           />
-        
+          onChangeText={(val) => handleEmailChange(val)}
+          value={data.email}
+        />
+
         {data.isValidEmail ?
           <Animatable.View
             animation='bounceIn'
@@ -156,11 +179,11 @@ console.log(data.isValidEmail);
           </Animatable.View>
           : null}
       </View>
-      {data.isValidEmail && data.email==="" ? null:
-      <Animatable.View animation="fadeInLeft" duration={100}>
+      {data.isValidEmail && data.email === "" ? null :
+        <Animatable.View animation="fadeInLeft" duration={100}>
           <Text style={styles.errorMsg}>incorrect email</Text>
         </Animatable.View>
-        }
+      }
       <Text>סיסמא</Text>
       <View style={styles.action}>
         <AntDesign name="lock" size={24} color="black" />
@@ -168,7 +191,7 @@ console.log(data.isValidEmail);
           secureTextEntry={data.secureTextEntry}
           style={styles.textInput}
           onChangeText={(val) => handlePasswordChange(val)}
-          onEndEditing={()=>{if(data.password.length===0)setData({...data,isValidPass:true});}}
+          onEndEditing={() => { if (data.password.length === 0) setData({ ...data, isValidPass: true }); }}
         />
         <TouchableOpacity onPress={updateSecureTextEntry}>
           {data.secureTextEntry ?
@@ -185,27 +208,37 @@ console.log(data.isValidEmail);
       <Text>שם עסק</Text>
       <View style={styles.action}>
         <AntDesign name="user" size={24} color="black" />
-        <TextInput style={styles.textInput} />
+        <TextInput style={styles.textInput}
+          onChangeText={(val) => setData({ ...data, businessName: val })}
+        />
       </View>
       <Text>ת.ז / ח"פ</Text>
       <View style={styles.action}>
         <AntDesign name="idcard" size={24} color="black" />
-        <TextInput style={styles.textInput} />
+        <TextInput style={styles.textInput}
+          onChangeText={(val) => setData({ ...data, businessLicense: val })}
+        />
       </View>
       <Text>טלפון עסק</Text>
       <View style={styles.action}>
         <AntDesign name="phone" size={24} color="black" />
-        <TextInput keyboardType="numeric" style={styles.textInput} />
+        <TextInput keyboardType="numeric" style={styles.textInput}
+          onChangeText={(val) => setData({ ...data, businessPhone: val })}
+        />
       </View>
       <Text>כתובת עסק</Text>
       <View style={styles.action}>
         <EvilIcons name="location" size={30} color="black" />
-        <TextInput style={styles.textInput} />
+        <TextInput style={styles.textInput}
+          onChangeText={(val) => setData({ ...data, businessAddress: val })}
+        />
       </View>
       <Text>תיאור עסק</Text>
       <View style={styles.action}>
         <AntDesign name="file1" size={24} color="black" />
-        <TextInput style={styles.textInput} />
+        <TextInput style={styles.textInput}
+          onChangeText={(val) => setData({ ...data, businessDescription: val })}
+        />
       </View>
       <View
         style={{
@@ -223,7 +256,7 @@ console.log(data.isValidEmail);
         )}
       </View>
 
-      <TouchableOpacity style={styles.signUpBtn}>
+      <TouchableOpacity style={styles.signUpBtn} onPress={handleRegisterBusinessUser}>
         <Text style={styles.btnTxt}>הרשם</Text>
       </TouchableOpacity>
       <View style={{ margin: 30 }} />

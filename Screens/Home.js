@@ -16,11 +16,15 @@ import { FoodFindContext } from "../context";
 import Header from "../Components/Header";
 import { Searchbar } from "react-native-paper";
 import BusinessCard from "../Components/BusinessCard";
+import {GetUserByEmail} from '../api/UserController'
+
+
 
 const Home = ({ navigation }) => {
   const windowWidth = Dimensions.get("window").width;
-  const { user } = React.useContext(FoodFindContext);
+  const { user ,setUser} = React.useContext(FoodFindContext);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [myID,SetMyId] = React.useState("")
   const onChangeSearch = (query) => setSearchQuery(query);
 
   const renderItem = ({ item }) => <BusinessCard style={styles.businessCardRender} />;
@@ -29,6 +33,7 @@ const Home = ({ navigation }) => {
   //         <Text style={styles.title}>{title}</Text>
   //     </View>
   // );
+
 
 
   const DATA = [
@@ -87,8 +92,19 @@ const Home = ({ navigation }) => {
     
   ];
 
-  // console.log(user);
-  
+
+  useEffect(() => {
+    //find id from db and push myID to user context
+     (async()=>{
+      const data =await GetUserByEmail(user.email);
+      console.log('data',data);
+      setUser({...user,userID: data.userID});
+    })()
+  },[user==null]);
+
+
+  console.log('user',user);
+
   return (
     <View style={styles.container}>
         <View style={styles.headerView}>

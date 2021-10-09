@@ -1,25 +1,24 @@
-import { UsersController } from '../utility/urls';
+import {BusinessUsersController} from '../utility/urls';
 
-export const getAllUsers = async () => {
-    const value = await fetch(UsersController.GetAllUsers)
+export const getAllBusinessUsers = async () => {
+    const value = await fetch(BusinessUsersController.GetAllBusinessUsers)
         .then((res) => {
             if (res.status == 200) return res.json();
             return null;
         })
         .catch((ex) => {
-            console.log("getAllUsers ex", ex);
+            console.log("getAllBusinessUsers ex", ex);
             return null;
         });
     return value;
 };
 
-export const GetUserByEmail = async(email)=> {
+export const getBusinessUserByEmail = async(email)=> {
     const req = {
         method: "GET",
-     
     };
     try{
-        const res = await fetch(UsersController.GetUserByEmail + `?email=${email}`,req);
+        const res = await fetch(BusinessUsersController.GetBusinessUserByEmail + `?email=${email}`,req);
         if(res.status!==200) return null;
         const data = await res.json(); 
         return data;
@@ -29,21 +28,19 @@ export const GetUserByEmail = async(email)=> {
         return null;
     }
 
-}
+};
 
-
-
-export const insertNewUser = async (user) => {
+export const insertBusinessUser = async (businessUser) => {
     const req = {
         method: "POST",
         headers: {
             "content-Type": "application/json",
         },
-        body: JSON.stringify(user),
+        body: JSON.stringify(businessUser),
     };
     try{
-        const res = await fetch('http://proj14.ruppin-tech.co.il/api/InsertNewUser',req);
-        if(res.status!==200) return null;
+        const res = await fetch(BusinessUsersController.InsertBusinessUser ,req);
+        if(res.status!==201) return null;
         const data = await res.json(); 
         return data;
     }
