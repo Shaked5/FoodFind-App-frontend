@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {getAllUsers} from '../api/UserController';
+import { getAllUsers } from '../api/UserController';
 import {
   View,
   Text,
@@ -15,16 +15,17 @@ import colors from "../utility/colors";
 import { FoodFindContext } from "../context";
 import Header from "../Components/Header";
 import { Searchbar } from "react-native-paper";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import BusinessCard from "../Components/BusinessCard";
-import {GetUserByEmail} from '../api/UserController'
+import { GetUserByEmail } from '../api/UserController'
 
 
 
 const Home = ({ navigation }) => {
   const windowWidth = Dimensions.get("window").width;
-  const { user ,setUser} = React.useContext(FoodFindContext);
+  const { user, setUser } = React.useContext(FoodFindContext);
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [myID,SetMyId] = React.useState("")
+  const [myID, SetMyId] = React.useState("")
   const onChangeSearch = (query) => setSearchQuery(query);
 
   const renderItem = ({ item }) => <BusinessCard style={styles.businessCardRender} />;
@@ -62,65 +63,64 @@ const Home = ({ navigation }) => {
       title: "Third Item",
     },
     {
-        id: "58694a0f-3da1-471f-bd96-144671e2329d72",
-        title: "Third Item",
-      },
-      {
-        id: "58694a0f-3da1-471f-bd96-14459d72",
-        title: "forth Item",
-      },
-      {
-        id: "58694a0f-3da1-471f-bd96-144639d72",
-        title: "forth Item",
-      },
-      {
-        id: "58694a0f-3da1-471f-bd96-1446329d72",
-        title: "forth Item",
-      },
-      {
-        id: "58694a0f-3da1-471f-bd96-1459d72",
-        title: "forth Item",
-      },
-      {
-        id: "58694a0f-3da1-471f-bd96-145429d72",
-        title: "forth Item",
-      },
-      {
-        id: "58694a0f-3da1-471f-bd96-1446529d72",
-        title: "forth Item",
-      },
-    
+      id: "58694a0f-3da1-471f-bd96-144671e2329d72",
+      title: "Third Item",
+    },
+    {
+      id: "58694a0f-3da1-471f-bd96-14459d72",
+      title: "forth Item",
+    },
+    {
+      id: "58694a0f-3da1-471f-bd96-144639d72",
+      title: "forth Item",
+    },
+    {
+      id: "58694a0f-3da1-471f-bd96-1446329d72",
+      title: "forth Item",
+    },
+    {
+      id: "58694a0f-3da1-471f-bd96-1459d72",
+      title: "forth Item",
+    },
+    {
+      id: "58694a0f-3da1-471f-bd96-145429d72",
+      title: "forth Item",
+    },
+    {
+      id: "58694a0f-3da1-471f-bd96-1446529d72",
+      title: "forth Item",
+    },
+
   ];
 
 
   useEffect(() => {
     //find id from db and push myID to user context
-     (async()=>{
-      const data =await GetUserByEmail(user.email);
-      console.log('data',data);
-      setUser({...user,userID: data.userID});
+    (async () => {
+      const data = await GetUserByEmail(user.email);
+      console.log('data', data);
+      setUser({ ...user, userID: data.userID });
     })()
-  },[user==null]);
+  }, [user == null]);
 
 
-  console.log('user',user);
+  console.log('user', user);
 
   return (
     <View style={styles.container}>
+      <KeyboardAwareScrollView >
         <View style={styles.headerView}>
-            <Header />
+          <Header />
         </View>
+        <Searchbar
 
-      {/* <Searchbar
-
-                    placeholder='חפש'
-                    onChangeText={onChangeSearch}
-                    value={searchQuery}
-                    icon='magnify'
-                /> */}
-
-      <View style={styles.containerBody}>
-        <ScrollView style={styles.FlatlistView}>
+          placeholder='חפש'
+          onChangeText={onChangeSearch}
+          value={searchQuery}
+          icon='magnify'
+        />
+        <View style={styles.containerBody}>
+          {/* <ScrollView style={styles.FlatlistView}> */}
           <FlatList
             vertical
             style={{ alignSelf: "center" }}
@@ -128,8 +128,9 @@ const Home = ({ navigation }) => {
             renderItem={renderItem}
             keyExtractor={DATA.id}
           />
-        </ScrollView>
-      </View>
+          {/* </ScrollView> */}
+        </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 };
@@ -138,7 +139,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width:'100%',
+    width: '100%',
   },
   containerInput: {
     backgroundColor: "red",
@@ -146,14 +147,14 @@ const styles = StyleSheet.create({
   containerBody: {
     flex: 9,
     backgroundColor: colors.white,
-   
-  },
-  headerView:{
-      flex:1.5,
 
   },
-  FlatlistView:{
-      flex:1,
+  headerView: {
+    flex: 1.5,
+
+  },
+  FlatlistView: {
+    flex: 1,
   },
   // item: {
   //     backgroundColor: '#035fff',
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
   },
-  businessCardRender:{
-      flex:1,
+  businessCardRender: {
+    flex: 1,
   },
 });

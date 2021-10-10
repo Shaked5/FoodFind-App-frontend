@@ -31,51 +31,22 @@ const BusinessForm = () => {
 
   const { user } = React.useContext(FoodFindContext);
   const [data, setData] = useState({
-    email: user.email,
+    userID: user.userID,
     password: "",
     businessName: "",
-    businessLicense: "",
+    businessEmail: user.email,
     businessPhone: "",
+    businessLicense: "",
     businessAddress: "",
+    businessStatus: 1,
+    businessLogo: "",
+    menuImage: "",
     businessDescription: "",
-    businessImg: "",
     isValidPass: true,
-    isValidEmail: false,
     secureTextEntry: true,
   });
   const [image, setImage] = useState(null);
 
-  // const emailTextInputChange = (val) => {
-  //   if (val.length !== 0) {
-  //     setData({
-  //       ...data,
-  //       email: val,
-  //       checkTextChange: true,
-  //     });
-  //   }
-  //   else {
-  //     setData({
-  //       ...data,
-  //       email: val,
-  //       checkTextChange: false,
-  //     })
-  //   }
-  // }
-
-  const handleEmailChange = (val) => {
-    if (emailValid(val)) {
-      setData({
-        ...data,
-        isValidEmail: true,
-      })
-    }
-    else {
-      setData({
-        ...data,
-        isValidEmail: false,
-      })
-    }
-  }
 
   const handlePasswordChange = (val) => {
     if (passValid(val))
@@ -113,6 +84,7 @@ const BusinessForm = () => {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      setData({ ...data, businessLogo: image });
 
     }
   };
@@ -132,27 +104,31 @@ const BusinessForm = () => {
     })();
   };
 
-  handleRegisterBusinessUser = async() => {
+  const handleRegisterBusinessUser = async () => {
     console.log('data', data);
-    if (user.userID !== null && data.isValidPass )
-      var businessUser =await insertBusinessUser({
-        userID: user.userID, password: data.password,businessName: data.businessName,
-        businessEmail: user.email, businessPhone: data.businessPhone,businessLicense:data.businessLicense,
-        businessAddress: data.businessAddress,
-        businessLogo: image.uri,menuImage:null, businessDescription: data.businessDesc
-      })
-    console.log('businessUser', businessUser);
-    if (businessUser !== null && businessUser !== undefined) {
-      alert('נרשמת בהצלחה!!!')
+    try {
+      if (user.userID === null || !data.isValidPass) {
+        alert("אחד או יותר מהשדות אינם נכונים")
+      }
+      if (data.businessName === "" || data.businessPhone === "" || data.businessLicense === "" ||
+        data.businessAddress === "")
+        alert("אחד או יותר מהשדות ריקים");
+      const returnBU = await insertBusinessUser(data);
+      console.log('businessUser', returnBU);
+      if (returnBU === "Conflict")
+        alert("רשום בעל עסק אם אותו מייל")
+      if (returnBU !== null && returnBU !== undefined && returnBU !== "Conflict") {
+        alert('נרשמת בהצלחה!!!')
+      }
     }
-    else {
-      alert("אחד או יותר מהשדות אינם נכונים")
-      return;
+    catch (error) {
+      console.log(error);
     }
   }
-  console.log('userID:', user.userID)
+
+
   console.log('user', user);
-  console.log(data.isValidEmail);
+
   return (
     // <KeyboardAwareScrollView contentContainerStyle={styles.businessForm}>
     <ScrollView style={styles.businessForm}>
@@ -165,25 +141,10 @@ const BusinessForm = () => {
       <View style={styles.action}>
         <AntDesign name="user" size={24} color="black" />
         <TextInput style={styles.textInput}
-          // onChangeText={(val) => emailTextInputChange(val)}
-          onChangeText={(val) => handleEmailChange(val)}
-          value={data.email}
+          value={data.businessEmail}
         />
-
-        {data.isValidEmail ?
-          <Animatable.View
-            animation='bounceIn'
-
-          >
-            <Feather name="check-circle" color="green" size={20} />
-          </Animatable.View>
-          : null}
       </View>
-      {data.isValidEmail && data.email === "" ? null :
-        <Animatable.View animation="fadeInLeft" duration={100}>
-          <Text style={styles.errorMsg}>incorrect email</Text>
-        </Animatable.View>
-      }
+
       <Text>סיסמא</Text>
       <View style={styles.action}>
         <AntDesign name="lock" size={24} color="black" />

@@ -40,7 +40,7 @@ export const insertBusinessUser = async (businessUser) => {
     };
     try{
         const res = await fetch(BusinessUsersController.InsertBusinessUser ,req);
-        if(res.status!==201) return null;
+        if(res.status!==201 && res.status!==200) return "Conflict";
         const data = await res.json(); 
         return data;
     }
