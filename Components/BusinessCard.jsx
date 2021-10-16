@@ -12,7 +12,8 @@ import color from "../utility/colors";
 
 const { width: WINDOW_WIDTH, height: WINDOW_HEIGHT } = Dimensions.get("window");
 
-const BusinessCard = () => {
+const BusinessCard = (props) => {
+  // console.log('itemFromHomeList',props.businessPost);
   return (
     // <View style={{
     //     borderRadius:25, width: WINDOW_WIDTH*0.85,
@@ -26,9 +27,9 @@ const BusinessCard = () => {
     <TouchableOpacity style={styles.btnCard}>
       <View style={styles.businessCardView}>
         
-          <Text style={{ fontSize: 22 }}>הג'חנון של פודפיינד</Text>
+          <Text style={{ fontSize: 22 }}>{props.businessPost.businessName}</Text>
           <Image source={foodFindLogo} />
-          <Text >sdadas</Text>
+          <Text style={{textAlign: 'center'}}>{props.businessPost.businessDescription}</Text>
        
       </View>
     </TouchableOpacity>

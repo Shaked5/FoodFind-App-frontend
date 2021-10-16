@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { getAllUsers } from '../api/UserController';
 import {
   View,
@@ -18,94 +18,65 @@ import { Searchbar } from "react-native-paper";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import BusinessCard from "../Components/BusinessCard";
 import { GetUserByEmail } from '../api/UserController'
+import { getAllBusinessUsers } from "../api/BusinessUsersController";
 
 
 
 const Home = ({ navigation }) => {
   const windowWidth = Dimensions.get("window").width;
-  const { user, setUser } = React.useContext(FoodFindContext);
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [myID, SetMyId] = React.useState("")
-  const onChangeSearch = (query) => setSearchQuery(query);
-
-  const renderItem = ({ item }) => <BusinessCard style={styles.businessCardRender} />;
-  // const Item = ({ title }) => (
-  //     <View style={styles.item}>
-  //         <Text style={styles.title}>{title}</Text>
-  //     </View>
-  // );
+  const { user, setUser } = useContext(FoodFindContext);
+  const [selectedId, setSelectedId] = useState(null);
+  const [allBusiness, setAllBusiness] = useState([]);
+  const [filteredBusiness, setFilteredBusiness] = useState([]);
+  const [search, setSearch] = useState("");
 
 
-
-  const DATA = [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "First Item",
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Second Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-1445571e29d72",
-      title: "Third Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-1345571e29d72",
-      title: "Third Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-1452571e29d72",
-      title: "Third Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e2329d72",
-      title: "Third Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-144671e2329d72",
-      title: "Third Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-14459d72",
-      title: "forth Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-144639d72",
-      title: "forth Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-1446329d72",
-      title: "forth Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-1459d72",
-      title: "forth Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145429d72",
-      title: "forth Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-1446529d72",
-      title: "forth Item",
-    },
-
-  ];
-
+  const renderItem = ({ item }) =>
+    <BusinessCard
+      businessPost={item}
+      style={styles.businessCardRender}
+    // onPress={() => setSelectedId(item.businessID),alert('dsad')}
+    />;
 
   useEffect(() => {
     //find id from db and push myID to user context
     (async () => {
-      const data = await GetUserByEmail(user.email);
-      console.log('data', data);
-      setUser({ ...user, userID: data.userID });
+      if(user.email!== null){
+        const data = await GetUserByEmail(user.email);
+        // console.log('data', data);
+        setUser({ ...user, userID: data.userID });
+      }
     })()
   }, [user == null]);
 
 
-  console.log('user', user);
+  useEffect(() => {
+    (async () => {
+      const res = await getAllBusinessUsers();
+      await setAllBusiness(res);
+      await setFilteredBusiness(res);
+      console.log('allBusiness',allBusiness);
+    })()
+  }, []);
 
+  const searchFilter = (text) => {
+    if (text) {
+      const newData = allBusiness.filter((item) => {
+        const itemData = item.businessName ? item.businessName : '';
+        return itemData.indexOf(text) > -1;
+      });
+      setFilteredBusiness(newData);
+      setSearch(text);
+    }
+    else{
+      setFilteredBusiness(allBusiness)
+      setSearch(text);
+    }
+  }
+
+  // console.log('user', user);
+  // console.log("businessPost",businessPost);
+  console.log(selectedId);
   return (
     <View style={styles.container}>
       <KeyboardAwareScrollView >
@@ -115,8 +86,8 @@ const Home = ({ navigation }) => {
         <Searchbar
 
           placeholder='חפש'
-          onChangeText={onChangeSearch}
-          value={searchQuery}
+          onChangeText={(text) => searchFilter(text)}
+          value={search}
           icon='magnify'
         />
         <View style={styles.containerBody}>
@@ -124,9 +95,10 @@ const Home = ({ navigation }) => {
           <FlatList
             vertical
             style={{ alignSelf: "center" }}
-            data={DATA}
+            data={filteredBusiness}
             renderItem={renderItem}
-            keyExtractor={DATA.id}
+            keyExtractor={item => item.businessID}
+            extraData={selectedId}
           />
           {/* </ScrollView> */}
         </View>
