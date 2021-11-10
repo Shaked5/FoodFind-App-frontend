@@ -35,7 +35,8 @@ const Home = ({ navigation }) => {
     <BusinessCard
       businessPost={item}
       style={styles.businessCardRender}
-    // onPress={() => setSelectedId(item.businessID),alert('dsad')}
+      navigation={navigation}
+      
     />;
 
   useEffect(() => {
@@ -55,7 +56,6 @@ const Home = ({ navigation }) => {
       const res = await getAllBusinessUsers();
       await setAllBusiness(res);
       await setFilteredBusiness(res);
-      console.log('allBusiness',allBusiness);
     })()
   }, []);
 
