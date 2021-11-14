@@ -13,6 +13,7 @@ import { retrieveAsyncStorageData } from "../utility/storage";
 import Logo from "../assets/foodFindLogoSmall2.png";
 import { GetBusinessItemsByBusinessID } from "../api/BusinessItemController";
 import colors from "../utility/colors";
+import { AntDesign } from "@expo/vector-icons";
 
 const BusinessMenu = ({ route, navigation }) => {
   const [businessItems, setBusinessItems] = useState([]);
@@ -26,7 +27,7 @@ const BusinessMenu = ({ route, navigation }) => {
     const res = await GetBusinessItemsByBusinessID(id);
     await setBusinessItems(res["items"]);
     await setBusinessToppings(res["toppings"]);
-    await setSelectedBusinessToppings(res['toppings']);
+    await setSelectedBusinessToppings(res["toppings"]);
   };
 
   useEffect(() => {
@@ -35,6 +36,15 @@ const BusinessMenu = ({ route, navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
+      <View>
+          <TouchableOpacity style={styles.goBackIcon}  onPress={() => {
+         navigation.goBack();
+        }}>
+          <AntDesign 
+          name="back" size={36} color="black" />
+          </TouchableOpacity>
+
+        </View>
       <View style={styles.logo}>
         <Image source={Logo} style={styles.image} />
       </View>
@@ -56,8 +66,8 @@ const BusinessMenu = ({ route, navigation }) => {
               key={item.itemID}
               style={styles.singleItemView}
               onPress={() => {
-                navigation.navigate("itemScreen", {
-                  itemToppingName:item.itemName,
+                navigation.navigate("ItemScreen", {
+                  itemName: item.itemName,
                 });
               }}
             >
@@ -80,6 +90,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     minHeight: "100%",
+    backgroundColor:colors.greyBackground,
   },
   logo: {
     flex: 3,
@@ -98,7 +109,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     minHeight: 160,
-    backgroundColor: "yellow",
+    backgroundColor: line
   },
   itemName: {
     fontSize: 20,
@@ -126,7 +137,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   items: {
-    backgroundColor: "#dee2e6",
     justifyContent: "space-around",
     padding: 10,
   },
@@ -144,4 +154,8 @@ const styles = StyleSheet.create({
   bla: {
     backgroundColor: "pink",
   },
+  goBackIcon:{
+    margin:5,
+    marginTop:20,
+   },
 });
