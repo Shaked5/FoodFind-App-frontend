@@ -1,58 +1,70 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack'
-import { createDrawerNavigator } from '@react-navigation/drawer';
-// import { NavigationContainer } from '@react-navigation/native';
-import Home from '../Screens/Home';
-import Login from '../Screens/Login';
-import UserOrders from '../Screens/UserOrders';
-import BusinessMenu from '../Screens/BusinessMenu';
-import itemScreen from '../Screens/ItemScreen';
-import {DrawerContent} from './DrawerContent';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from '@react-navigation/native';
+import Home from "../Screens/Home";
+import Login from "../Screens/Login";
+import UserOrders from "../Screens/UserOrders";
+import BusinessMenu from "../Screens/BusinessMenu";
+import itemScreen from "../Screens/ItemScreen";
+import { DrawerContent } from "./DrawerContent";
 
-import BusinessRegister from '../Screens/BusinessRegister';
-
-
-
+import BusinessRegister from "../Screens/BusinessRegister";
 
 export const MainNavigator = (navigation, route) => {
-    var stam = true;
+  var stam = true;
 
-    const StackAuth = createStackNavigator();
-    const Drawer = createDrawerNavigator();
-    // const StackAuthentication = (
-    //     <>
-    //         <StackAuth.Navigator initialRouteName='Home'>
-    //             <StackAuth.Screen name='Login' component={Login} options={{ headerShown: false }} />
-    //             <StackAuth.Screen name='Home' component={Home} options={{ headerShown: false }} />
-    //         </StackAuth.Navigator>
-    //     </>
-    // );
-    // const StackMain = createStackNavigator();
-
-    // const StackLoggedIn = (
-    //     <>
-    //         <StackMain.Navigator>
-    //             <StackMain.Screen name='Home' component={Home} />
-    //         </StackMain.Navigator>
-    //     </>
-    // );
-
+  const Stack = createStackNavigator();
+  const Drawer = createDrawerNavigator();
+  const MyDrawer = () => {
     return (
-        <>
-            <Drawer.Navigator edgeWidth={0}
-                drawerContent={(props) => <DrawerContent {...props} />}
-            
-            >
-                <Drawer.Screen name='Home' component={Home} options={{ headerShown: false }} />
-                <Drawer.Screen name='Login' component={Login} options={{ headerShown: false }} />
-                <Drawer.Screen name='UserOrders' component={UserOrders} options={{ headerShown: false }} />
-                <Drawer.Screen name='BusinessRegister' component={BusinessRegister} options={{ headerShown: false }} />
-                <Drawer.Screen name='BusinessMenu' component={BusinessMenu} options={{ headerShown: false }} />
-                <Drawer.Screen name='itemScreen' component={itemScreen} options={{ headerShown: false }} />
-            </Drawer.Navigator>
-           
-            {/* {stam ? StackAuthentication : StackLoggedIn} */}
-        </>
-    )
-}
+      <Drawer.Navigator
+        edgeWidth={0}
+        drawerContent={(props) => <DrawerContent {...props} />}
+      >
+        <Drawer.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+   
+        <Drawer.Screen
+          name="UserOrders"
+          component={UserOrders}
+          options={{ headerShown: false }}
+        />
+        <Drawer.Screen
+          name="BusinessRegister"
+          component={BusinessRegister}
+          options={{ headerShown: false }}
+        />
+      </Drawer.Navigator>
+    );
+  };
+
+  return (
+    <>
+   
+        <Stack.Navigator
+        edgeWidth={0}
+        >
+          <Stack.Screen
+            name="MyDrawer"
+            component={MyDrawer}
+            options={{ headerShown: false }}
+          />
+               <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+          <Stack.Screen name="BusinessMenu" component={BusinessMenu} options={{ headerShown: false }} />
+          <Stack.Screen name="ItemScreen" component={itemScreen} options={{ headerShown: false }} />
+        </Stack.Navigator>
+    
+
+      {/* {stam ? StackAuthentication : StackLoggedIn} */}
+    </>
+  );
+};
 export default MainNavigator;

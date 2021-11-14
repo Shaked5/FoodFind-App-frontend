@@ -12,9 +12,10 @@ import {
 import { FoodFindContext } from "../context";
 import Logo from "../assets/foodFindLogoSmall2.png";
 import { AntDesign } from "@expo/vector-icons";
+import colors from "../utility/colors";
 
 const ItemScreen = ({ navigation, route }) => {
-  const { itemToppingName } = route.params;
+  const { itemName } = route.params;
   const { selectedBusinessToppings } = useContext(FoodFindContext);
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
@@ -28,16 +29,21 @@ const ItemScreen = ({ navigation, route }) => {
     <ScrollView style={styles.container}>
       <View
         style={{
-          backgroundColor: "yellow",
+          backgroundColor: colors.greyBackground,
           minWidth: windowWidth,
           minHeight: windowHeight,
           borderWidth: 1,
         }}
       >
-        <View style={{ marginTop: '5%' }}><AntDesign onPress={() => {
-         navigation.goBack();
-        }}
-          style={{ paddingLeft: 5 }} name="back" size={36} color="black" />
+        <View>
+          <TouchableOpacity
+            style={styles.goBackIcon}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <AntDesign name="back" size={36} color="black" />
+          </TouchableOpacity>
         </View>
         <View
           style={{
@@ -47,7 +53,7 @@ const ItemScreen = ({ navigation, route }) => {
             alignItems: "center",
           }}
         >
-          <Text>{itemToppingName}</Text>
+          <Text>{itemName}</Text>
         </View>
 
         <View
@@ -82,32 +88,38 @@ const ItemScreen = ({ navigation, route }) => {
         </View>
 
         <View style={{ flex: 1 }}>
-          <View style={{ backgroundColor: 'pink', minHeight: 80, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ fontSize: 22 }}>ניתן לבחור תוספות למוצר {itemToppingName}</Text>
+          <View style={styles.middleView}>
+            <Text style={{ fontSize: 22 }}>
+              ניתן לבחור תוספות למוצר {itemName}
+            </Text>
           </View>
 
-          <View style={{}}>
-            {selectedBusinessToppings.map((item) => { ///להפוך לגריד
+         
+            {selectedBusinessToppings.map((item) => {
+              ///להפוך לגריד
               return (
+                <View style={{backgroundColor:'red',flexDirection:'column' }}>
                 <TouchableOpacity
                   key={item.toppingID}
                   style={{
-                    backgroundColor: "#fff",
+                    flex:1,
+                    backgroundColor: "pink",
                     margin: 10,
-                    flexDirection: 'row',
-                    maxWidth: 120,
+                    flexDirection:'row',
+                    maxWidth:150,
                     borderRadius: 25,
                     padding: 5,
+                    justifyContent: "space-evenly",
+                    alignItems: "center",
                   }}
                 >
                   <Text style={styles.itemName}>{item.toppingName}</Text>
-                  <Text style={{}}>
-                    ₪{item.toppingPrice}
-                  </Text>
+                  <Text style={{}}>₪{item.toppingPrice}</Text>
                 </TouchableOpacity>
+                </View>
               );
             })}
-          </View>
+          
         </View>
       </View>
     </ScrollView>
@@ -119,6 +131,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     minHeight: "100%",
+  },
+  goBackIcon: {
+    margin: 5,
+    marginTop: 20,
   },
   itemName: {
     fontSize: 15,
@@ -132,5 +148,11 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 20,
     color: "blue",
+  },
+
+  middleView: {
+    minHeight: 80,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

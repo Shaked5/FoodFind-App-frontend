@@ -5,6 +5,6 @@ export default{
     danger: "#D62828", //red
     facebookBlue: "#4867aa",
     businessCard: "#cccccc",
-    greyBackground:"#f2f2f2",
+    greyBackground:"#f8f9fa",
     
 };
