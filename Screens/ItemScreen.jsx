@@ -34,6 +34,11 @@ const ItemScreen = ({ navigation, route }) => {
           borderWidth: 1,
         }}
       >
+        <View style={{ marginTop: '5%' }}><AntDesign onPress={() => {
+         navigation.goBack();
+        }}
+          style={{ paddingLeft: 5 }} name="back" size={36} color="black" />
+        </View>
         <View
           style={{
             backgroundColor: "green",
@@ -76,12 +81,12 @@ const ItemScreen = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
 
-        <View style={{ flex: 1}}>
-          <View style={{backgroundColor:'pink', minHeight:80, justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{fontSize:22}}>ניתן לבחור תוספות למוצר {itemToppingName}</Text>
+        <View style={{ flex: 1 }}>
+          <View style={{ backgroundColor: 'pink', minHeight: 80, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ fontSize: 22 }}>ניתן לבחור תוספות למוצר {itemToppingName}</Text>
           </View>
 
-          <View style={{}}> 
+          <View style={{}}>
             {selectedBusinessToppings.map((item) => { ///להפוך לגריד
               return (
                 <TouchableOpacity
@@ -89,10 +94,10 @@ const ItemScreen = ({ navigation, route }) => {
                   style={{
                     backgroundColor: "#fff",
                     margin: 10,
-                    flexDirection:'row',
-                    maxWidth:120,
+                    flexDirection: 'row',
+                    maxWidth: 120,
                     borderRadius: 25,
-                    padding:5,
+                    padding: 5,
                   }}
                 >
                   <Text style={styles.itemName}>{item.toppingName}</Text>
