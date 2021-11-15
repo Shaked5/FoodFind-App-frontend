@@ -13,17 +13,38 @@ import { FoodFindContext } from "../context";
 import Logo from "../assets/foodFindLogoSmall2.png";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../utility/colors";
+import { FlatGrid } from "react-native-super-grid";
 
 const ItemScreen = ({ navigation, route }) => {
-  const { itemName } = route.params;
+  const { itemName, itemID } = route.params;
   const { selectedBusinessToppings } = useContext(FoodFindContext);
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
   const [itemAmount, setItemAmount] = useState(0);
+  const [onPressTopping, setOnPressTopping] = useState(false);
+  const [filteredTopping, setFilteredTopping] = useState([]);
 
   useEffect(() => {
-    console.log("context=", selectedBusinessToppings);
+    filterToppingHandler();
   }, []);
+
+  const onMultiSelection = () => {
+    console.log("newData=", filteredTopping);
+  };
+
+  const filterToppingHandler = async () => {
+    console.log("context=", selectedBusinessToppings);
+    const topfil = selectedBusinessToppings.filter(
+      (item) => itemID === item.itemID
+    );
+
+    console.log("filter=", topfil);
+    const newData = topfil.map((item) => {
+      return {...item,selected:false}
+    })
+    await setFilteredTopping(newData);
+    console.log("after shilbug =", newData);
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -87,40 +108,52 @@ const ItemScreen = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
 
-        <View style={{ flex: 1 }}>
+        <View style={{ backgroundColor: "red", padding: 5 }}>
           <View style={styles.middleView}>
             <Text style={{ fontSize: 22 }}>
               ניתן לבחור תוספות למוצר {itemName}
             </Text>
           </View>
-
-         
-            {selectedBusinessToppings.map((item) => {
-              ///להפוך לגריד
-              return (
-                <View style={{backgroundColor:'red',flexDirection:'column' }}>
-                <TouchableOpacity
-                  key={item.toppingID}
-                  style={{
-                    flex:1,
-                    backgroundColor: "pink",
-                    margin: 10,
-                    flexDirection:'row',
-                    maxWidth:150,
-                    borderRadius: 25,
-                    padding: 5,
-                    justifyContent: "space-evenly",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={styles.itemName}>{item.toppingName}</Text>
-                  <Text style={{}}>₪{item.toppingPrice}</Text>
-                </TouchableOpacity>
-                </View>
-              );
-            })}
-          
         </View>
+
+        <FlatGrid
+          itemDimension={130}
+          data={filteredTopping}
+          style={styles.gridView}
+          // staticDimension={300}
+          // fixed
+          spacing={5}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "column",
+              }}
+            >
+              <TouchableOpacity
+                key={item.toppingID}
+                style={{
+                  flex: 1,
+                  backgroundColor:
+                  filteredTopping.selected == true ? "#52b788" : "white",
+                  margin: 10,
+                  maxWidth: 150,
+                  borderRadius: 25,
+                  padding: 5,
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                }}
+                keyExtractor={(item) => item.id}
+                onPress={() => {
+                  
+                }}
+              >
+                <Text style={styles.itemName}>{item.toppingName}</Text>
+                <Text style={{}}>₪{item.toppingPrice}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
       </View>
     </ScrollView>
   );
@@ -151,7 +184,7 @@ const styles = StyleSheet.create({
   },
 
   middleView: {
-    minHeight: 80,
+    maxHeight: 80,
     justifyContent: "center",
     alignItems: "center",
   },

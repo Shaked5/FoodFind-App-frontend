@@ -26,7 +26,6 @@ const BusinessMenu = ({ route, navigation }) => {
   const GetAllItemsAndToppings = async (id) => {
     const res = await GetBusinessItemsByBusinessID(id);
     await setBusinessItems(res["items"]);
-    await setBusinessToppings(res["toppings"]);
     await setSelectedBusinessToppings(res["toppings"]);
   };
 
@@ -68,6 +67,7 @@ const BusinessMenu = ({ route, navigation }) => {
               onPress={() => {
                 navigation.navigate("ItemScreen", {
                   itemName: item.itemName,
+                  itemID: item.itemID,
                 });
               }}
             >
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     minHeight: 160,
-    backgroundColor: line
+    
   },
   itemName: {
     fontSize: 20,
