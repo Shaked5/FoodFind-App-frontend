@@ -23,28 +23,51 @@ const ItemScreen = ({ navigation, route }) => {
   const [itemAmount, setItemAmount] = useState(0);
   const [onPressTopping, setOnPressTopping] = useState(false);
   const [filteredTopping, setFilteredTopping] = useState([]);
+  const [comment,setComment] = useState("");
+
 
   useEffect(() => {
     filterToppingHandler();
   }, []);
 
   const onMultiSelection = () => {
-    console.log("newData=", filteredTopping);
+    // console.log("newData=", filteredTopping);
   };
 
   const filterToppingHandler = async () => {
-    console.log("context=", selectedBusinessToppings);
+    // console.log("context=", selectedBusinessToppings);
     const topfil = selectedBusinessToppings.filter(
-      (item) => itemID === item.itemID
+      (item) => itemID === item.itemID &&item.isActive
     );
 
-    console.log("filter=", topfil);
+    // console.log("filter=", topfil);
     const newData = topfil.map((item) => {
-      return {...item,selected:false}
+      return { ...item, selected: false }
     })
     await setFilteredTopping(newData);
-    console.log("after shilbug =", newData);
+    // console.log("after shilbug =", newData);
   };
+// help us to know which topping is choosen
+  const handleClickTopping = async (item) => {
+    if(item.selected){
+      //to clear the green BG
+      item.selected=false;
+      //remove toppingName from comment
+      let newString = comment.replace(item.toppingName+" ","")
+      await setComment(newString);
+      console.log("newString",newString);
+    }else{
+      item.selected = true;
+      let newComment=comment+item.toppingName+" ";
+      await setComment(newComment);
+      console.log("newComent",newComment);
+    }
+    //for re render the component
+    let newList = filteredTopping.filter(e => e.toppingID !== item.toppingID)
+    newList.push(item);
+    await setFilteredTopping(newList);
+  }
+
 
   return (
     <ScrollView style={styles.container}>
@@ -56,7 +79,7 @@ const ItemScreen = ({ navigation, route }) => {
           borderWidth: 1,
         }}
       >
-        <View>
+        <View style={{backgroundColor: colors.backgroundApp}}>
           <TouchableOpacity
             style={styles.goBackIcon}
             onPress={() => {
@@ -120,8 +143,6 @@ const ItemScreen = ({ navigation, route }) => {
           itemDimension={130}
           data={filteredTopping}
           style={styles.gridView}
-          // staticDimension={300}
-          // fixed
           spacing={5}
           renderItem={({ item }) => (
             <View
@@ -134,8 +155,7 @@ const ItemScreen = ({ navigation, route }) => {
                 key={item.toppingID}
                 style={{
                   flex: 1,
-                  backgroundColor:
-                  filteredTopping.selected == true ? "#52b788" : "white",
+                  backgroundColor: item.selected ? colors.backgroundApp : "white",
                   margin: 10,
                   maxWidth: 150,
                   borderRadius: 25,
@@ -145,15 +165,26 @@ const ItemScreen = ({ navigation, route }) => {
                 }}
                 keyExtractor={(item) => item.id}
                 onPress={() => {
-                  
+                  handleClickTopping(item);
                 }}
               >
+
                 <Text style={styles.itemName}>{item.toppingName}</Text>
                 <Text style={{}}>₪{item.toppingPrice}</Text>
               </TouchableOpacity>
             </View>
           )}
         />
+        
+        <View style={{minHeight:120,justifyContent: 'center',alignItems: 'center'}}>
+          <Text style={{marginBottom:10,fontWeight: "bold",fontSize:16}}>ניתן להוסיף הערות למוצר</Text>
+          <TextInput style={{backgroundColor:'red',minHeight:100,minWidth:300,borderRadius:10}} placeholder="הוסף הערה למוצר"/>
+        </View>
+        <View>
+          <TouchableOpacity>
+            <Text>לחץ</Text>
+          </TouchableOpacity>
+          </View>
       </View>
     </ScrollView>
   );

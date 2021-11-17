@@ -35,7 +35,7 @@ const BusinessMenu = ({ route, navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <View>
+      <View style={{backgroundColor: colors.backgroundApp}}>
           <TouchableOpacity style={styles.goBackIcon}  onPress={() => {
          navigation.goBack();
         }}>
