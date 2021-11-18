@@ -6,7 +6,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
- 
+
 } from "react-native";
 import Header from "../Components/Header";
 import { FoodFindContext } from "../context";
@@ -20,7 +20,7 @@ const BusinessMenu = ({ route, navigation }) => {
   const [businessItems, setBusinessItems] = useState([]);
   const [businessToppings, setBusinessToppings] = useState([]);
   const [businessDetails, setBusinessDetails] = useState([]);
-  const { setSelectedBusinessToppings } = useContext(FoodFindContext);
+  const { setSelectedBusinessToppings, orderList } = useContext(FoodFindContext);
   const { businessID, businessName, businessDescription, businessPhone } =
     route.params;
 
@@ -34,17 +34,25 @@ const BusinessMenu = ({ route, navigation }) => {
     GetAllItemsAndToppings(businessID);
   }, [businessID]);
 
+  useEffect(() => {
+    if (orderList != null)
+      console.log("orederlist.length", orderList.length);
+  }, []);
+
+  const openUserCart =() => {
+    navigation.navigate('UserCart')
+  }
+  console.log("orderList.length", orderList.length);
   return (
     <ScrollView style={styles.container}>
-      <View style={{backgroundColor: colors.backgroundApp}}>
-          <TouchableOpacity style={styles.goBackIcon}  onPress={() => {
-         navigation.goBack();
+      <View style={{ backgroundColor: colors.backgroundApp }}>
+        <TouchableOpacity style={styles.goBackIcon} onPress={() => {
+          navigation.goBack();
         }}>
-          <AntDesign 
-          name="back" size={36} color="black" />
-          </TouchableOpacity>
-
-        </View>
+          <AntDesign
+            name="back" size={36} color="black" />
+        </TouchableOpacity>
+      </View>
       <View style={styles.logo}>
         <Image source={Logo} style={styles.image} />
       </View>
@@ -69,7 +77,11 @@ const BusinessMenu = ({ route, navigation }) => {
                 navigation.navigate("ItemScreen", {
                   itemName: item.itemName,
                   itemID: item.itemID,
-                  itemPrice:item.itemPrice
+                  itemPrice: item.itemPrice,
+                  businessID: businessID,
+                  businessName: businessName,
+                  businessDescription: businessDescription,
+                  businessPhone: businessPhone,
                 });
               }}
             >
@@ -80,8 +92,24 @@ const BusinessMenu = ({ route, navigation }) => {
           );
         })}
       </View>
-      <View style={{ minHeight: 150 }}>
-        <Text>footer</Text>
+      <View style={{ minHeight: 60, flexDirection: "row", justifyContent: "center", alignItems: "center", padding: 5 }}>
+      {orderList.length == 0 ? <View/> :
+        <TouchableOpacity style={{ flexDirection: "row",justifyContent: "space-evenly", minWidth: 300, maxHeight: 40, padding: 5, backgroundColor: colors.backgroundApp, alignItems: "center", borderRadius: 10 }}
+        onPress={openUserCart}
+        >
+          <Text style={{ fontSize: 20 }}>
+           {orderList.length}
+            
+            <AntDesign name="shoppingcart" size={22} color="black" />
+          </Text>
+          <Text style={{fontSize:20}}>
+            לחץ להצגת הזמנה
+          </Text>
+        </TouchableOpacity>
+        }
+      </View>
+      <View style={{ minHeight: 80, marginTop: 10 }}>
+        
       </View>
     </ScrollView>
   );
@@ -92,7 +120,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     minHeight: "100%",
-    backgroundColor:colors.greyBackground,
+    backgroundColor: colors.greyBackground,
   },
   logo: {
     flex: 3,
@@ -110,8 +138,8 @@ const styles = StyleSheet.create({
   description: {
     flex: 1,
     padding: 15,
-    minHeight: 160,
-    
+    minHeight: 80,
+
   },
   itemName: {
     fontSize: 20,
@@ -132,6 +160,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundApp,
     padding: 15,
     margin: 10,
+    marginBottom: 20,
     borderRadius: 25,
     maxWidth: "35%",
     flex: 1,
@@ -156,8 +185,8 @@ const styles = StyleSheet.create({
   bla: {
     backgroundColor: "pink",
   },
-  goBackIcon:{
-    margin:5,
-    marginTop:20,
-   },
+  goBackIcon: {
+    margin: 5,
+    marginTop: 20,
+  },
 });

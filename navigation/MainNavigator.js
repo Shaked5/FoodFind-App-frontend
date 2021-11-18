@@ -7,6 +7,7 @@ import Login from "../Screens/Login";
 import UserOrders from "../Screens/UserOrders";
 import BusinessMenu from "../Screens/BusinessMenu";
 import itemScreen from "../Screens/ItemScreen";
+import UserCart from "../Screens/UserCart";
 import { DrawerContent } from "./DrawerContent";
 
 import BusinessRegister from "../Screens/BusinessRegister";
@@ -60,6 +61,7 @@ export const MainNavigator = (navigation, route) => {
         />
           <Stack.Screen name="BusinessMenu" component={BusinessMenu} options={{ headerShown: false }} />
           <Stack.Screen name="ItemScreen" component={itemScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="UserCart" component={UserCart} options={{ headerShown: false }} />
         </Stack.Navigator>
     
 

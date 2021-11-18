@@ -5,13 +5,14 @@ import Logo from "../assets/foodFindLogoSmall2.png";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../utility/colors";
 import { FlatGrid } from "react-native-super-grid";
+import { render } from "react-dom";
 
 const ItemScreen = ({ navigation, route }) => {
-  const { itemName, itemID, itemPrice } = route.params;
+  const { itemName, itemID, itemPrice,businessID,businessName,businessDescription,businessPhone } = route.params;
   const { selectedBusinessToppings, orderList, setOrderList } = useContext(FoodFindContext);
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
-  const [itemAmount, setItemAmount] = useState(0);
+  const [itemAmount, setItemAmount] = useState(1);
   const [addComment, setAddComment] = useState("");
   const [filteredTopping, setFilteredTopping] = useState([]);
   const [comment, setComment] = useState("");
@@ -64,7 +65,7 @@ const ItemScreen = ({ navigation, route }) => {
   const insertItemToOrder = async () => {
     let newComment = comment + addComment
     await setComment(newComment)
-    orderList.push({ itemName, itemAmount, comment, itemPrice });
+    orderList.push({ itemName, itemAmount, comment:newComment, itemPrice });
     await setShowLoader(true);
     await closeLoaderIn5Seconds();
   }
@@ -73,8 +74,14 @@ const ItemScreen = ({ navigation, route }) => {
     setTimeout(() => {
       setShowLoader(false);
       console.log(orderList);
-      navigation.goBack();
-    }, 5000);
+      // navigation.goBack();
+      navigation.navigate("BusinessMenu", {
+        businessID: businessID,
+        businessName: businessName,
+        businessDescription:businessDescription,
+        businessPhone: businessPhone,
+    });
+    }, 3000);
   };
 
 
@@ -187,7 +194,7 @@ const ItemScreen = ({ navigation, route }) => {
         />
 
         <View style={{ minHeight: 120, justifyContent: 'center', alignItems: 'center' }}>
-          {showLoader && <ActivityIndicator size="small" color="#0000ff" />}
+          
           <Text style={{ marginBottom: 10, fontWeight: "bold", fontSize: 16 }}>ניתן להוסיף הערות למוצר</Text>
           <TextInput style={{ borderWidth: 1, minHeight: 100, minWidth: 300, borderRadius: 10 }} placeholder="הוסף הערה למוצר"
             onChangeText={e => setAddComment(e)}
@@ -195,6 +202,7 @@ const ItemScreen = ({ navigation, route }) => {
         </View>
 
         <View style={{ margin: 20 }}>
+        {showLoader && <ActivityIndicator size="large" color="#0000ff" />}
           <TouchableOpacity style={{
             borderRadius: 30,
             padding: 20,
