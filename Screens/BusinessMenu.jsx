@@ -6,6 +6,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+ 
 } from "react-native";
 import Header from "../Components/Header";
 import { FoodFindContext } from "../context";
@@ -68,6 +69,7 @@ const BusinessMenu = ({ route, navigation }) => {
                 navigation.navigate("ItemScreen", {
                   itemName: item.itemName,
                   itemID: item.itemID,
+                  itemPrice:item.itemPrice
                 });
               }}
             >

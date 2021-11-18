@@ -1,14 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  Dimensions,
-  TextInput,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Dimensions, TextInput, ActivityIndicator } from "react-native";
 import { FoodFindContext } from "../context";
 import Logo from "../assets/foodFindLogoSmall2.png";
 import { AntDesign } from "@expo/vector-icons";
@@ -16,14 +7,15 @@ import colors from "../utility/colors";
 import { FlatGrid } from "react-native-super-grid";
 
 const ItemScreen = ({ navigation, route }) => {
-  const { itemName, itemID } = route.params;
-  const { selectedBusinessToppings } = useContext(FoodFindContext);
+  const { itemName, itemID, itemPrice } = route.params;
+  const { selectedBusinessToppings, orderList, setOrderList } = useContext(FoodFindContext);
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
   const [itemAmount, setItemAmount] = useState(0);
-  const [onPressTopping, setOnPressTopping] = useState(false);
+  const [addComment, setAddComment] = useState("");
   const [filteredTopping, setFilteredTopping] = useState([]);
-  const [comment,setComment] = useState("");
+  const [comment, setComment] = useState("");
+  const [showLoader, setShowLoader] = useState(false);
 
 
   useEffect(() => {
@@ -37,7 +29,7 @@ const ItemScreen = ({ navigation, route }) => {
   const filterToppingHandler = async () => {
     // console.log("context=", selectedBusinessToppings);
     const topfil = selectedBusinessToppings.filter(
-      (item) => itemID === item.itemID &&item.isActive
+      (item) => itemID === item.itemID && item.isActive
     );
 
     // console.log("filter=", topfil);
@@ -47,26 +39,43 @@ const ItemScreen = ({ navigation, route }) => {
     await setFilteredTopping(newData);
     // console.log("after shilbug =", newData);
   };
-// help us to know which topping is choosen
+
+  // help us to know which topping is choosen
   const handleClickTopping = async (item) => {
-    if(item.selected){
+    if (item.selected) {
       //to clear the green BG
-      item.selected=false;
+      item.selected = false;
       //remove toppingName from comment
-      let newString = comment.replace(item.toppingName+" ","")
+      let newString = comment.replace(item.toppingName + " ", "")
       await setComment(newString);
-      console.log("newString",newString);
-    }else{
+      console.log("newString", newString);
+    } else {
       item.selected = true;
-      let newComment=comment+item.toppingName+" ";
+      let newComment = comment + item.toppingName + " ";
       await setComment(newComment);
-      console.log("newComent",newComment);
+      console.log("newComent", newComment);
     }
     //for re render the component
     let newList = filteredTopping.filter(e => e.toppingID !== item.toppingID)
     newList.push(item);
     await setFilteredTopping(newList);
   }
+
+  const insertItemToOrder = async () => {
+    let newComment = comment + addComment
+    await setComment(newComment)
+    orderList.push({ itemName, itemAmount, comment, itemPrice });
+    await setShowLoader(true);
+    await closeLoaderIn5Seconds();
+  }
+
+  const closeLoaderIn5Seconds = () => {
+    setTimeout(() => {
+      setShowLoader(false);
+      console.log(orderList);
+      navigation.goBack();
+    }, 5000);
+  };
 
 
   return (
@@ -79,7 +88,7 @@ const ItemScreen = ({ navigation, route }) => {
           borderWidth: 1,
         }}
       >
-        <View style={{backgroundColor: colors.backgroundApp}}>
+        <View style={{ backgroundColor: colors.backgroundApp }}>
           <TouchableOpacity
             style={styles.goBackIcon}
             onPress={() => {
@@ -112,7 +121,7 @@ const ItemScreen = ({ navigation, route }) => {
               setItemAmount(itemAmount + 1);
             }}
           >
-            <AntDesign name="plus" size={30} color="black" />
+            <AntDesign name="plus" size={24} color="black" />
           </TouchableOpacity>
 
           <Text style={styles.input} value={itemAmount} keyboardType="numeric">
@@ -122,16 +131,17 @@ const ItemScreen = ({ navigation, route }) => {
           <TouchableOpacity>
             <AntDesign
               name="minus"
-              size={30}
+              size={24}
               color="black"
               onPress={() => {
+                if (itemAmount == 0) return;
                 setItemAmount(itemAmount - 1);
               }}
             />
           </TouchableOpacity>
         </View>
 
-        <View style={{ backgroundColor: "red", padding: 5 }}>
+        <View style={{ padding: 5 }}>
           <View style={styles.middleView}>
             <Text style={{ fontSize: 22 }}>
               ניתן לבחור תוספות למוצר {itemName}
@@ -170,21 +180,33 @@ const ItemScreen = ({ navigation, route }) => {
               >
 
                 <Text style={styles.itemName}>{item.toppingName}</Text>
-                <Text style={{}}>₪{item.toppingPrice}</Text>
+                <Text>₪{item.toppingPrice}</Text>
               </TouchableOpacity>
             </View>
           )}
         />
-        
-        <View style={{minHeight:120,justifyContent: 'center',alignItems: 'center'}}>
-          <Text style={{marginBottom:10,fontWeight: "bold",fontSize:16}}>ניתן להוסיף הערות למוצר</Text>
-          <TextInput style={{backgroundColor:'red',minHeight:100,minWidth:300,borderRadius:10}} placeholder="הוסף הערה למוצר"/>
+
+        <View style={{ minHeight: 120, justifyContent: 'center', alignItems: 'center' }}>
+          {showLoader && <ActivityIndicator size="small" color="#0000ff" />}
+          <Text style={{ marginBottom: 10, fontWeight: "bold", fontSize: 16 }}>ניתן להוסיף הערות למוצר</Text>
+          <TextInput style={{ borderWidth: 1, minHeight: 100, minWidth: 300, borderRadius: 10 }} placeholder="הוסף הערה למוצר"
+            onChangeText={e => setAddComment(e)}
+          />
         </View>
-        <View>
-          <TouchableOpacity>
-            <Text>לחץ</Text>
+
+        <View style={{ margin: 20 }}>
+          <TouchableOpacity style={{
+            borderRadius: 30,
+            padding: 20,
+            backgroundColor: colors.backgroundApp,
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+            onPress={insertItemToOrder}
+          >
+            <Text>אשר</Text>
           </TouchableOpacity>
-          </View>
+        </View>
       </View>
     </ScrollView>
   );
