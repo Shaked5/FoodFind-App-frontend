@@ -105,7 +105,6 @@ const BusinessForm = () => {
   };
 
   const handleRegisterBusinessUser = async () => {
-    console.log('data', data);
     try {
       if (user.userID === null || !data.isValidPass) {
         alert("אחד או יותר מהשדות אינם נכונים")
@@ -125,9 +124,6 @@ const BusinessForm = () => {
       console.log(error);
     }
   }
-
-
-  console.log('user', user);
 
   return (
     // <KeyboardAwareScrollView contentContainerStyle={styles.businessForm}>

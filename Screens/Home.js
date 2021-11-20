@@ -44,20 +44,20 @@ const Home = ({ navigation }) => {
     (async () => {
       if(user.email!== null){
         const data = await GetUserByEmail(user.email);
-        // console.log('data', data);
         setUser({ ...user, userID: data.userID });
       }
     })()
   }, [user == null]);
 
+  const handleGetAllBusinessUsers= async () => {
+    const res = await getAllBusinessUsers();
+    await setAllBusiness(res);
+    await setFilteredBusiness(res);
+  }
 
   useEffect(() => {
-    (async () => {
-      const res = await getAllBusinessUsers();
-      await setAllBusiness(res);
-      await setFilteredBusiness(res);
-    })()
-  }, []);
+    handleGetAllBusinessUsers();
+  },[]);
 
   const searchFilter = (text) => {
     if (text) {
@@ -74,9 +74,6 @@ const Home = ({ navigation }) => {
     }
   }
 
-  // console.log('user', user);
-  // console.log("businessPost",businessPost);
-  console.log(selectedId);
   return (
     <View style={styles.container}>
       <KeyboardAwareScrollView >

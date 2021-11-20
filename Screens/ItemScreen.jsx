@@ -15,8 +15,9 @@ const ItemScreen = ({ navigation, route }) => {
   const [itemAmount, setItemAmount] = useState(1);
   const [addComment, setAddComment] = useState("");
   const [filteredTopping, setFilteredTopping] = useState([]);
-  const [comment, setComment] = useState("");
+  const [toppingsString, setToppingsString] = useState("");
   const [showLoader, setShowLoader] = useState(false);
+  const [totalToppingsPrice,setTotalToppingsPrice] = useState(0);
 
 
   useEffect(() => {
@@ -33,12 +34,10 @@ const ItemScreen = ({ navigation, route }) => {
       (item) => itemID === item.itemID && item.isActive
     );
 
-    // console.log("filter=", topfil);
     const newData = topfil.map((item) => {
       return { ...item, selected: false }
     })
     await setFilteredTopping(newData);
-    // console.log("after shilbug =", newData);
   };
 
   // help us to know which topping is choosen
@@ -47,13 +46,16 @@ const ItemScreen = ({ navigation, route }) => {
       //to clear the green BG
       item.selected = false;
       //remove toppingName from comment
-      let newString = comment.replace(item.toppingName + " ", "")
-      await setComment(newString);
-      console.log("newString", newString);
+      let newString = toppingsString.replace(item.toppingName + " ", "")
+      await setToppingsString(newString);
+      let removeToppingPrice = totalToppingsPrice - item.toppingPrice;
+      setTotalToppingsPrice(removeToppingPrice);
     } else {
       item.selected = true;
-      let newComment = comment + item.toppingName + " ";
-      await setComment(newComment);
+      let newComment = toppingsString + item.toppingName + ", ";
+      let addToppingPrice= totalToppingsPrice + item.toppingPrice;
+      await setTotalToppingsPrice(addToppingPrice);
+      await setToppingsString(newComment);
       console.log("newComent", newComment);
     }
     //for re render the component
@@ -63,9 +65,8 @@ const ItemScreen = ({ navigation, route }) => {
   }
 
   const insertItemToOrder = async () => {
-    let newComment = comment + addComment
-    await setComment(newComment)
-    orderList.push({ itemName, itemAmount, comment:newComment, itemPrice });
+    let totalPriceForItem = (itemPrice + totalToppingsPrice)*itemAmount;
+    orderList.push({ itemName, itemAmount, toppingsString, itemPrice,addComment,totalPriceForItem });
     await setShowLoader(true);
     await closeLoaderIn5Seconds();
   }
@@ -73,8 +74,6 @@ const ItemScreen = ({ navigation, route }) => {
   const closeLoaderIn5Seconds = () => {
     setTimeout(() => {
       setShowLoader(false);
-      console.log(orderList);
-      // navigation.goBack();
       navigation.navigate("BusinessMenu", {
         businessID: businessID,
         businessName: businessName,

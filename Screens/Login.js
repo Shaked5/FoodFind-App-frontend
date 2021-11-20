@@ -70,7 +70,6 @@ export const Login = ({ navigation }) => {
           console.log('email already exist');
         }
       
-        console.log('yess');
         setUser(user);
         storeAsyncStorageData('user', user)
         // setTimeout(() => {
@@ -85,7 +84,7 @@ export const Login = ({ navigation }) => {
       console.log(e);
     }
   }
-console.log(data);
+
   return (
     <View style={styles.mainWrraper} width={windowWidth} height={windowHeight}>
       <View style={styles.header}>

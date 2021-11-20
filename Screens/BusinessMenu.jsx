@@ -18,8 +18,6 @@ import { AntDesign } from "@expo/vector-icons";
 
 const BusinessMenu = ({ route, navigation }) => {
   const [businessItems, setBusinessItems] = useState([]);
-  const [businessToppings, setBusinessToppings] = useState([]);
-  const [businessDetails, setBusinessDetails] = useState([]);
   const { setSelectedBusinessToppings, orderList } = useContext(FoodFindContext);
   const { businessID, businessName, businessDescription, businessPhone } =
     route.params;
@@ -34,15 +32,12 @@ const BusinessMenu = ({ route, navigation }) => {
     GetAllItemsAndToppings(businessID);
   }, [businessID]);
 
-  useEffect(() => {
-    if (orderList != null)
-      console.log("orederlist.length", orderList.length);
-  }, []);
-
   const openUserCart =() => {
-    navigation.navigate('UserCart')
+    navigation.navigate('UserCart',{
+      businessID:businessID
+    })
   }
-  console.log("orderList.length", orderList.length);
+  
   return (
     <ScrollView style={styles.container}>
       <View style={{ backgroundColor: colors.backgroundApp }}>
