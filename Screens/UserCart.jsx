@@ -1,28 +1,38 @@
-import React, { useContext,useState,useEffect } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { AntDesign } from "@expo/vector-icons";
 import { FoodFindContext } from "../context";
 import colors from "../utility/colors";
+import { insertNewOrder } from "../api/UserOrderController";
 
 const UserCart = ({ route, navigation }) => {
-    const {businessID}= route.params;
-    const { orderList,user } = useContext(FoodFindContext);
-    const [ totalPrice,setTotalPrice] = useState(0);
-   
+    const { businessID } = route.params;
+    const { orderList, user } = useContext(FoodFindContext);
+    const [totalPrice, setTotalPrice] = useState(0);
 
-const getTotalPrice = () => {
-    let total=0;
-    orderList.map(async(item)=>{
-         total+= item.totalPriceForItem
-       await setTotalPrice(total)
-    })
-}
 
-useEffect(() => {
-    getTotalPrice();
-    console.log("userID",user.userID);
-    console.log("businessID",businessID);
-}, []);
+    const getTotalPrice = () => {
+        let total = 0;
+        orderList.map(async (item) => {
+            total += item.totalPriceForItem
+            await setTotalPrice(total)
+        })
+    }
+
+    const handleSendOrder = async () => {
+        console.log("userID", user.userID);
+        console.log("businessID", businessID);
+        // let obj=
+        // console.log("obj=",obj);
+        let orderID = await insertNewOrder({userID: user.userID, businessID:businessID, orderStatus: false, orderPaidUp: false, shippingAddress: null })
+        console.log("orderID", orderID);
+
+    }
+
+    useEffect(() => {
+        getTotalPrice();
+    
+    }, []);
 
     return (
         <ScrollView style={styles.container}>
@@ -40,7 +50,7 @@ useEffect(() => {
             </View>
             {orderList && orderList.map((item) => {
                 return (
-                    <View style={{ maxWidth: 360, margin: 15,marginTop:6, borderRadius: 15, backgroundColor: 'white', padding:8 }}>
+                    <View style={{ maxWidth: 360, margin: 15, marginTop: 6, borderRadius: 15, backgroundColor: 'white', padding: 8 }}>
                         <View style={{ alignItems: 'center' }}>
                             <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{item.itemName}</Text>
                         </View>
@@ -50,7 +60,7 @@ useEffect(() => {
                         <View style={{}}>
                             <Text style={{ fontWeight: 'bold', padding: 2, fontSize: 16, marginLeft: 8 }}>תוספות נבחרות:</Text>
                         </View>
-                        <View style={{  }}>
+                        <View style={{}}>
                             <Text style={{ fontWeight: 'bold', paddingRight: 20 }}>{item.toppingsString}</Text>
                         </View>
                         <View style={{}}>
@@ -66,13 +76,17 @@ useEffect(() => {
                 )
             })}
 
-            <View style={{flex: 1,minHeight:80,flexDirection: 'row',justifyContent:"space-around",backgroundColor:"white",alignItems: 'center',marginTop:20}}>
-                <Text style={{fontWeight: 'bold'}}>
-               {`סה"כ לתשלום: `+totalPrice}
+            <View style={{ flex: 1, minHeight: 80, flexDirection: 'row', justifyContent: "space-around", backgroundColor: "white", alignItems: 'center', marginTop: 20 }}>
+                <Text style={{ fontWeight: 'bold' }}>
+                    {`סה"כ לתשלום: ` + totalPrice}
                 </Text>
-                <TouchableOpacity style={{backgroundColor:colors.backgroundApp,minWidth:120,minHeight:50,borderRadius:25,justifyContent:'center',alignItems: 'center'}}>
-                    <Text style={{fontWeight: 'bold'}}>
-                     לתשלום
+                <TouchableOpacity
+                    style={{ backgroundColor: colors.backgroundApp, minWidth: 120, minHeight: 50, borderRadius: 25, justifyContent: 'center', alignItems: 'center' }}
+                    onPress={()=>{handleSendOrder()}}
+                >
+                    <Text style={{ fontWeight: 'bold' }}
+                    >
+                        לתשלום
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -90,7 +104,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor:colors.greyCartBG,
+        backgroundColor: colors.greyCartBG,
     },
     // items: {
     //     justifyContent: "space-around",
