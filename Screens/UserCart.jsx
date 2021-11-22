@@ -30,9 +30,9 @@ const UserCart = ({ route, navigation }) => {
         if (orderID !== undefined && orderID !== null) {
             //mapping orderlist and arrange the list to send 
             orderList.map((item) => {
-                let obj = {orderID: orderID, itemID: item.itemID, comment: item.toppingsString + item.addComment, itemAmount: item.itemAmount, itemTotalPrice: item.totalPriceForItem}
-                console.log("obj: ",obj);
-                listToSend.push(obj)
+                // let obj = 
+                // console.log("obj: ",obj);
+                listToSend.push({orderID: orderID, itemID: item.itemID, comments: item.toppingsString + item.addComment, itemAmount: item.itemAmount, itemTotalPrice: item.totalPriceForItem})
             })
             console.log("listToSend", listToSend);
             let orderItems = await insertItemToOrder(listToSend);
@@ -42,7 +42,6 @@ const UserCart = ({ route, navigation }) => {
 
     useEffect(() => {
         getTotalPrice();
-
     }, []);
 
 

@@ -21,6 +21,8 @@ export const GetBusinessUserById = `${Base_URL}/businessuser/GetBusinessUserById
 export const GetBusinessUserByEmail = `${Base_URL}/businessuser/GetBusinessUserByEmail/`;
 export const InsertBusinessUser = `${Base_URL}/businessuser/InsertBusinessUser`;
 export const LoginWithEmailAndPass = `${Base_URL}/businessuser/LoginWithEmailAndPass`;
+export const UploadBusinessImg = `${Base_URL}/image/uploadimage`;
+
 
 
 export const BusinessUsersController = {
@@ -29,6 +31,7 @@ export const BusinessUsersController = {
     GetBusinessUserByEmail,
     InsertBusinessUser,
     LoginWithEmailAndPass,
+    UploadBusinessImg,
 };
 
 

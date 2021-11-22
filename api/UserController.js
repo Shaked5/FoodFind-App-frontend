@@ -42,7 +42,7 @@ export const insertNewUser = async (user) => {
         body: JSON.stringify(user),
     };
     try{
-        const res = await fetch('http://proj14.ruppin-tech.co.il/api/InsertNewUser',req);
+        const res = await fetch('http://proj14.ruppin-tech.co.il/api/user/InsertNewUser',req);
         if(res.status!==200) return null;
         const data = await res.json(); 
         return data;

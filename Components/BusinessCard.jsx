@@ -34,18 +34,19 @@ const BusinessCard = ({ navigation, businessPost }) => {
       style={styles.btnCard}
       onPress={() => {
         navigation.navigate("BusinessMenu", {
-            businessID: businessPost.businessID,
-            businessName: businessPost.businessName,
-            businessDescription: businessPost.businessDescription,
-            businessPhone: businessPost.businessPhone,
-            businessStatus: businessPost.businessStatus,
+          businessID: businessPost.businessID,
+          businessName: businessPost.businessName,
+          businessDescription: businessPost.businessDescription,
+          businessPhone: businessPost.businessPhone,
+          businessStatus: businessPost.businessStatus,
+          businessLogo: businessPost.businessLogo,
         });
-      //   selectedBusinessHandler({businessID,businessName,businessDescription,businessPhone,businessStatus})
       }}
     >
       <View style={styles.businessCardView}>
+        <Image source={{ uri: businessPost.businessLogo }} style={{ width: 325, height: 120,borderRadius:15 }} />
         <Text style={{ fontSize: 22 }}>{businessPost.businessName}</Text>
-        <Image source={foodFindLogo} />
+
         <Text style={{ textAlign: "center" }}>
           {businessPost.businessDescription}
         </Text>
@@ -59,7 +60,8 @@ export default BusinessCard;
 
 const styles = StyleSheet.create({
   btnCard: {
-    marginTop: 20,
+    marginTop: 15,
+    marginBottom:15,
     borderRadius: 25,
     width: WINDOW_WIDTH * 0.96,
     shadowColor: "#000",

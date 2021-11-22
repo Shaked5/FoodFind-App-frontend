@@ -49,3 +49,25 @@ export const insertBusinessUser = async (businessUser) => {
         return null;
     }
 };
+
+export const UploadImage = async (imageObj) => {
+    //שליחת המידע לשרת
+    let response = await fetch(BusinessUsersController.UploadBusinessImg, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify(imageObj)
+    })
+
+    //json המרה של התשובה מהשרת ל 
+    let data = await response.json()
+
+    console.log('data => ', data)
+
+    if (data.isOk) {
+      return data.path;
+    }
+  }
+

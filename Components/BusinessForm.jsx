@@ -22,7 +22,7 @@ import * as Animatable from 'react-native-animatable';
 import colors from "../utility/colors";
 import { FoodFindContext } from "../context";
 import { emailValid, passValid } from '../utility/validations';
-import { insertBusinessUser } from "../api/BusinessUsersController";
+import { insertBusinessUser, UploadImage } from "../api/BusinessUsersController";
 import * as ImagePicker from "expo-image-picker";
 
 const windowWidth = Dimensions.get("window").width;
@@ -45,7 +45,7 @@ const BusinessForm = () => {
     isValidPass: true,
     secureTextEntry: true,
   });
-  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
 
 
   const handlePasswordChange = (val) => {
@@ -72,20 +72,41 @@ const BusinessForm = () => {
     })
   }
 
+  // const ConvertToBase64 = (element) => {
+  //   console.log("elemnt",element);
+  //   // let file = element.files["0"]
+  //   // let reader = new FileReader()
+  //   reader.onloadend = function () {
+  //     console.log('RESULT', reader.result.split(`base64,`))
+  //     setImageBase(reader.result.split(`base64,`)[1])
+  //   }
+  //   reader.readAsDataURL(file)
+  // }
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.6,
+      base64: true
     });
 
     console.log(result);
 
     if (!result.cancelled) {
-      setImage(result.uri);
-      setData({ ...data, businessLogo: image });
-
+      let imageObj = {
+        name: user.userID,
+        folder: "businessUser",
+        base64: result.base64
+      }
+      let res = await UploadImage(imageObj);
+      console.log("image update result:", res);
+      if (res !== "") {
+        setImageUrl(res);
+        console.log("res", res);
+        setData({ ...data, businessLogo: res })
+      }
     }
   };
 
@@ -123,7 +144,9 @@ const BusinessForm = () => {
       console.log(error);
     }
   }
+  useEffect(() => {
 
+  }, [imageUrl]);
   return (
     // <KeyboardAwareScrollView contentContainerStyle={styles.businessForm}>
     <ScrollView style={styles.businessForm}>
@@ -207,9 +230,11 @@ const BusinessForm = () => {
       >
         <Text>תמונת עסק</Text>
         <FontAwesome onPress={HandleUploadImage} name="image" size={40} color="black" />
-        {image && (
-          <Image source={{ uri: image }} style={{ width: 300, height: 200 }} />
-        )}
+        <Text>
+          {imageUrl && (
+            <Image source={{ uri: imageUrl }} style={{ width: 300, height: 200 }} />
+          )}
+        </Text>
       </View>
 
       <TouchableOpacity style={styles.signUpBtn} onPress={handleRegisterBusinessUser}>
