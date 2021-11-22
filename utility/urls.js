@@ -65,7 +65,7 @@ export const BusinessItemController = {
 
 
 export const InsertNewOrder = `${Base_URL}/orders/InsertNewOrder`
-export const InsertItemToOrder = `${Base_URL}/orders/InsertItemToOrder`
+export const InsertItemToOrder = `${Base_URL}/orderofitems/InsertItemToOrder`
 
 export const OrdersController ={
     InsertNewOrder,

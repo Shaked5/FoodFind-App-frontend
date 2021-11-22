@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-nati
 import { AntDesign } from "@expo/vector-icons";
 import { FoodFindContext } from "../context";
 import colors from "../utility/colors";
-import { insertNewOrder } from "../api/UserOrderController";
+import { insertNewOrder, insertItemToOrder } from "../api/UserOrderController";
 
 const UserCart = ({ route, navigation }) => {
     const { businessID } = route.params;
@@ -20,19 +20,31 @@ const UserCart = ({ route, navigation }) => {
     }
 
     const handleSendOrder = async () => {
-        console.log("userID", user.userID);
-        console.log("businessID", businessID);
-        // let obj=
-        // console.log("obj=",obj);
-        let orderID = await insertNewOrder({userID: user.userID, businessID:businessID, orderStatus: false, orderPaidUp: false, shippingAddress: null })
-        console.log("orderID", orderID);
-
+        // console.log("orderLiat",orderList);
+        let orderID;
+        let listToSend = [];
+        if (businessID !== null && businessID !== undefined && user.userID !== null && user.userID !== undefined) {
+            orderID = await insertNewOrder({ userID: user.userID, businessID: businessID, orderDate: "", orderStatus: false, orderPaidUp: false, shippingAddress: "" })
+            console.log("orderID", orderID);
+        } else console.log("error");
+        if (orderID !== undefined && orderID !== null) {
+            //mapping orderlist and arrange the list to send 
+            orderList.map((item) => {
+                let obj = {orderID: orderID, itemID: item.itemID, comment: item.toppingsString + item.addComment, itemAmount: item.itemAmount, itemTotalPrice: item.totalPriceForItem}
+                console.log("obj: ",obj);
+                listToSend.push(obj)
+            })
+            console.log("listToSend", listToSend);
+            let orderItems = await insertItemToOrder(listToSend);
+            console.log("orderItems=", orderItems);
+        }
     }
 
     useEffect(() => {
         getTotalPrice();
-    
+
     }, []);
+
 
     return (
         <ScrollView style={styles.container}>
@@ -82,7 +94,7 @@ const UserCart = ({ route, navigation }) => {
                 </Text>
                 <TouchableOpacity
                     style={{ backgroundColor: colors.backgroundApp, minWidth: 120, minHeight: 50, borderRadius: 25, justifyContent: 'center', alignItems: 'center' }}
-                    onPress={()=>{handleSendOrder()}}
+                    onPress={handleSendOrder}
                 >
                     <Text style={{ fontWeight: 'bold' }}
                     >

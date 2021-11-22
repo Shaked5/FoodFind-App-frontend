@@ -9,7 +9,7 @@ import { render } from "react-dom";
 
 const ItemScreen = ({ navigation, route }) => {
   const { itemName, itemID, itemPrice,businessID,businessName,businessDescription,businessPhone } = route.params;
-  const { selectedBusinessToppings, orderList, setOrderList } = useContext(FoodFindContext);
+  const { selectedBusinessToppings, orderList} = useContext(FoodFindContext);
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
   const [itemAmount, setItemAmount] = useState(1);
@@ -24,12 +24,7 @@ const ItemScreen = ({ navigation, route }) => {
     filterToppingHandler();
   }, []);
 
-  const onMultiSelection = () => {
-    // console.log("newData=", filteredTopping);
-  };
-
   const filterToppingHandler = async () => {
-    // console.log("context=", selectedBusinessToppings);
     const topfil = selectedBusinessToppings.filter(
       (item) => itemID === item.itemID && item.isActive
     );
@@ -56,7 +51,6 @@ const ItemScreen = ({ navigation, route }) => {
       let addToppingPrice= totalToppingsPrice + item.toppingPrice;
       await setTotalToppingsPrice(addToppingPrice);
       await setToppingsString(newComment);
-      console.log("newComent", newComment);
     }
     //for re render the component
     let newList = filteredTopping.filter(e => e.toppingID !== item.toppingID)
@@ -66,7 +60,7 @@ const ItemScreen = ({ navigation, route }) => {
 
   const insertItemToOrder = async () => {
     let totalPriceForItem = (itemPrice + totalToppingsPrice)*itemAmount;
-    orderList.push({ itemName, itemAmount, toppingsString, itemPrice,addComment,totalPriceForItem });
+    orderList.push({ itemName,itemID, itemAmount, toppingsString, itemPrice,addComment,totalPriceForItem });
     await setShowLoader(true);
     await closeLoaderIn5Seconds();
   }

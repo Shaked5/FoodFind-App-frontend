@@ -113,7 +113,6 @@ const BusinessForm = () => {
         data.businessAddress === "")
         alert("אחד או יותר מהשדות ריקים");
       const returnBU = await insertBusinessUser(data);
-      console.log('businessUser', returnBU);
       if (returnBU === "Conflict")
         alert("רשום בעל עסק אם אותו מייל")
       if (returnBU !== null && returnBU !== undefined && returnBU !== "Conflict") {
