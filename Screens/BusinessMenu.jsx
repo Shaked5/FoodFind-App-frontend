@@ -19,7 +19,7 @@ import { AntDesign } from "@expo/vector-icons";
 const BusinessMenu = ({ route, navigation }) => {
   const [businessItems, setBusinessItems] = useState([]);
   const { setSelectedBusinessToppings, orderList } = useContext(FoodFindContext);
-  const { businessID, businessName, businessDescription, businessPhone } =
+  const { businessID, businessName, businessDescription, businessPhone,businessLogo } =
     route.params;
 
   const GetAllItemsAndToppings = async (id) => {
@@ -49,13 +49,13 @@ const BusinessMenu = ({ route, navigation }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.logo}>
-        <Image source={Logo} style={styles.image} />
+        <Image source={{uri:businessLogo}} style={styles.image} />
       </View>
 
       <View style={styles.description}>
         <Text style={styles.h1}>{businessName}</Text>
         <Text style={styles.h2}>{businessDescription}</Text>
-        <Text style={{ margin: 5 }}>טלפון ליצירת קשר : {businessPhone}</Text>
+        <Text style={{ margin: 5,marginBottom:0,marginTop:10 }}>טלפון ליצירת קשר : {businessPhone}</Text>
       </View>
 
       <View style={styles.items}>
@@ -126,14 +126,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: 250,
-    height: 80,
-    marginTop: 25,
+    width: 360,
+    height: 180,
+    // marginTop: 25,
   },
   description: {
     flex: 1,
     padding: 15,
-    minHeight: 80,
+    // backgroundColor:'black'
+    // minHeight: 20,
 
   },
   itemName: {
@@ -143,13 +144,13 @@ const styles = StyleSheet.create({
   h1: {
     fontSize: 25,
     fontWeight: "500",
-    margin: 5,
+    margin: 2,
   },
   h2: {
     fontSize: 16,
     color: "gray",
     fontWeight: "200",
-    margin: 5,
+    margin: 2,
   },
   sectionView: {
     backgroundColor: colors.backgroundApp,
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
   },
   items: {
     justifyContent: "space-around",
-    padding: 10,
+    padding: 5,
   },
   singleItemView: {
     backgroundColor: "#f8f9fa",

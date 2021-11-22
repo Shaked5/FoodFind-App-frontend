@@ -44,7 +44,7 @@ const BusinessCard = ({ navigation, businessPost }) => {
       }}
     >
       <View style={styles.businessCardView}>
-        <Image source={{ uri: businessPost.businessLogo }} style={{ width: 325, height: 120,borderRadius:15 }} />
+        <Image source={{ uri: businessPost.businessLogo }} style={{ width: '100%', height: '72%',borderRadius:22 }} />
         <Text style={{ fontSize: 22 }}>{businessPost.businessName}</Text>
 
         <Text style={{ textAlign: "center" }}>
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom:15,
     borderRadius: 25,
-    width: WINDOW_WIDTH * 0.96,
+    width: WINDOW_WIDTH * 0.92,
     shadowColor: "#000",
     shadowOpacity: 0.5,
     shadowRadius: 3.62,
