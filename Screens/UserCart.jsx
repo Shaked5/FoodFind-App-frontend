@@ -30,7 +30,6 @@ const UserCart = ({ route, navigation }) => {
         if (orderID !== undefined && orderID !== null) {
             //mapping orderlist and arrange the list to send 
             orderList.map((item) => {
-                // let obj = 
                 // console.log("obj: ",obj);
                 listToSend.push({orderID: orderID, itemID: item.itemID, comments: item.toppingsString + item.addComment, itemAmount: item.itemAmount, itemTotalPrice: item.totalPriceForItem})
             })
@@ -81,7 +80,7 @@ const UserCart = ({ route, navigation }) => {
                             <Text style={{ paddingRight: 20 }}>{item.addComment}</Text>
                         </View>
                         <View style={{ position: 'absolute', bottom: 2, right: 5 }}>
-                            <Text style={{ fontWeight: 'bold', }}>{"מחיר כולל: " + item.totalPriceForItem}</Text>
+                            <Text style={{ fontWeight: 'bold', }}>{"מחיר כולל: " +"₪"+item.totalPriceForItem}</Text>
                         </View>
                     </View>
                 )
@@ -89,7 +88,7 @@ const UserCart = ({ route, navigation }) => {
 
             <View style={{ flex: 1, minHeight: 80, flexDirection: 'row', justifyContent: "space-around", backgroundColor: "white", alignItems: 'center', marginTop: 20 }}>
                 <Text style={{ fontWeight: 'bold' }}>
-                    {`סה"כ לתשלום: ` + totalPrice}
+                    {`סה"כ לתשלום: `+"₪" + totalPrice}
                 </Text>
                 <TouchableOpacity
                     style={{ backgroundColor: colors.backgroundApp, minWidth: 120, minHeight: 50, borderRadius: 25, justifyContent: 'center', alignItems: 'center' }}

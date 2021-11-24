@@ -7,7 +7,7 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import foodFindLogo from "../assets/foodFindLogoSmall.png";
+import foodFindLogoSmall2 from "../assets/foodFindLogoSmall2.png";
 import color from "../utility/colors";
 import { FoodFindContext } from "../context";
 
@@ -44,9 +44,10 @@ const BusinessCard = ({ navigation, businessPost }) => {
       }}
     >
       <View style={styles.businessCardView}>
+        {businessPost.businessLogo !== "" ?
         <Image source={{ uri: businessPost.businessLogo }} style={{ width: '100%', height: '72%',borderRadius:22 }} />
+        :<Image source={ foodFindLogoSmall2 } style={{ width: 300, height: '44%',borderRadius:22 }} />}
         <Text style={{ fontSize: 22 }}>{businessPost.businessName}</Text>
-
         <Text style={{ textAlign: "center" }}>
           {businessPost.businessDescription}
         </Text>
@@ -61,7 +62,7 @@ export default BusinessCard;
 const styles = StyleSheet.create({
   btnCard: {
     marginTop: 15,
-    marginBottom:15,
+    marginBottom: 15,
     borderRadius: 25,
     width: WINDOW_WIDTH * 0.92,
     shadowColor: "#000",
