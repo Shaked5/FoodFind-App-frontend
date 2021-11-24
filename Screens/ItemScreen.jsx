@@ -8,7 +8,7 @@ import { FlatGrid } from "react-native-super-grid";
 import { render } from "react-dom";
 
 const ItemScreen = ({ navigation, route }) => {
-  const { itemName, itemID, itemPrice,businessID,businessName,businessDescription,businessPhone } = route.params;
+  const { itemName, itemID, itemPrice,businessID,businessName,businessDescription,businessPhone,itemImg } = route.params;
   const { selectedBusinessToppings, orderList} = useContext(FoodFindContext);
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
@@ -100,13 +100,14 @@ const ItemScreen = ({ navigation, route }) => {
         </View>
         <View
           style={{
-            backgroundColor: "green",
-            minHeight: 200,
+            // backgroundColor: "green",
+            // minHeight: 200,
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Text>{itemName}</Text>
+          <Image source={{uri:itemImg}} style={{width: "100%", height:200}}></Image>
+          <Text style={{fontSize:16}}>{itemName}</Text>
         </View>
 
         <View

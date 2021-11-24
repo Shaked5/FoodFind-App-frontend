@@ -116,13 +116,14 @@ const BusinessMenu = ({ route, navigation }) => {
                   businessName: businessName,
                   businessDescription: businessDescription,
                   businessPhone: businessPhone,
+                  itemImg:item.itemImg
                 });
               }}
             >
               <Image source={{uri:item.itemImg}} style={{width:"100%",height:120,borderRadius:10}}></Image>
               <Text style={styles.itemName}>{item.itemName}</Text>
               <Text style={{fontSize:14 , paddingRight:20}}>{item.comment}</Text>
-              <Text style={{ alignSelf: "flex-end" }}>₪{item.itemPrice}</Text>
+              <Text style={{ alignSelf: "flex-end",paddingLeft:5 }}>₪{item.itemPrice}</Text>
             </TouchableOpacity>
           );
         })}

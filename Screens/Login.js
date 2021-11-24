@@ -47,7 +47,13 @@ export const Login = ({ navigation }) => {
       if (type === 'success') {
         // Get the user's name and email using Facebook's Graph API
         const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email`);
-        setUser(await response.json())
+        const res = await response.json();
+        await insertNewUser({
+          userName:res.name,
+          userEmail:res.email,
+          pushToken:res.id
+        })        
+        setUser(await res)
         storeAsyncStorageData('user', user)
         navigation.navigate('Home');
       } else {
