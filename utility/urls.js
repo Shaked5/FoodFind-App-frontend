@@ -16,7 +16,7 @@ export const UsersController = {
     GetUserByEmail,
 };
 
-export const GetAllBusinessUsers = `${Base_URL}/businessuser/GetAllBusinessUsers`;
+export const GetAllActiveBusinessUsers = `${Base_URL}/businessuser/GetAllActiveBusinessUsers`;
 export const GetBusinessUserById = `${Base_URL}/businessuser/GetBusinessUserById/`;
 export const GetBusinessUserByEmail = `${Base_URL}/businessuser/GetBusinessUserByEmail/`;
 export const InsertBusinessUser = `${Base_URL}/businessuser/InsertBusinessUser`;
@@ -26,7 +26,7 @@ export const UploadBusinessImg = `${Base_URL}/image/uploadimage`;
 
 
 export const BusinessUsersController = {
-    GetAllBusinessUsers,
+    GetAllActiveBusinessUsers,
     GetBusinessUserById,
     GetBusinessUserByEmail,
     InsertBusinessUser,

@@ -1,13 +1,14 @@
 import {BusinessUsersController} from '../utility/urls';
 
 export const getAllBusinessUsers = async () => {
-    const value = await fetch(BusinessUsersController.GetAllBusinessUsers)
+    const value = await fetch(BusinessUsersController.GetAllActiveBusinessUsers)
         .then((res) => {
-            if (res.status == 200) return res.json();
-            return null;
+            if (res.status !== 200 && res.status!==201)  return null;
+            return res.json();
+            
         })
         .catch((ex) => {
-            console.log("getAllBusinessUsers ex", ex);
+            console.log("getAllActiveBusinessUsers ex", ex);
             return null;
         });
     return value;

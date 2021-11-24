@@ -51,6 +51,7 @@ const Home = ({ navigation }) => {
 
   const handleGetAllBusinessUsers= async () => {
     const res = await getAllBusinessUsers();
+    console.log("bla", res);
     await setAllBusiness(res);
     await setFilteredBusiness(res);
   }

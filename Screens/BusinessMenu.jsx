@@ -102,6 +102,7 @@ const BusinessMenu = ({ route, navigation }) => {
         </View>
 
         {businessItems.map((item) => {
+          console.log("item src",item.itemImg);
           return (
             <TouchableOpacity
               key={item.itemID}
@@ -118,8 +119,9 @@ const BusinessMenu = ({ route, navigation }) => {
                 });
               }}
             >
+              <Image source={{uri:item.itemImg}} style={{width:"100%",height:120,borderRadius:10}}></Image>
               <Text style={styles.itemName}>{item.itemName}</Text>
-              <Text>{item.comment}</Text>
+              <Text style={{fontSize:14 , paddingRight:20}}>{item.comment}</Text>
               <Text style={{ alignSelf: "flex-end" }}>₪{item.itemPrice}</Text>
             </TouchableOpacity>
           );
@@ -177,6 +179,7 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 20,
     marginBottom: 3,
+    paddingRight:20
   },
   h1: {
     fontSize: 25,
@@ -207,7 +210,7 @@ const styles = StyleSheet.create({
   singleItemView: {
     backgroundColor: "#f8f9fa",
     marginBottom: 8,
-    padding: 15,
+    // padding: 15,
     borderWidth: 1,
     borderRadius: 10,
     fontSize: 24,
