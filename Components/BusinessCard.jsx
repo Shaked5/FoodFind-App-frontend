@@ -45,12 +45,15 @@ const BusinessCard = ({ navigation, businessPost }) => {
     >
       <View style={styles.businessCardView}>
         {businessPost.businessLogo !== "" ?
-        <Image source={{ uri: businessPost.businessLogo }} style={{ width: '100%', height: '72%',borderRadius:22 }} />
-        :<Image source={ foodFindLogoSmall2 } style={{ width: 300, height: '44%',borderRadius:22 }} />}
-        <Text style={{ fontSize: 22 }}>{businessPost.businessName}</Text>
+        <Image source={{ uri: businessPost.businessLogo }} style={{ width: "100%", height:130,borderRadius:2}} />
+        :<Image source={ foodFindLogoSmall2 } style={{ width: '100%', height: '44%',borderRadius:2 }} />}
+
+       
+        <Text style={{ fontSize: 22, margin:8 }}>{businessPost.businessName}</Text>
         <Text style={{ textAlign: "center" }}>
           {businessPost.businessDescription}
         </Text>
+        
       </View>
     </TouchableOpacity>
     // </View>
@@ -63,21 +66,22 @@ const styles = StyleSheet.create({
   btnCard: {
     marginTop: 15,
     marginBottom: 15,
-    borderRadius: 25,
-    width: WINDOW_WIDTH * 0.92,
+    borderRadius: 5,
+  
     shadowColor: "#000",
     shadowOpacity: 0.5,
     shadowRadius: 3.62,
-    elevation: 8,
+    elevation: 2.5,
   },
 
   businessCardView: {
     flex: 1,
-    height: 230,//////
-    backgroundColor: color.businessCard,
+    minHeight: 230,//////
+    width:380,
+    backgroundColor: "white",
     alignItems: "center",
-    borderRadius: 25,
-    justifyContent: "space-evenly",
+    borderRadius: 5,
+    borderColor:'#f0efeb',
     borderWidth: 0.8,
   },
 });

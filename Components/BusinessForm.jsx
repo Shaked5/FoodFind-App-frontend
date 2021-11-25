@@ -72,16 +72,6 @@ const BusinessForm = () => {
     })
   }
 
-  // const ConvertToBase64 = (element) => {
-  //   console.log("elemnt",element);
-  //   // let file = element.files["0"]
-  //   // let reader = new FileReader()
-  //   reader.onloadend = function () {
-  //     console.log('RESULT', reader.result.split(`base64,`))
-  //     setImageBase(reader.result.split(`base64,`)[1])
-  //   }
-  //   reader.readAsDataURL(file)
-  // }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -222,9 +212,9 @@ const BusinessForm = () => {
       <View
         style={{
           flex: 1,
-          justifyContent: "space-evenly",
+          justifyContent: "space-between",
           alignItems: "center",
-          marginTop: 5,
+          marginTop: 10,
           padding: 5,
         }}
       >
@@ -240,7 +230,7 @@ const BusinessForm = () => {
       <TouchableOpacity style={styles.signUpBtn} onPress={handleRegisterBusinessUser}>
         <Text style={styles.btnTxt}>הרשם</Text>
       </TouchableOpacity>
-      <View style={{ margin: 30 }} />
+      
     </ScrollView>
     // </KeyboardAwareScrollView>
   );
@@ -254,8 +244,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     margin: "3%",
     backgroundColor: "white",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderRadius: 8,
     paddingHorizontal: 20,
     paddingVertical: 30,
     shadowColor: "#000",

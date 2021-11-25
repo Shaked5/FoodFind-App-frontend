@@ -93,12 +93,10 @@ const BusinessMenu = ({ route, navigation }) => {
                 }}
               >אישור</Text>
             </Pressable>
-
-
           </View>
         </View>
-
       </Modal>
+
       <View style={styles.logo}>
         <Image source={{ uri: businessLogo }} style={styles.image} />
       </View>
@@ -106,7 +104,7 @@ const BusinessMenu = ({ route, navigation }) => {
       <View style={styles.description}>
         <Text style={styles.h1}>{businessName}</Text>
         <Text style={styles.h2}>{businessDescription}</Text>
-        <Text style={{ margin: 5, marginBottom: 0, marginTop: 10 }}>טלפון ליצירת קשר : {businessPhone}</Text>
+        <Text style={{ margin: 5, marginBottom: 0, marginTop: 10 ,marginBottom:5 }}>טלפון ליצירת קשר : {businessPhone}</Text>
       </View>
 
       <View style={styles.items}>
@@ -133,7 +131,7 @@ const BusinessMenu = ({ route, navigation }) => {
                 });
               }}
             >
-              <Image source={{ uri: item.itemImg }} style={{ width: "100%", height: 150, borderRadius: 10 }}></Image>
+              <Image source={{ uri: item.itemImg }} style={{ width: '100%', height:130,borderRadius:2}}></Image>
               <Text style={styles.itemName}>{item.itemName}</Text>
               <Text style={{ fontSize: 14, paddingRight: 20 }}>{item.comment}</Text>
               <Text style={{ alignSelf: "flex-end", paddingLeft: 5 }}>₪{item.itemPrice}</Text>
@@ -174,20 +172,22 @@ const styles = StyleSheet.create({
     flex: 3,
     justifyContent: "center",
     alignItems: "center",
-    minHeight: "25%",
-    maxHeight: "30%",
+
     alignItems: "center",
   },
   image: {
-    width: 360,
-    height: 180,
+    width: '100%',
+    height: 200,
     // marginTop: 25,
   },
   description: {
     flex: 1,
     padding: 15,
-    // backgroundColor:'black'
-    // minHeight: 20,
+    backgroundColor:'white',
+    shadowColor: "#000",
+    shadowOpacity: 0.5,
+    shadowRadius: 3.62,
+    elevation: 2.5,
 
   },
   itemName: {
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   h1: {
     fontSize: 25,
     fontWeight: "500",
-    margin: 2,
+    
   },
   h2: {
     fontSize: 16,
@@ -213,6 +213,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 25,
     maxWidth: "35%",
+    fontSize:25,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -222,12 +223,20 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   singleItemView: {
-    backgroundColor: "#f8f9fa",
-    marginBottom: 8,
-    // padding: 15,
+    flex: 1,
+    margin:10,
+    minHeight: 200,//////
+    maxHeight:230,
+    backgroundColor: "white",
+    marginBottom:5,
+    alignItems: "center",
+    borderRadius: 5,
+    borderColor:'#f0efeb',
     borderWidth: 1,
-    borderRadius: 10,
-    fontSize: 24,
+    shadowColor: "#000",
+    shadowOpacity: 0.5,
+    shadowRadius: 3.62,
+    elevation: 2.5,
   },
   toppings: {
     backgroundColor: "green",
