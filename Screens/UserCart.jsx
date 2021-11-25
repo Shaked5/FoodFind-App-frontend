@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
 import { AntDesign } from "@expo/vector-icons";
 import { FoodFindContext } from "../context";
 import colors from "../utility/colors";
@@ -20,23 +20,28 @@ const UserCart = ({ route, navigation }) => {
     }
 
     const handleSendOrder = async () => {
-        // console.log("orderLiat",orderList);
+     if(user!==null){
+        //insert to OrdersTB and OrderOfItemaTB
         let orderID;
         let listToSend = [];
         if (businessID !== null && businessID !== undefined && user.userID !== null && user.userID !== undefined) {
             orderID = await insertNewOrder({ userID: user.userID, businessID: businessID, orderDate: "", orderStatus: false, orderPaidUp: false, shippingAddress: "" })
             console.log("orderID", orderID);
-        } else console.log("error");
+        } 
+
         if (orderID !== undefined && orderID !== null) {
             //mapping orderlist and arrange the list to send 
             orderList.map((item) => {
                 // console.log("obj: ",obj);
-                listToSend.push({orderID: orderID, itemID: item.itemID, comments: item.toppingsString + item.addComment, itemAmount: item.itemAmount, itemTotalPrice: item.totalPriceForItem})
+                listToSend.push({ orderID: orderID, itemID: item.itemID, comments: item.toppingsString + item.addComment, itemAmount: item.itemAmount, itemTotalPrice: item.totalPriceForItem })
             })
             console.log("listToSend", listToSend);
             let orderItems = await insertItemToOrder(listToSend);
             console.log("orderItems=", orderItems);
         }
+    }else{
+      navigation.navigate('Login',{ fromCart:true})
+    }
     }
 
     useEffect(() => {
@@ -80,7 +85,7 @@ const UserCart = ({ route, navigation }) => {
                             <Text style={{ paddingRight: 20 }}>{item.addComment}</Text>
                         </View>
                         <View style={{ position: 'absolute', bottom: 2, right: 5 }}>
-                            <Text style={{ fontWeight: 'bold', }}>{"מחיר כולל: " +"₪"+item.totalPriceForItem}</Text>
+                            <Text style={{ fontWeight: 'bold', }}>{"מחיר כולל: " + "₪" + item.totalPriceForItem}</Text>
                         </View>
                     </View>
                 )
@@ -88,7 +93,7 @@ const UserCart = ({ route, navigation }) => {
 
             <View style={{ flex: 1, minHeight: 80, flexDirection: 'row', justifyContent: "space-around", backgroundColor: "white", alignItems: 'center', marginTop: 20 }}>
                 <Text style={{ fontWeight: 'bold' }}>
-                    {`סה"כ לתשלום: `+"₪" + totalPrice}
+                    {`סה"כ לתשלום: ` + "₪" + totalPrice}
                 </Text>
                 <TouchableOpacity
                     style={{ backgroundColor: colors.backgroundApp, minWidth: 120, minHeight: 50, borderRadius: 25, justifyContent: 'center', alignItems: 'center' }}

@@ -7,21 +7,21 @@ import * as Google from "expo-google-app-auth";
 import * as Facebook from 'expo-facebook';
 import { storeAsyncStorageData } from '../utility/storage';
 import FoodFindLogo from '../assets/foodFindLogoSmall.png';
-import {insertNewUser} from '../api/UserController'
+import { insertNewUser } from '../api/UserController'
 
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 
-export const Login = ({ navigation }) => {
-
+export const Login = ({ navigation, route }) => {
+  const { fromCart } = route.params;
   const { user, setUser } = React.useContext(FoodFindContext);
   const [userFacebook, setUserFacebook] = useState('')
-  const [data,setData]=React.useState({
-    name:'',
+  const [data, setData] = React.useState({
+    name: '',
     email: '',
-    pushToken:'',
+    pushToken: '',
   })
 
   const config = {
@@ -49,13 +49,13 @@ export const Login = ({ navigation }) => {
         const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email`);
         const res = await response.json();
         await insertNewUser({
-          userName:res.name,
-          userEmail:res.email,
-          pushToken:res.id
-        })        
+          userName: res.name,
+          userEmail: res.email,
+          pushToken: res.id
+        })
         setUser(await res)
         storeAsyncStorageData('user', user)
-        navigation.navigate('Home');
+        fromCart===true ? navigation.goBack() : navigation.navigate('Home');
       } else {
         // type === 'cancel'
       }
@@ -67,21 +67,20 @@ export const Login = ({ navigation }) => {
   const signInWithGoogleAsync = async () => {
     try {
       const { type, accessToken, user } = await Google.logInAsync(config);
-   
+
       if (type === 'success') {
-        const ifUserExist = await insertNewUser({userName:user.name,
+        const ifUserExist = await insertNewUser({
+          userName: user.name,
           userEmail: user.email,
-          pushToken:user.id})
-        if(ifUserExist==="Conflict"){
+          pushToken: user.id
+        })
+        if (ifUserExist === "Conflict") {
           console.log('email already exist');
         }
-      
+
         setUser(user);
         storeAsyncStorageData('user', user)
-        // setTimeout(() => {
-        //   <ActivityIndicator size="large" color="#00ff00" />
-        // }, 2000);
-        navigation.navigate('Home');
+        fromCart===true ? navigation.goBack() : navigation.navigate('Home');
 
       } else {
         console.log('error')
@@ -91,6 +90,7 @@ export const Login = ({ navigation }) => {
     }
   }
 
+  console.log("fromCart", fromCart);
   return (
     <View style={styles.mainWrraper} width={windowWidth} height={windowHeight}>
       <View style={styles.header}>

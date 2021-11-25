@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Modal, Pressable } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Modal, Pressable, Alert, BackHandler } from "react-native";
 import Header from "../Components/Header";
 import { FoodFindContext } from "../context";
 import { retrieveAsyncStorageData } from "../utility/storage";
@@ -8,12 +8,25 @@ import { GetBusinessItemsByBusinessID } from "../api/BusinessItemController";
 import colors from "../utility/colors";
 import { AntDesign } from "@expo/vector-icons";
 
+
 const BusinessMenu = ({ route, navigation }) => {
   const [businessItems, setBusinessItems] = useState([]);
   const { setSelectedBusinessToppings, orderList, setOrderList } = useContext(FoodFindContext);
   const { businessID, businessName, businessDescription, businessPhone, businessLogo } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
 
+
+  const backAction = () => {
+    setModalVisible(!modalVisible);
+    return true;
+  };
+
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", backAction);
+
+    return () =>
+      BackHandler.removeEventListener("hardwareBackPress", backAction);
+  }, []);
 
   const GetAllItemsAndToppings = async (id) => {
     const res = await GetBusinessItemsByBusinessID(id);
@@ -35,10 +48,10 @@ const BusinessMenu = ({ route, navigation }) => {
     <ScrollView style={styles.container}>
       <View style={{ backgroundColor: colors.backgroundApp }}>
         <TouchableOpacity style={styles.goBackIcon} onPress={() => {
-          if(orderList.length>0)
-          setModalVisible(!modalVisible);
+          if (orderList.length > 0)
+            setModalVisible(!modalVisible);
           else
-          navigation.goBack();
+            navigation.goBack();
         }}>
           <AntDesign
             name="back" size={36} color="black" />
@@ -64,20 +77,20 @@ const BusinessMenu = ({ route, navigation }) => {
             <AntDesign name="closecircleo" size={24} color="black" />
             {/* <Text style={styles.textStyle}>Hide Modal</Text> */}
           </Pressable>
-          <View style={{flexDirection: "row",justifyContent: "space-around",marginTop:15}}>
+          <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 15 }}>
             <Pressable style={styles.button1}>
-              <Text style={{fontSize:16}}
-              onPress={()=>{
-                setModalVisible(!modalVisible)
-              }}
+              <Text style={{ fontSize: 16 }}
+                onPress={() => {
+                  setModalVisible(!modalVisible)
+                }}
               >ביטול</Text>
             </Pressable>
             <Pressable style={styles.button1}>
-              <Text style={{fontSize:16}}
-              onPress={()=>{
-                setOrderList([])
-                navigation.goBack();
-              }}
+              <Text style={{ fontSize: 16 }}
+                onPress={() => {
+                  setOrderList([])
+                  navigation.goBack();
+                }}
               >אישור</Text>
             </Pressable>
 
@@ -102,7 +115,7 @@ const BusinessMenu = ({ route, navigation }) => {
         </View>
 
         {businessItems.map((item) => {
-          console.log("item src",item.itemImg);
+          console.log("item src", item.itemImg);
           return (
             <TouchableOpacity
               key={item.itemID}
@@ -116,14 +129,14 @@ const BusinessMenu = ({ route, navigation }) => {
                   businessName: businessName,
                   businessDescription: businessDescription,
                   businessPhone: businessPhone,
-                  itemImg:item.itemImg
+                  itemImg: item.itemImg
                 });
               }}
             >
-              <Image source={{uri:item.itemImg}} style={{width:"100%",height:120,borderRadius:10}}></Image>
+              <Image source={{ uri: item.itemImg }} style={{ width: "100%", height: 150, borderRadius: 10 }}></Image>
               <Text style={styles.itemName}>{item.itemName}</Text>
-              <Text style={{fontSize:14 , paddingRight:20}}>{item.comment}</Text>
-              <Text style={{ alignSelf: "flex-end",paddingLeft:5 }}>₪{item.itemPrice}</Text>
+              <Text style={{ fontSize: 14, paddingRight: 20 }}>{item.comment}</Text>
+              <Text style={{ alignSelf: "flex-end", paddingLeft: 5 }}>₪{item.itemPrice}</Text>
             </TouchableOpacity>
           );
         })}
@@ -180,7 +193,7 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 20,
     marginBottom: 3,
-    paddingRight:20
+    paddingRight: 20
   },
   h1: {
     fontSize: 25,
@@ -251,7 +264,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    backgroundColor:colors.backgroundApp
+    backgroundColor: colors.backgroundApp
   },
   textStyle: {
     color: "white",

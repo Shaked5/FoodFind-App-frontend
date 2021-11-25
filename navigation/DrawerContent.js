@@ -111,7 +111,7 @@ export const DrawerContent = (props) => {
                                 />
                             )}
                             label="ההזמנות שלי"
-                            onPress={() => { user ? navigation.navigate('UserOrders') : navigation.navigate('Login') }}
+                            onPress={() => { user ? navigation.navigate('UserOrders') : navigation.navigate('Login',{fromCart:false}) }}
                         />
                         <DrawerItem
                             icon={({ color, size }) => (
@@ -119,7 +119,7 @@ export const DrawerContent = (props) => {
                                     size={size} color={color} />
                             )}
                             label="הרשם כבעל עסק"
-                            onPress={() => { user ? navigation.navigate('BusinessRegister') : navigation.navigate('Login') }}
+                            onPress={() => { user ? navigation.navigate('BusinessRegister') : navigation.navigate('Login',{fromCart:false}) }}
                         />
                     </Drawer.Section>
                     <Drawer.Section title="העדפות">
