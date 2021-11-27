@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'rea
 import { AntDesign } from "@expo/vector-icons";
 import { FoodFindContext } from "../context";
 import colors from "../utility/colors";
-import { insertNewOrder, insertItemToOrder } from "../api/UserOrderController";
+import { insertNewOrder, insertItemToOrder ,UpdateTotalPrice} from "../api/UserOrderController";
 
 const UserCart = ({ route, navigation }) => {
     const { businessID } = route.params;
@@ -17,7 +17,9 @@ const UserCart = ({ route, navigation }) => {
             total += item.totalPriceForItem
             await setTotalPrice(total)
         })
+        console.log("totalPrice=",total);
     }
+
 
     const handleSendOrder = async () => {
      if(user!==null){
@@ -39,6 +41,17 @@ const UserCart = ({ route, navigation }) => {
             let orderItems = await insertItemToOrder(listToSend);
             console.log("orderItems=", orderItems);
         }
+        console.log("totalPriceHook", totalPrice);
+        const result = await UpdateTotalPrice({orderID,totalPrice:totalPrice});
+        if (result == 1){
+            Alert.alert("ההזמנה נשלחה לבעל העסק , בתאבון");
+            navigation.navigate('UserOrders'); ///need to move the order in params
+        }
+        else {
+            Alert.alert("תקלה זמנית");
+        }
+       
+
     }else{
       navigation.navigate('Login',{ fromCart:true})
     }
@@ -46,6 +59,7 @@ const UserCart = ({ route, navigation }) => {
 
     useEffect(() => {
         getTotalPrice();
+
     }, []);
 
 
@@ -65,7 +79,7 @@ const UserCart = ({ route, navigation }) => {
             </View>
             {orderList && orderList.map((item) => {
                 return (
-                    <View style={{ maxWidth: 360, margin: 15, marginTop: 6, borderRadius: 15, backgroundColor: 'white', padding: 8 }}>
+                    <View style={{ minWidth: 300, margin: 15, marginTop: 6, borderRadius: 15, backgroundColor: 'white', padding: 8 }}>
                         <View style={{ alignItems: 'center' }}>
                             <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{item.itemName}</Text>
                         </View>

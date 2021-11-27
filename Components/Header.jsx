@@ -17,7 +17,7 @@ const Header = () => {
             <MaterialCommunityIcons style={styles.menuIcon} name="menu" onPress={() => navigation.dispatch(DrawerActions.openDrawer())} size={28} color="black" />
             <Image source={FoodFindLogo} style={styles.txtFoodFindHeader} width={180} height={70} />
             {user? <View style={{marginLeft:50}}/>:
-            <Ionicons onPress={() => navigation.navigate('Login')} style={styles.contactIcon} name="person" size={28} color="black" />
+            <Ionicons onPress={() => navigation.navigate('Login',{fromCart:false})} style={styles.contactIcon} name="person" size={28} color="black" />
         }
         </View>
     )

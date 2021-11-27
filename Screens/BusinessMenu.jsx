@@ -164,6 +164,7 @@ const BusinessMenu = ({ route, navigation }) => {
                   businessName: businessName,
                   businessDescription: businessDescription,
                   businessPhone: businessPhone,
+                  businessLogo:businessLogo,
                   itemImg: item.itemImg,
                 });
               }}

@@ -43,3 +43,28 @@ export const insertItemToOrder = async (itemList) => {
         return null;
     }
 };
+
+export const UpdateTotalPrice = async (order) => {
+    const req = {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+            orderID:order.orderID,
+            totalPrice:order.totalPrice
+        })
+    };
+    try{
+        const res = await fetch(OrdersController.UpdateTotalPrice,req);
+        if(res.status!==200 && res.status!== 201) return console.log(res.status)
+        const data = await res.json(); 
+        return data;
+    }
+    catch(error){
+        console.log(error);
+        return null;
+    }
+}

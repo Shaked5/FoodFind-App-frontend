@@ -27,6 +27,7 @@ const ItemScreen = ({ navigation, route }) => {
     businessName,
     businessDescription,
     businessPhone,
+    businessLogo,
     itemImg,
   } = route.params;
   const { selectedBusinessToppings, orderList } = useContext(FoodFindContext);
@@ -100,6 +101,7 @@ const ItemScreen = ({ navigation, route }) => {
         businessName: businessName,
         businessDescription: businessDescription,
         businessPhone: businessPhone,
+        businessLogo:businessLogo,
       });
     }, 3000);
   };
