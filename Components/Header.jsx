@@ -35,15 +35,15 @@ const styles = StyleSheet.create({
 
     },
     txtFoodFindHeader: {
-        marginTop: '6%',
+        marginTop: '10%',
 
     },
     menuIcon: {
         marginLeft: '4%',
-        marginTop: '6%'
+        marginTop: '10%'
     },
     contactIcon: {
         marginRight: '4%',
-        marginTop: '6%',
+        marginTop: '10%',
     },
 });

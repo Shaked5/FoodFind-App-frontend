@@ -108,46 +108,53 @@ const ItemScreen = ({ navigation, route }) => {
     <ScrollView style={styles.container}>
       <View
         style={{
-          backgroundColor: colors.greyBackground,
-          minWidth: windowWidth,
-          minHeight: windowHeight,
-          borderWidth: 1,
+          backgroundColor: colors.backgroundApp,
+          width: "100%",
+          minHeight: 80,
+         
         }}
       >
-        <View style={{ backgroundColor: colors.backgroundApp }}>
-          <TouchableOpacity
-            style={styles.goBackIcon}
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            <AntDesign name="back" size={36} color="black" />
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            // backgroundColor: "green",
-            // minHeight: 200,
-            justifyContent: "center",
-            alignItems: "center",
+        <TouchableOpacity
+          style={styles.goBackIcon}
+          onPress={() => {
+            navigation.goBack();
           }}
         >
-          <Image
-            source={{ uri: itemImg }}
-            style={{ width: "100%", height: 200 }}
-          />
-        </View>
+          <AntDesign name="back" size={36} color="black" />
+        </TouchableOpacity>
+      </View>
+      <View
+        style={{
+          // backgroundColor: "green",
+          // minHeight: 200,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+      
+        <Image
+          source={{ uri: itemImg }}
+          style={{ width: "100%", height: 200 }}
+        />
+      </View>
 
-        <View style={styles.itemNameView}>
-          <Text style={{ fontSize: 25, alignSelf: "center" }}>{itemName}</Text>
-          <Text style={{ paddingTop: 10 }}>בחר את כמות המוצרים</Text>
-        </View>
+      <View style={styles.itemNameView}>
+        <Text style={{ fontSize: 25, alignSelf: "center" }}>{itemName}</Text>
+      </View>
+      <View
+        style={{
+          flexDirection: "column",
+          justifyContent: "space-evenly",
+        }}
+      >
+        <Text style={{ paddingTop: 10, alignSelf: "center" }}>
+          בחר את כמות המוצרים
+        </Text>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-evenly",
             alignItems: "center",
-            margin: 20,
           }}
         >
           <TouchableOpacity
@@ -174,93 +181,89 @@ const ItemScreen = ({ navigation, route }) => {
             />
           </TouchableOpacity>
         </View>
+      </View>
 
-        <View style={{ padding: 5 }}>
-          <View style={styles.middleView}>
-            <Text style={{ fontSize: 22 }}>
-              ניתן לבחור תוספות למוצר {itemName}
-            </Text>
-          </View>
+      <View style={{ padding: 5 }}>
+        <View style={styles.middleView}>
+          <Text style={{ fontSize: 22 }}>
+            ניתן לבחור תוספות למוצר {itemName}
+          </Text>
         </View>
+      </View>
 
-        <FlatGrid
-          itemDimension={130}
-          data={filteredTopping}
-          style={styles.gridView}
-          spacing={5}
-          renderItem={({ item }) => (
-            <View
+      <FlatGrid
+        itemDimension={130}
+        data={filteredTopping}
+        style={styles.gridView}
+        spacing={5}
+        renderItem={({ item }) => (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "column",
+            }}
+          >
+            <TouchableOpacity
+              key={item.toppingID}
               style={{
                 flex: 1,
-                flexDirection: "column",
-                
+                backgroundColor: item.selected ? colors.backgroundApp : "white",
+                margin: 10,
+                maxWidth: 150,
+                borderRadius: 25,
+                padding: 10,
+                flexDirection: "row",
+                justifyContent: "space-around",
+                alignItems: "center",
+              }}
+              keyExtractor={(item) => item.id}
+              onPress={() => {
+                handleClickTopping(item);
               }}
             >
-              <TouchableOpacity
-                key={item.toppingID}
-                style={{
-                  flex: 1,
-                  backgroundColor: item.selected
-                    ? colors.backgroundApp
-                    : "white",
-                  margin: 10,
-                  maxWidth: 100,
-                  borderRadius: 25,
-                  padding: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                }}
-                keyExtractor={(item) => item.id}
-                onPress={() => {
-                  handleClickTopping(item);
-                }}
-              >
-                <Text style={styles.itemName}>{item.toppingName}</Text>
-                <Text>₪{item.toppingPrice}</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        />
+              <Text style={styles.itemName}>{item.toppingName}</Text>
+              <Text>₪{item.toppingPrice}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
 
-        <View
+      <View
+        style={{
+          minHeight: 120,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ marginBottom: 10, fontWeight: "bold", fontSize: 16 }}>
+          ניתן להוסיף הערות למוצר
+        </Text>
+        <View style={styles.textAreaContiner}>
+          <AutoGrowingTextInput
+            minHeight={100}
+            maxHeight={280}
+            minWidth={280}
+            maxWidth={280}
+            style={styles.textInput}
+            placeholder={"הוסף הערה למוצר"}
+          />
+        </View>
+      </View>
+
+      <View style={{ margin: 20 }}>
+        {showLoader && <ActivityIndicator size="large" color="#0000ff" />}
+        <TouchableOpacity
           style={{
-            minHeight: 120,
+            borderRadius: 30,
+            padding: 20,
+            backgroundColor: colors.backgroundApp,
             justifyContent: "center",
             alignItems: "center",
           }}
+          onPress={insertItemToOrder}
         >
-          <Text style={{ marginBottom: 10, fontWeight: "bold", fontSize: 16 }}>
-            ניתן להוסיף הערות למוצר
-          </Text>
-          <View style={styles.textAreaContiner}>
-            <AutoGrowingTextInput
-              minHeight={100}
-              maxHeight={280}
-              minWidth={280}
-              maxWidth={280}
-              style={styles.textInput}
-              placeholder={"הוסף הערה למוצר"}
-            />
-          </View>
-        </View>
-
-        <View style={{ margin: 20 }}>
-          {showLoader && <ActivityIndicator size="large" color="#0000ff" />}
-          <TouchableOpacity
-            style={{
-              borderRadius: 30,
-              padding: 20,
-              backgroundColor: colors.backgroundApp,
-              justifyContent: "center",
-              alignItems: "center",
-              
-            }}
-            onPress={insertItemToOrder}
-          >
-            <Text style={{fontSize:15, fontWeight: "bold"}}>אשר</Text>
-          </TouchableOpacity>
-        </View>
+          <Text style={{ fontSize: 15, fontWeight: "bold" }}>אשר</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -270,7 +273,8 @@ export default ItemScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    minHeight: "100%",
+    height: "100%",
+    backgroundColor: colors.greyBackground,
   },
   itemNameView: {
     backgroundColor: "white",
@@ -278,8 +282,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   goBackIcon: {
-    margin: 5,
-    marginTop: 20,
+    padding: 10,
+    paddingTop: "10%",
   },
   itemName: {
     fontSize: 15,
@@ -301,15 +305,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textAreaContiner: {
-    width:'90%',
+    width: "90%",
     borderColor: "gray",
     borderWidth: 1,
-    borderRadius:5,
+    borderRadius: 5,
     padding: 5,
   },
-  textInput: {
-    
-  },
+  textInput: {},
 
   // textArea: {
   //   display: "flex",
