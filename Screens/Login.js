@@ -53,8 +53,9 @@ export const Login = ({ navigation, route }) => {
           userEmail: res.email,
           pushToken: res.id
         })
-        setUser(await res)
-        storeAsyncStorageData('user', user)
+        console.log("res",res);
+        setUser(res)
+        storeAsyncStorageData('user', res)
         fromCart===true ? navigation.goBack() : navigation.navigate('Home');
       } else {
         // type === 'cancel'

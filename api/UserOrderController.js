@@ -1,5 +1,23 @@
 import {OrdersController} from '../utility/urls';
 
+
+export const getAllOrdersByUserID = async(id)=> {
+    const req = {
+        method: "GET",
+    };
+    try{
+        const res = await fetch(OrdersController.GetAllOrdersByUserID + `${id}`,req);
+        if(res.status!==200) return null;
+        const data = await res.json(); 
+        return data;
+    }
+    catch(error){
+        console.log(error);
+        return null;
+    }
+
+};
+
 export const insertNewOrder = async (order) => {
     const req = {
         method: "POST",

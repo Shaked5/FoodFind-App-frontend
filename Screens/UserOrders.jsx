@@ -1,15 +1,25 @@
-import React from "react";
+import React, {useContext}from "react";
 import { View, Text, StyleSheet, FlatList, Dimensions } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Header from "../Components/Header";
 import Order from "../Components/Order";
 import colors from "../utility/colors";
+import {FoodFindContext} from "../context";
 
+import {getAllOrdersByUserID} from '../api/UserOrderController';
 const windowWidth = Dimensions.get("window").width;
+
 
 const UserOrders = () => {
 
+    const { user } = useContext(FoodFindContext);
     const renderItem = ({ item }) => <Order />;
+
+    const fetchOrders = async() => {
+        let res = await getAllOrdersByUserID(user.userID);
+        console.log("res",res);
+    }
+    
 
     const DATA = [
         {
@@ -60,7 +70,9 @@ const UserOrders = () => {
             </View>
             <View style={styles.containerBody}>
                 <View style={styles.buttonsView}>
-                    <TouchableOpacity style={styles.buttons}>
+                    <TouchableOpacity style={styles.buttons}
+                    onPress={fetchOrders}
+                    >
                         <Text style={{ fontWeight: "bold" }}>הזמנות אחרונות</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttons}>

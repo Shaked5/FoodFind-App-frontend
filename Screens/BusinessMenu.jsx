@@ -33,8 +33,10 @@ const BusinessMenu = ({ route, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const backAction = () => {
-    setModalVisible(!modalVisible);
-    return true;
+    if(orderList.length>0){
+      setModalVisible(!modalVisible);
+      return true;
+    }
   };
 
   useEffect(() => {
