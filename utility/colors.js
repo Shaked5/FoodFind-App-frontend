@@ -6,6 +6,7 @@ export default{
     facebookBlue: "#4867aa",
     businessCard: "#cccccc",
     greyBackground:"#f8f9fa",
-    greyCartBG:"#e9ecef"
+    greyCartBG:"#e9ecef",
+    greyNearBlack:"#adb5bd",
     
 };

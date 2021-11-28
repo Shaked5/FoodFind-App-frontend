@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-} from "react-native";
+import {View,Text,StyleSheet,TouchableOpacity,Dimensions} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 import colors from "../utility/colors";
 
 const windowWidth = Dimensions.get("window").width;
-const Order = () => {
+
+const Order = ({userOrder}) => {
+
+  console.log("userOrder",userOrder);
   return (
     <TouchableOpacity>
       <View style={styles.mainView}>
         <View style={styles.innerView}>
           <View style={styles.topInnerView}>
-            <Text style={styles.businessName}>הג'חנון של ג'קלין</Text>
-            <Text style={styles.orderAddress}>הכלנית 69, נתניה</Text>
+            <Text style={styles.businessName}>{userOrder.businessName}</Text>
+            <Text style={styles.orderAddress}>{userOrder.businessAddress}</Text>
           </View>
           <View style={styles.bottomInnerView}>
             <View
@@ -31,8 +27,8 @@ const Order = () => {
                 margin: 10,
               }}
             >
-              <Text>02/11/2021</Text>
-              <Text>19:32</Text>
+              <Text>{userOrder.orderDate}</Text>
+              {/* <Text>19:32</Text> */}
             </View>
             <View
               style={{
@@ -43,7 +39,7 @@ const Order = () => {
                 margin: 10,
               }}
             >
-              <Text style={styles.orderPrice}>167.00$</Text>
+              <Text style={styles.orderPrice}>{userOrder.orderTotalPrice}₪</Text>
               <AntDesign
                 style={{ paddingLeft: 10 }}
                 name="down"

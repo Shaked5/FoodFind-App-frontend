@@ -152,7 +152,6 @@ const BusinessMenu = ({ route, navigation }) => {
         </View>
 
         {businessItems.map((item) => {
-          console.log("item src", item.itemImg);
           return (
             <TouchableOpacity
               key={item.itemID}
