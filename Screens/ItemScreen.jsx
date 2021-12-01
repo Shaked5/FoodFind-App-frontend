@@ -101,10 +101,11 @@ const ItemScreen = ({ navigation, route }) => {
         businessName: businessName,
         businessDescription: businessDescription,
         businessPhone: businessPhone,
-        businessLogo:businessLogo,
+        businessLogo: businessLogo,
       });
     }, 3000);
   };
+
 
   return (
     <ScrollView style={styles.container}>
@@ -113,7 +114,7 @@ const ItemScreen = ({ navigation, route }) => {
           backgroundColor: colors.backgroundApp,
           width: "100%",
           minHeight: 80,
-         
+
         }}
       >
         <TouchableOpacity
@@ -133,7 +134,7 @@ const ItemScreen = ({ navigation, route }) => {
           alignItems: "center",
         }}
       >
-      
+
         <Image
           source={{ uri: itemImg }}
           style={{ width: "100%", height: 200 }}
@@ -248,6 +249,10 @@ const ItemScreen = ({ navigation, route }) => {
             maxWidth={280}
             style={styles.textInput}
             placeholder={"הוסף הערה למוצר"}
+            onChangeText={(val) => {
+              setAddComment(val)
+              console.log(val)
+            }}
           />
         </View>
       </View>
