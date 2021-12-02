@@ -8,9 +8,13 @@ const windowWidth = Dimensions.get("window").width;
 
 const Order = ({userOrder}) => {
 
+  const [expend, setExpend] = useState(false);
+
   console.log("userOrder",userOrder);
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => {
+      setExpend(expend => !expend)
+    }}>
       <View style={styles.mainView}>
         <View style={styles.innerView}>
           <View style={styles.topInnerView}>
@@ -49,6 +53,10 @@ const Order = ({userOrder}) => {
             </View>
           </View>
         </View>
+        {expend &&
+         <View style={{minWidth:'100%',minHeight:150,padding:15}}>
+          <Text>הייייייי</Text>
+          </View>}
       </View>
     </TouchableOpacity>
   );
@@ -60,15 +68,16 @@ const styles = StyleSheet.create({
   mainView: {
     flex: 1,
     width: windowWidth*0.95,
+    minHeight: 170,
     marginTop: 15,
-    justifyContent: "center",
+    paddingTop:10,
     alignItems: "center",
     backgroundColor: colors.backgroundApp,
     borderRadius: 5,
   },
   innerView: {
     width: "95%",
-    height: "90%",
+    minHeight: 150,
     backgroundColor: "white",
     borderRadius: 5,
   },

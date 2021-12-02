@@ -148,9 +148,10 @@ const ItemScreen = ({ navigation, route }) => {
         style={{
           flexDirection: "column",
           justifyContent: "space-evenly",
+          backgroundColor:'white',
         }}
       >
-        <Text style={{ paddingTop: 10, alignSelf: "center" }}>
+        <Text style={{ padding:10,fontSize:18, alignSelf: "center" }}>
           בחר את כמות המוצרים
         </Text>
         <View
@@ -158,35 +159,38 @@ const ItemScreen = ({ navigation, route }) => {
             flexDirection: "row",
             justifyContent: "space-evenly",
             alignItems: "center",
+            backgroundColor:'white',
+            padding:15,
           }}
         >
           <TouchableOpacity
+            style={{backgroundColor:colors.backgroundApp, borderRadius:50}}
             onPress={() => {
-              setItemAmount(itemAmount + 1);
+              setItemAmount(itemAmount => itemAmount + 1);
             }}
           >
-            <AntDesign name="plus" size={25} color="black" />
+            <AntDesign name="plus" size={30} color="black" />
           </TouchableOpacity>
 
           <Text style={styles.input} value={itemAmount} keyboardType="numeric">
             {itemAmount}
           </Text>
 
-          <TouchableOpacity>
+          <TouchableOpacity style={{backgroundColor:colors.backgroundApp, borderRadius:50}}>
             <AntDesign
               name="minus"
-              size={25}
+              size={30}
               color="black"
               onPress={() => {
                 if (itemAmount == 0) return;
-                setItemAmount(itemAmount - 1);
+                setItemAmount(itemAmount => itemAmount - 1);
               }}
             />
           </TouchableOpacity>
         </View>
       </View>
 
-      <View style={{ padding: 5 }}>
+      <View style={{ padding: 20 }}>
         <View style={styles.middleView}>
           <Text style={{ fontSize: 22 }}>
             ניתן לבחור תוספות למוצר {itemName}
@@ -269,7 +273,7 @@ const ItemScreen = ({ navigation, route }) => {
           }}
           onPress={insertItemToOrder}
         >
-          <Text style={{ fontSize: 15, fontWeight: "bold" }}>אשר</Text>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>אשר</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -302,7 +306,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   input: {
-    fontSize: 25,
+    fontSize: 30,
     color: "blue",
   },
 

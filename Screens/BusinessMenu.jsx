@@ -59,6 +59,7 @@ const BusinessMenu = ({ route, navigation }) => {
   const openUserCart = () => {
     navigation.navigate("UserCart", {
       businessID: businessID,
+      businessPhone:businessPhone,
     });
   };
 
@@ -148,7 +149,7 @@ const BusinessMenu = ({ route, navigation }) => {
 
       <View style={styles.items}>
         <View style={styles.sectionView}>
-          <Text>המוצרים שלנו</Text>
+          <Text style={{fontWeight:'bold'}}>המוצרים שלנו</Text>
         </View>
 
         {businessItems.map((item) => {
@@ -203,7 +204,8 @@ const BusinessMenu = ({ route, navigation }) => {
               justifyContent: "space-evenly",
               minWidth: 300,
               maxHeight: 40,
-              padding: 5,
+              marginTop:15,
+              padding: 30,
               backgroundColor: colors.backgroundApp,
               alignItems: "center",
               borderRadius: 10,
@@ -238,7 +240,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 300,
+    height: 280,
     resizeMode: "stretch",
   },
   description: {
@@ -269,6 +271,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundApp,
     padding: 15,
     margin: 10,
+    marginTop:20,
     marginBottom: 20,
     borderRadius: 25,
     maxWidth: "35%",
