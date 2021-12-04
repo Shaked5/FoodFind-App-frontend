@@ -29,17 +29,25 @@ const UserCart = ({ route, navigation }) => {
   const [userPhoneNumber, setUserPhoneNumber] = useState("");
 
 
-  const  deleteItemFromCart =  (itemID, index) => {
-    const items = orderList.filter(item => item.itemID !== itemID)
+  const  deleteItemFromCart =  (index) => {
+    console.log("index is",index);
+    const items = orderList.filter((item , i) => i !== index)
+    console.log("items=",items);
     setOrderList(items);
+    getTotalPrice();
   }
 
+  //////////////////////////////////
   const getTotalPrice = () => {
     let total = 0;
+    if(orderList.length === 0) {
+      setTotalPrice(total);
+      return
+    }
     orderList.map( (item) => {
       total += item.totalPriceForItem;
-       setTotalPrice(total);
     });
+    setTotalPrice(total);
     console.log("totalPrice=", total);
   };
 
@@ -121,7 +129,7 @@ const UserCart = ({ route, navigation }) => {
         orderList.map((item,index) => {
           return (
             <View
-              keyExtractor={item.orderID}
+              keyExtractor={(item, index) => item.key}
               style={{
                 minWidth: 300,
                 margin: 15,
@@ -141,9 +149,7 @@ const UserCart = ({ route, navigation }) => {
                 <Text style={{ fontWeight: "bold", fontSize: 16, padding: 9 }}>
                   {item.itemAmount}X
                 </Text>
-                <Ionicons onPress={() => {
-                    deleteItemFromCart(item.itemID)
-                   }} style={{ margin:8}}name="ios-trash-bin" size={24} color="black"/>
+                <Ionicons onPress={() => deleteItemFromCart(index)} style={{ margin:8}}name="ios-trash-bin" size={24} color="black"/>
               </View>
               <View style={{}}>
                 <Text
