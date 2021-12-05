@@ -70,11 +70,13 @@ export const GetAllOrdersByUserID = `${Base_URL}/orders/GetAllOrdersByUserID/`
 export const InsertNewOrder = `${Base_URL}/orders/InsertNewOrder`
 export const InsertItemToOrder = `${Base_URL}/orderofitems/InsertItemToOrder`
 export const UpdateTotalPrice = `${Base_URL}/orders/UpdateTotalPrice`
+export const GetAllOfOrder = `${Base_URL}/orderofitems/GetAllItemOfOrderByOrderID/`
 
 export const OrdersController ={
     InsertNewOrder,
     InsertItemToOrder,
     UpdateTotalPrice,
     GetAllOrdersByUserID,
+    GetAllOfOrder,
 }
 

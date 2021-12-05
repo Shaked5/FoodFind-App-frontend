@@ -16,14 +16,21 @@ const UserOrders = () => {
   const [prevOrder, setPrevOrder] = useState([]);
   const [ifLastOrder, setIfLastOrder] = useState(false);
 
+
+
+
+  //render the orders of user
   const renderItem = ({ item }) => <Order userOrder={item} />;
 
+  //Get all orders by userID
   const fetchOrders = async () => {
     let res = await getAllOrdersByUserID(user.userID);
     setUserOrders(res);
     console.log("res", res);
   };
 
+
+  //fliter the orders that didnt finished
   const filterOrdersInProcess = async () => {
     console.log("inProcess", inProcess);
     if (ifLastOrder && inProcess.length > 0) {
@@ -37,6 +44,8 @@ const UserOrders = () => {
     console.log("filteredInProcess", filteredInProcess);
   };
 
+
+  //filter the orders that finished
   const filterPreviousOrders = async () => {
     if (!ifLastOrder && prevOrder.length > 0) {
       setIfLastOrder(!ifLastOrder);
@@ -49,10 +58,12 @@ const UserOrders = () => {
     console.log("filterPrevOrders", filterPrevOrders);
   };
 
+  //fetching orders data onload page
   useEffect(() => {
     fetchOrders();
   }, []);
 
+  //will work when user orders is updated
   useEffect(() => {
     filterOrdersInProcess();
     filterPreviousOrders();

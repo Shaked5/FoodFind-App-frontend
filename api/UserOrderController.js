@@ -86,3 +86,25 @@ export const UpdateTotalPrice = async (order) => {
         return null;
     }
 }
+
+export const getAllOfOrder  = async (orderID) => {
+    const req = {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
+      
+    };
+    try{
+        const res = await fetch(OrdersController.GetAllOfOrder + orderID,req);
+        if(res.status!==200 && res.status!== 201) return console.log(res.status)
+        const data = await res.json(); 
+        return data;
+    }
+    catch(error){
+        console.log(error);
+        return null;
+    }
+}

@@ -29,21 +29,23 @@ const UserCart = ({ route, navigation }) => {
   const [userPhoneNumber, setUserPhoneNumber] = useState("");
 
 
+
+  //handle delete items in cart
   const  deleteItemFromCart =  (index) => {
     console.log("index is",index);
     const items = orderList.filter((item , i) => i !== index)
     console.log("items=",items);
     setOrderList(items);
-    getTotalPrice();
   }
 
-  //////////////////////////////////
+  //update price if delete 1 item
+  useEffect(() => {
+    getTotalPrice()
+  },[orderList])
+
+  //get total price of item in cart
   const getTotalPrice = () => {
     let total = 0;
-    if(orderList.length === 0) {
-      setTotalPrice(total);
-      return
-    }
     orderList.map( (item) => {
       total += item.totalPriceForItem;
     });
@@ -51,7 +53,13 @@ const UserCart = ({ route, navigation }) => {
     console.log("totalPrice=", total);
   };
 
+
+  //insert new order , inserts items to order and update the price
   const handleSendOrder = async () => {
+    if (orderList.length === 0){
+      Alert.alert("לא ניתן לבצע הזמנה ללא מוצרים.")
+      return
+    } 
     if (user !== null) {
       //insert to OrdersTB and OrderOfItemaTB
       let orderID;
@@ -105,9 +113,7 @@ const UserCart = ({ route, navigation }) => {
     }
   };
 
-  useEffect(() => {
-    getTotalPrice();
-  }, []);
+
 
   return (
     <ScrollView style={styles.container}>
@@ -241,6 +247,7 @@ const UserCart = ({ route, navigation }) => {
         </View>
       )}
 
+
       {useBit && (
           <View
           style={{
@@ -299,10 +306,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.greyCartBG,
   },
-  // items: {
-  //     justifyContent: "space-around",
-  //     padding: 10,
-  //   },
   headerOrder: {
     backgroundColor: colors.backgroundApp,
     padding: 15,
@@ -328,5 +331,4 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  checkbox: {},
 });
