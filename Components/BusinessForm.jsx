@@ -128,6 +128,7 @@ const BusinessForm = () => {
         alert("רשום בעל עסק אם אותו מייל")
       if (returnBU !== null && returnBU !== undefined && returnBU !== "Conflict") {
         alert('נרשמת בהצלחה!!!')
+        navigation.navigate('Home')
       }
     }
     catch (error) {

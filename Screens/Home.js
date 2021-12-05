@@ -7,9 +7,9 @@ import {
   Image,
   FlatList,
   Button,
-  SafeAreaView,
   Dimensions,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import colors from "../utility/colors";
 import { FoodFindContext } from "../context";
@@ -19,7 +19,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import BusinessCard from "../Components/BusinessCard";
 import { GetUserByEmail } from '../api/UserController'
 import { getAllBusinessUsers } from "../api/BusinessUsersController";
+import { SafeAreaView } from "react-native-safe-area-context";
 
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 
 const Home = ({ navigation }) => {
@@ -29,6 +33,14 @@ const Home = ({ navigation }) => {
   const [allBusiness, setAllBusiness] = useState([]);
   const [filteredBusiness, setFilteredBusiness] = useState([]);
   const [search, setSearch] = useState("");
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    handleGetAllBusinessUsers();
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
 
   const renderItem = ({ item }) =>
@@ -76,7 +88,14 @@ const Home = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}
+    refreshControl={
+      <RefreshControl
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+      />
+    }
+    >
       <KeyboardAwareScrollView >
         <View style={styles.headerView}>
           <Header />
@@ -88,8 +107,9 @@ const Home = ({ navigation }) => {
           value={search}
           icon='magnify'
         />
-        <View style={styles.containerBody}>
-          {/* <ScrollView style={styles.FlatlistView}> */}
+        <View style={styles.containerBody}
+        >
+
           <FlatList
             vertical
             style={{ alignSelf: "center" }}
@@ -98,10 +118,10 @@ const Home = ({ navigation }) => {
             keyExtractor={item => item.businessID}
             extraData={selectedId}
           />
-          {/* </ScrollView> */}
+        
         </View>
       </KeyboardAwareScrollView>
-    </View>
+    </ScrollView>
   );
 };
 export default Home;
@@ -126,6 +146,12 @@ const styles = StyleSheet.create({
   },
   FlatlistView: {
     flex: 1,
+  },
+  scrollView:{
+    flex: 1,
+    backgroundColor: 'pink',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   // item: {
   //     backgroundColor: '#035fff',
