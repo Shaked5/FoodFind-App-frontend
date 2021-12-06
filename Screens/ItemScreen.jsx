@@ -9,6 +9,7 @@ import {
   Dimensions,
   TextInput,
   ActivityIndicator,
+  BackHandler,
 } from "react-native";
 import { FoodFindContext } from "../context";
 import Logo from "../assets/foodFindLogoSmall2.png";
@@ -105,6 +106,17 @@ const ItemScreen = ({ navigation, route }) => {
       });
     }, 3000);
   };
+
+  // const backAction = () => {
+  //  navigation.goBack();
+  // };
+
+  // useEffect(() => {
+  //   BackHandler.addEventListener("hardwareBackPress", backAction);
+
+  //   return () =>
+  //     BackHandler.removeEventListener("hardwareBackPress", backAction);
+  // }, []);
 
 
   return (

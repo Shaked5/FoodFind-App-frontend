@@ -61,11 +61,11 @@ const Order = ({ userOrder }) => {
               }}
             >
               <Text style={styles.orderPrice}>
-                 מחיר סה"כ {userOrder.orderTotalPrice}₪ 
+                 מחיר סה"כ:  {userOrder.orderTotalPrice}₪ 
               </Text>
               <AntDesign
                 style={{ paddingLeft: 10 }}
-                name="down"
+                name={expand?"up": "down"}
                 size={34}
                 color={colors.backgroundApp}
               />
@@ -79,7 +79,7 @@ const Order = ({ userOrder }) => {
                 style={{
                   minWidth: "100%",
                   maxHeight: "100%",
-                  borderWidth: 1,
+                  borderBottomWidth:lastOrder.length>1? 1:0,
                   flexDirection: "column",
                   margin:2,
                   
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   orderPrice: {
-    margin: 15,
+    margin: 8,
   },
   details:{
     fontSize:18,

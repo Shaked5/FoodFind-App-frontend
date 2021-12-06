@@ -11,6 +11,7 @@ import {
   Alert,
   BackHandler,
 } from "react-native";
+import { useRoute } from '@react-navigation/native';
 import Header from "../Components/Header";
 import { FoodFindContext } from "../context";
 import { retrieveAsyncStorageData } from "../utility/storage";
@@ -31,11 +32,18 @@ const BusinessMenu = ({ route, navigation }) => {
     businessLogo,
   } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
+  const Route = useRoute();
 
   const backAction = () => {
-    if(orderList.length>0){
-      setModalVisible(!modalVisible);
-      return true;
+    if (Route.name !== "BusinessMenu") {
+      navigation.goBack();
+    }
+    else {
+      if (orderList.length > 0) {
+        setModalVisible(!modalVisible);
+        return true;
+      }
+
     }
   };
 
@@ -59,7 +67,7 @@ const BusinessMenu = ({ route, navigation }) => {
   const openUserCart = () => {
     navigation.navigate("UserCart", {
       businessID: businessID,
-      businessPhone:businessPhone,
+      businessPhone: businessPhone,
     });
   };
 
@@ -87,7 +95,7 @@ const BusinessMenu = ({ route, navigation }) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
+          // Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}
       >
@@ -101,7 +109,6 @@ const BusinessMenu = ({ route, navigation }) => {
             onPress={() => setModalVisible(!modalVisible)}
           >
             <AntDesign name="closecircleo" size={24} color="black" />
-            {/* <Text style={styles.textStyle}>Hide Modal</Text> */}
           </Pressable>
           <View
             style={{
@@ -149,7 +156,7 @@ const BusinessMenu = ({ route, navigation }) => {
 
       <View style={styles.items}>
         <View style={styles.sectionView}>
-          <Text style={{fontWeight:'bold'}}>המוצרים שלנו</Text>
+          <Text style={{ fontWeight: 'bold' }}>המוצרים שלנו</Text>
         </View>
 
         {businessItems.map((item) => {
@@ -166,7 +173,7 @@ const BusinessMenu = ({ route, navigation }) => {
                   businessName: businessName,
                   businessDescription: businessDescription,
                   businessPhone: businessPhone,
-                  businessLogo:businessLogo,
+                  businessLogo: businessLogo,
                   itemImg: item.itemImg,
                 });
               }}
@@ -204,7 +211,7 @@ const BusinessMenu = ({ route, navigation }) => {
               justifyContent: "space-evenly",
               minWidth: 300,
               maxHeight: 40,
-              marginTop:15,
+              marginTop: 15,
               padding: 30,
               backgroundColor: colors.backgroundApp,
               alignItems: "center",
@@ -271,7 +278,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundApp,
     padding: 15,
     margin: 10,
-    marginTop:20,
+    marginTop: 20,
     marginBottom: 20,
     borderRadius: 25,
     maxWidth: "35%",
