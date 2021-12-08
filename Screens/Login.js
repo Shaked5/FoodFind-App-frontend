@@ -7,7 +7,10 @@ import * as Google from "expo-google-app-auth";
 import * as Facebook from 'expo-facebook';
 import { storeAsyncStorageData } from '../utility/storage';
 import FoodFindLogo from '../assets/foodFindLogoSmall.png';
-import { insertNewUser } from '../api/UserController'
+import { insertNewUser } from '../api/UserController';
+import Constants from 'expo-constants';
+import * as Notifications  from 'expo-notifications';
+
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -17,19 +20,50 @@ const windowHeight = Dimensions.get('window').height;
 export const Login = ({ navigation, route }) => {
   const { fromCart } = route.params;
   const { user, setUser } = React.useContext(FoodFindContext);
-  const [userFacebook, setUserFacebook] = useState('')
+  const [pushToken, setPushToken] = useState('')
   const [data, setData] = React.useState({
     name: '',
     email: '',
     pushToken: '',
   })
 
+  const registerForPushNotificationsAsync = async () => {
+    if(Constants.isDevice){
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+  
+      // only ask if permissions have not already been determined, because
+      // iOS won't necessarily prompt the user a second time.
+      if (existingStatus !== 'granted') {
+        // Android remote notification permissions are granted during the app
+        // install, so this will only ask on iOS
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+  
+      // Stop here if the user did not grant permissions
+      if (finalStatus !== 'granted') {
+        return;
+      }
+  
+      
+        // Get the token that uniquely identifies this device
+        let token = (await Notifications.getExpoPushTokenAsync()).data;
+        console.log("token=", token);
+        // POST the token to your backend server from where you can retrieve it to send push notifications.
+        setPushToken(token);
+      
+    }else
+    alert('Must use physical device for push notifications');
+  };
+
+  //config for login with google Androind && IOS
   const config = {
     androidClientId: '749131361216-0hfddk09s5thaondf0l1kdj82kco8m41.apps.googleusercontent.com',
     iosClientId: '749131361216-mf1lpcnvjm91vl04r3do4srlmvru3dhu.apps.googleusercontent.com',
   }
 
-
+  //login with facebook get picture email and name
   const signInWithFacebookAsync = async () => {
     try {
       await Facebook.initializeAsync({
@@ -51,12 +85,12 @@ export const Login = ({ navigation, route }) => {
         await insertNewUser({
           userName: res.name,
           userEmail: res.email,
-          pushToken: res.id
+          pushToken: pushToken
         })
-        console.log("res",res);
+        console.log("res", res);
         setUser(res)
         storeAsyncStorageData('user', res)
-        fromCart===true ? navigation.goBack() : navigation.navigate('Home');
+        fromCart === true ? navigation.goBack() : navigation.navigate('Home');
       } else {
         // type === 'cancel'
       }
@@ -65,15 +99,16 @@ export const Login = ({ navigation, route }) => {
     }
   }
 
+  //login with google get picture email and name
   const signInWithGoogleAsync = async () => {
     try {
       const { type, accessToken, user } = await Google.logInAsync(config);
-
+      //if login success
       if (type === 'success') {
         const ifUserExist = await insertNewUser({
           userName: user.name,
           userEmail: user.email,
-          pushToken: user.id
+          pushToken: pushToken
         })
         if (ifUserExist === "Conflict") {
           console.log('email already exist');
@@ -81,7 +116,7 @@ export const Login = ({ navigation, route }) => {
 
         setUser(user);
         storeAsyncStorageData('user', user)
-        fromCart===true ? navigation.goBack() : navigation.navigate('Home');
+        fromCart === true ? navigation.goBack() : navigation.navigate('Home');
 
       } else {
         console.log('error')
@@ -90,6 +125,12 @@ export const Login = ({ navigation, route }) => {
       console.log(e);
     }
   }
+
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+  }, []);
+
+
 
   console.log("fromCart", fromCart);
   return (
