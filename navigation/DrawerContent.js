@@ -29,24 +29,11 @@ export const DrawerContent = (props) => {
         if (user !== undefined && user !== null) setUser(user);
     }
 
-    const createButtonAlert = () =>
-        Alert.alert(
-            "",
-            "אינך מחובר כרגע",
-            [
-                { text: "הבנתי", onPress: () => console.log("OK Pressed") }
-            ],
-            { cancelable: false }
-        );
-
     const handleLogOut = async () => {
         if (user !== undefined && user !== null) {
             await setUser(null);
-        } else {
-            createButtonAlert();
-        }
+        } 
         removeAsyncStorageData('user')
-
     }
 
     const getProfilePic = () => {
@@ -134,7 +121,9 @@ export const DrawerContent = (props) => {
                     </Drawer.Section>
                 </View>
             </DrawerContentScrollView>
+            
             <Drawer.Section style={styles.bottomDrawerSection}>
+            {user===null||user===undefined?<Text></Text>:
                 <DrawerItem
                     icon={({ color, size }) => (
                         <Icon
@@ -146,7 +135,9 @@ export const DrawerContent = (props) => {
                     label="התנתק"
                     onPress={handleLogOut}
                 />
+            }
             </Drawer.Section>
+            
         </View>
     )
 }

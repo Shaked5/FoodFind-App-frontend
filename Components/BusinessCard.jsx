@@ -20,16 +20,14 @@ const BusinessCard = ({ navigation, businessPost }) => {
     await setSelectedBusiness(data);
   };
 
+  const renderUserImage = () =>
+  businessPost?.businessLogo
+    ? { uri: `${businessPost.businessLogo}?date=${Date.now()}` }
+    : require("../assets/foodFindLogoSmall2.png");
+
+
   return (
-    // <View style={{
-    //     borderRadius:25, width: WINDOW_WIDTH*0.85,
-    //     shadowColor: "#000",
-
-    //     shadowOpacity: 0.5,
-    //     shadowRadius: 3.62,
-
-    //     elevation: 10,
-    // }}>
+ 
     <TouchableOpacity
       style={styles.btnCard}
       onPress={() => {
@@ -44,9 +42,9 @@ const BusinessCard = ({ navigation, businessPost }) => {
       }}
     >
       <View style={styles.businessCardView}>
-        {businessPost.businessLogo !== "" ?
-        <Image source={{ uri: businessPost.businessLogo }} style={{ width: "100%", height:130,borderRadius:2}} />
-        :<Image source={ foodFindLogoSmall2 } style={{ width: '100%', height: '44%',borderRadius:2 }} />}
+        {businessPost.businessLogo !== "" &&
+        <Image source={renderUserImage()} style={{ width: "100%", height:130,borderRadius:2}} />
+    }
 
        
         <Text style={{ fontSize: 22, margin:8 }}>{businessPost.businessName}</Text>
