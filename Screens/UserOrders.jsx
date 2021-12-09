@@ -104,10 +104,9 @@ const UserOrders = () => {
             vertical
             data={ifLastOrder ? prevOrder : inProcess}
             renderItem={renderItem}
-            keyExtractor={userOrders.businessID}
+            keyExtractor={(item, index) => index}
           />
         </View>
-  
       </View>
     </View>
   );

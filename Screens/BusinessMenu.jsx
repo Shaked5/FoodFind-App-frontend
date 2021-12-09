@@ -71,6 +71,12 @@ const BusinessMenu = ({ route, navigation }) => {
     });
   };
 
+  const renderUserImage = () =>
+  businessLogo?
+     { uri: `${businessLogo}?date=${Date.now()}` }
+    : require("../assets/foodFindLogoSmall2.png");
+
+
   return (
     <ScrollView style={styles.container}>
       <View
@@ -95,7 +101,6 @@ const BusinessMenu = ({ route, navigation }) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          // Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}
       >
@@ -142,7 +147,7 @@ const BusinessMenu = ({ route, navigation }) => {
         </View>
       </Modal>
 
-      <Image source={{ uri: businessLogo }} style={styles.image} />
+      <Image source={renderUserImage()} style={styles.image} />
 
       <View style={styles.description}>
         <Text style={styles.h1}>{businessName}</Text>

@@ -13,8 +13,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const DrawerContent = (props) => {
     const { user, setUser, isDarkTheme, setIsDarkTheme } = React.useContext(FoodFindContext);
-    const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
     const navigation = useNavigation();
+    const [greet, setGreeting] = React.useState("");
 
     const scheme = useColorScheme();
 
@@ -36,6 +36,15 @@ export const DrawerContent = (props) => {
         removeAsyncStorageData('user')
     }
 
+    const _handleSetGreeting = () => {
+        const hour = new Date().getHours();
+        if (hour >= 6 && hour <= 12) setGreeting("בוקר טוב");
+        else if (hour >= 13 && hour <= 16) setGreeting("צהריים טובים");
+        else if (hour >= 17 && hour <= 18) setGreeting("אחר צהריים טובים");
+        else if (hour >= 19 && hour < 24) setGreeting("ערב טוב");
+        else setGreeting("לילה טוב");
+      };
+
     const getProfilePic = () => {
         if (user !== undefined && user !== null) {
             if (user.photoUrl !== null && user.photoUrl !== undefined) {
@@ -49,14 +58,7 @@ export const DrawerContent = (props) => {
 
     useEffect(() => {
         getUserAsyncStorage();
-    }, []);
-
-    useEffect(() => {
-        let secTimer = setInterval(() => {
-            setCurrentTime(new Date().toLocaleString())
-        }, 1000)
-
-        return () => clearInterval(secTimer);
+        _handleSetGreeting();
     }, []);
 
 
@@ -64,16 +66,16 @@ export const DrawerContent = (props) => {
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
-                    <View style={styles.timeView}>
-                        <Text>{currentTime}</Text>
+                    <View >
+                     
                     </View>
                     <View style={styles.userInfoSection}>
                         <View style={styles.containerProfile}>
                             <Avatar.Image source={{ uri: getProfilePic() }}
-                                size={85}
+                                size={110}
                             />
                             <View style={styles.containerUserTitle}>
-                                <Title style={styles.title}>שלום, {user ? user.name : 'אורח'}</Title>
+                                <Title style={styles.title}>{`${greet}, ${user ? user.name : 'אורח'}`}</Title>
                             </View>
 
                         </View>
@@ -168,7 +170,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 16,
-        marginTop: 3,
+        marginTop: 15,
         fontWeight: 'bold',
     },
 

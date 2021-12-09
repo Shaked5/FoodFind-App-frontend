@@ -115,6 +115,13 @@ const BusinessForm = () => {
     })();
   };
 
+  const renderUserImage = () =>
+  imageUrl?
+     { uri: `${imageUrl}?date=${Date.now()}` }
+    : require("../assets/foodFindLogoSmall2.png");
+
+
+
   const handleRegisterBusinessUser = async () => {
     try {
       if (user.userID === null || !data.isValidPass) {
@@ -221,11 +228,10 @@ const BusinessForm = () => {
       >
         <Text>תמונת עסק</Text>
         <FontAwesome onPress={HandleUploadImage} name="image" size={40} color="black" />
-        <Text>
-          {imageUrl && (
-            <Image source={{ uri: imageUrl }} style={{ width: 300, height: 200 }} />
-          )}
-        </Text>
+        
+          {imageUrl? 
+            <Image style={styles.image} source={renderUserImage()} />
+            :<Text></Text>} 
       </View>
 
       <TouchableOpacity style={styles.signUpBtn} onPress={handleRegisterBusinessUser}>
@@ -282,4 +288,10 @@ const styles = StyleSheet.create({
     color: '#FF0000',
     fontSize: 14,
   },
+  image:{
+    width: 300,
+    height: 280,
+  
+  },
+
 });
