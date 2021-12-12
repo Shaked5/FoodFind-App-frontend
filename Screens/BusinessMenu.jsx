@@ -35,6 +35,9 @@ const BusinessMenu = ({ route, navigation }) => {
   const Route = useRoute();
 
   const backAction = () => {
+    if(Route.path === undefined){
+      return;
+    }
     if (Route.name !== "BusinessMenu") {
       navigation.goBack();
     }
@@ -43,7 +46,6 @@ const BusinessMenu = ({ route, navigation }) => {
         setModalVisible(!modalVisible);
         return true;
       }
-
     }
   };
 

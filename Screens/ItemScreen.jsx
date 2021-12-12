@@ -107,17 +107,6 @@ const ItemScreen = ({ navigation, route }) => {
     }, 3000);
   };
 
-  // const backAction = () => {
-  //  navigation.goBack();
-  // };
-
-  // useEffect(() => {
-  //   BackHandler.addEventListener("hardwareBackPress", backAction);
-
-  //   return () =>
-  //     BackHandler.removeEventListener("hardwareBackPress", backAction);
-  // }, []);
-
 
   return (
     <ScrollView style={styles.container}>

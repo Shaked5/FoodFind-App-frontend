@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
 
   businessCardView: {
     flex: 1,
-    minHeight: 230,//////
+    minHeight: 230,
     width:380,
     backgroundColor: "white",
     alignItems: "center",
