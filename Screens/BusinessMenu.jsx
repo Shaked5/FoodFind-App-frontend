@@ -35,7 +35,7 @@ const BusinessMenu = ({ route, navigation }) => {
   const Route = useRoute();
 
   const backAction = () => {
-    if(Route.path === undefined){
+    if (Route.path === undefined) {
       return;
     }
     if (Route.name !== "BusinessMenu") {
@@ -74,170 +74,173 @@ const BusinessMenu = ({ route, navigation }) => {
   };
 
   const renderUserImage = () =>
-  businessLogo?
-     { uri: `${businessLogo}?date=${Date.now()}` }
-    : require("../assets/foodFindLogoSmall2.png");
+    businessLogo ?
+      { uri: `${businessLogo}?date=${Date.now()}` }
+      : require("../assets/foodFindLogoSmall2.png");
 
 
-  return (
-    <ScrollView style={styles.container}>
-      <View
-        style={{
-          backgroundColor: colors.backgroundApp,
-          width: "100%",
-          minHeight: 80,
+return (
+  <ScrollView style={styles.container}>
+    <View
+      style={{
+        backgroundColor: colors.backgroundApp,
+        width: "100%",
+        minHeight: 80,
+      }}
+    >
+      <TouchableOpacity
+        style={styles.goBackIcon}
+        onPress={() => {
+          if (orderList.length > 0) setModalVisible(!modalVisible);
+          else navigation.goBack();
         }}
       >
-        <TouchableOpacity
-          style={styles.goBackIcon}
-          onPress={() => {
-            if (orderList.length > 0) setModalVisible(!modalVisible);
-            else navigation.goBack();
+        <AntDesign name="back" size={36} color="black" />
+      </TouchableOpacity>
+    </View>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        setModalVisible(!modalVisible);
+      }}
+    >
+      <View style={styles.modalView}>
+        <Text style={styles.modalText}>
+          האם אתה בטוח שברצונך לצאת מעסק זה?
+        </Text>
+        <Text style={{}}>אם תבצע פעולה זו רשימת המוצרים תמחק</Text>
+        <Pressable
+          style={[styles.button, styles.buttonClose]}
+          onPress={() => setModalVisible(!modalVisible)}
+        >
+          <AntDesign name="closecircleo" size={24} color="black" />
+        </Pressable>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+            marginTop: 15,
           }}
         >
-          <AntDesign name="back" size={36} color="black" />
-        </TouchableOpacity>
-      </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.modalView}>
-          <Text style={styles.modalText}>
-            האם אתה בטוח שברצונך לצאת מעסק זה?
-          </Text>
-          <Text style={{}}>אם תבצע פעולה זו רשימת המוצרים תמחק</Text>
-          <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={() => setModalVisible(!modalVisible)}
-          >
-            <AntDesign name="closecircleo" size={24} color="black" />
-          </Pressable>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
-              marginTop: 15,
-            }}
-          >
-            <Pressable style={styles.button1}>
-              <Text
-                style={{ fontSize: 16 }}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                ביטול
-              </Text>
-            </Pressable>
-            <Pressable style={styles.button1}>
-              <Text
-                style={{ fontSize: 16 }}
-                onPress={() => {
-                  setOrderList([]);
-                  navigation.goBack();
-                }}
-              >
-                אישור
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-
-      <Image source={renderUserImage()} style={styles.image} />
-
-      <View style={styles.description}>
-        <Text style={styles.h1}>{businessName}</Text>
-        <Text style={styles.h2}>{businessDescription}</Text>
-        <Text
-          style={{ margin: 5, marginBottom: 0, marginTop: 10, marginBottom: 5 }}
-        >
-          טלפון ליצירת קשר : {businessPhone}
-        </Text>
-      </View>
-
-      <View style={styles.items}>
-        <View style={styles.sectionView}>
-          <Text style={{ fontWeight: 'bold' }}>המוצרים שלנו</Text>
-        </View>
-
-        {businessItems.map((item) => {
-          return (
-            <TouchableOpacity
-              key={item.itemID}
-              style={styles.singleItemView}
+          <Pressable style={styles.button1}>
+            <Text
+              style={{ fontSize: 16 }}
               onPress={() => {
-                navigation.navigate("ItemScreen", {
-                  itemName: item.itemName,
-                  itemID: item.itemID,
-                  itemPrice: item.itemPrice,
-                  businessID: businessID,
-                  businessName: businessName,
-                  businessDescription: businessDescription,
-                  businessPhone: businessPhone,
-                  businessLogo: businessLogo,
-                  itemImg: item.itemImg,
-                });
+                setModalVisible(!modalVisible);
               }}
             >
-              <Image
-                source={{ uri: item.itemImg }}
-                style={{ width: "100%", height: 130, borderRadius: 2 }}
-              ></Image>
-              <Text style={styles.itemName}>{item.itemName}</Text>
-              <Text style={{ fontSize: 14, paddingRight: 20 }}>
-                {item.comment}
-              </Text>
-              <Text style={{ alignSelf: "flex-end", paddingLeft: 5 }}>
-                ₪{item.itemPrice}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-      <View
-        style={{
-          minHeight: 60,
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: 5,
-        }}
-      >
-        {orderList.length == 0 ? (
-          <View />
-        ) : (
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-evenly",
-              minWidth: 300,
-              maxHeight: 40,
-              marginTop: 15,
-              padding: 30,
-              backgroundColor: colors.backgroundApp,
-              alignItems: "center",
-              borderRadius: 10,
-            }}
-            onPress={openUserCart}
-          >
-            <Text style={{ fontSize: 20 }}>
-              {orderList.length}
-
-              <AntDesign name="shoppingcart" size={22} color="black" />
+              ביטול
             </Text>
-            <Text style={{ fontSize: 20 }}>לחץ להצגת הזמנה</Text>
-          </TouchableOpacity>
-        )}
+          </Pressable>
+          <Pressable style={styles.button1}>
+            <Text
+              style={{ fontSize: 16 }}
+              onPress={() => {
+                setOrderList([]);
+                navigation.goBack();
+              }}
+            >
+              אישור
+            </Text>
+          </Pressable>
+        </View>
       </View>
-      <View style={{ minHeight: 80, marginTop: 10 }}></View>
-    </ScrollView>
-  );
+    </Modal>
+
+    <Image source={renderUserImage()} style={styles.image} />
+
+    <View style={styles.description}>
+      <Text style={styles.h1}>{businessName}</Text>
+      <Text style={styles.h2}>{businessDescription}</Text>
+      <Text
+        style={{ margin: 5, marginBottom: 0, marginTop: 10, marginBottom: 5 }}
+      >
+        טלפון ליצירת קשר : {businessPhone}
+      </Text>
+    </View>
+
+    <View style={styles.items}>
+      <View style={styles.sectionView}>
+        <Text style={{ fontWeight: 'bold' }}>המוצרים שלנו</Text>
+      </View>
+
+      {businessItems.map((item) => {
+        return (
+          <TouchableOpacity
+            key={item.itemID}
+            style={styles.singleItemView}
+            onPress={() => {
+              navigation.navigate("ItemScreen", {
+                itemName: item.itemName,
+                itemID: item.itemID,
+                itemPrice: item.itemPrice,
+                businessID: businessID,
+                businessName: businessName,
+                businessDescription: businessDescription,
+                businessPhone: businessPhone,
+                businessLogo: businessLogo,
+                itemImg: item.itemImg,
+              });
+            }}
+          >
+            <Image
+              source={item.itemImg !== "" && item.itemImg !== null && item.itemImg !== undefined ?
+                { uri: `${item.itemImg}?date=${Date.now()}` }
+                : require("../assets/foodFindLogoSmall2.png")
+              }
+              style={{ width: "100%", height: 130, borderRadius: 2 }}
+            />
+            <Text style={styles.itemName}>{item.itemName}</Text>
+            <Text style={{ fontSize: 14, paddingRight: 20 }}>
+              {item.comment}
+            </Text>
+            <Text style={{ alignSelf: "flex-end", paddingLeft: 5 }}>
+              ₪{item.itemPrice}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+    <View
+      style={{
+        minHeight: 60,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 5,
+      }}
+    >
+      {orderList.length == 0 ? (
+        <View />
+      ) : (
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            minWidth: 300,
+            maxHeight: 40,
+            marginTop: 15,
+            padding: 30,
+            backgroundColor: colors.backgroundApp,
+            alignItems: "center",
+            borderRadius: 10,
+          }}
+          onPress={openUserCart}
+        >
+          <Text style={{ fontSize: 20 }}>
+            {orderList.length}
+
+            <AntDesign name="shoppingcart" size={22} color="black" />
+          </Text>
+          <Text style={{ fontSize: 20 }}>לחץ להצגת הזמנה</Text>
+        </TouchableOpacity>
+      )}
+    </View>
+    <View style={{ minHeight: 80, marginTop: 10 }}></View>
+  </ScrollView>
+);
 };
 export default BusinessMenu;
 
