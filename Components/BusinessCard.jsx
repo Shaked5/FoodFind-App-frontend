@@ -23,7 +23,7 @@ const BusinessCard = ({ navigation, businessPost }) => {
   const renderUserImage = () =>
   businessPost?.businessLogo
     ? { uri: `${businessPost.businessLogo}?date=${Date.now()}` }
-    : require("../assets/foodFindLogoSmall2.png");
+    : {uri:`http://proj14.ruppin-tech.co.il/uploads/foodFindDefaultLogo.png`}
 
 
   return (

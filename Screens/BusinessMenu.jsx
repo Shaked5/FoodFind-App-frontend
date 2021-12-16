@@ -76,7 +76,7 @@ const BusinessMenu = ({ route, navigation }) => {
   const renderUserImage = () =>
     businessLogo ?
       { uri: `${businessLogo}?date=${Date.now()}` }
-      : require("../assets/foodFindLogoSmall2.png");
+      : {uri:`http://proj14.ruppin-tech.co.il/uploads/foodFindDefaultLogo.png`};
 
 
 return (

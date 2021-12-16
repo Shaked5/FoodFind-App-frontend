@@ -118,7 +118,7 @@ const BusinessForm = () => {
   const renderUserImage = () =>
   imageUrl?
      { uri: `${imageUrl}?date=${Date.now()}` }
-    : require("../assets/foodFindLogoSmall2.png");
+    : {uri:`http://proj14.ruppin-tech.co.il/uploads/foodFindDefaultLogo.png`};
 
 
 
