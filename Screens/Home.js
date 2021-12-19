@@ -36,13 +36,14 @@ const Home = ({ navigation }) => {
 
   const [refreshing, setRefreshing] = React.useState(false);
 
+  //refresh home page and get the new data from database
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     handleGetAllBusinessUsers();
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-
+// render every item in flatlist 
   const renderItem = ({ item }) =>
     <BusinessCard
       businessPost={item}
@@ -61,9 +62,9 @@ const Home = ({ navigation }) => {
     })()
   }, [user == null]);
 
+  // fecth all businessUsers and set in hooks
   const handleGetAllBusinessUsers= async () => {
     const res = await getAllBusinessUsers();
-    console.log("bla", res);
     await setAllBusiness(res);
     await setFilteredBusiness(res);
   }
@@ -72,6 +73,7 @@ const Home = ({ navigation }) => {
     handleGetAllBusinessUsers();
   },[]);
 
+  //handle search business by name 
   const searchFilter = (text) => {
     if (text) {
       const newData = allBusiness.filter((item) => {

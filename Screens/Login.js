@@ -87,7 +87,6 @@ export const Login = ({ navigation, route }) => {
           userEmail: res.email,
           pushToken: pushToken
         })
-        console.log("res", res);
         setUser(res)
         storeAsyncStorageData('user', res)
         fromCart === true ? navigation.goBack() : navigation.navigate('Home');
@@ -130,9 +129,6 @@ export const Login = ({ navigation, route }) => {
     registerForPushNotificationsAsync();
   }, []);
 
-
-
-  console.log("fromCart", fromCart);
   return (
     <View style={styles.mainWrraper} width={windowWidth} height={windowHeight}>
       <View style={styles.header}>

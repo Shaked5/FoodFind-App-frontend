@@ -54,7 +54,6 @@ const BusinessCard = ({ navigation, businessPost }) => {
         
       </View>
     </TouchableOpacity>
-    // </View>
   );
 };
 

@@ -1,23 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-  Dimensions,
-  Image,
-} from "react-native";
+import {View,Text,StyleSheet,ScrollView,TouchableOpacity,TextInput, Dimensions,Image,} from "react-native";
 
-import {
-  AntDesign,
-  Feather,
-  EvilIcons,
-  MaterialIcons,
-  FontAwesome,
-} from "@expo/vector-icons";
+import {AntDesign,Feather,EvilIcons,FontAwesome,} from "@expo/vector-icons";
 import * as Animatable from 'react-native-animatable';
 import colors from "../utility/colors";
 import { FoodFindContext } from "../context";
@@ -31,10 +15,10 @@ const BusinessForm = () => {
 
   const { user } = React.useContext(FoodFindContext);
   const [data, setData] = useState({
-    userID: user.userID,
+    userID: user ? user.userID : "",
     password: "",
     businessName: "",
-    businessEmail: user.email,
+    businessEmail: user ? user.email : "",
     businessPhone: "",
     businessLicense: "",
     businessAddress: "",
@@ -47,7 +31,7 @@ const BusinessForm = () => {
   });
   const [imageUrl, setImageUrl] = useState('');
 
-
+  //check if password is valid
   const handlePasswordChange = (val) => {
     if (passValid(val))
       setData({
@@ -64,7 +48,7 @@ const BusinessForm = () => {
 
     }
   }
-
+  //click on icon and see the pasword 
   const updateSecureTextEntry = (val) => {
     setData({
       ...data,
@@ -72,7 +56,7 @@ const BusinessForm = () => {
     })
   }
 
-
+  //open gallery and pick a image
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -82,7 +66,6 @@ const BusinessForm = () => {
       base64: true
     });
 
-    console.log(result);
 
     if (!result.cancelled) {
       let imageObj = {
@@ -91,15 +74,13 @@ const BusinessForm = () => {
         base64: result.base64
       }
       let res = await UploadImage(imageObj);
-      console.log("image update result:", res);
       if (res !== "") {
         setImageUrl(res);
-        console.log("res", res);
         setData({ ...data, businessLogo: res })
       }
     }
   };
-
+  // check if you granted the open gallery
   const HandleUploadImage = () => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -115,13 +96,14 @@ const BusinessForm = () => {
     })();
   };
 
+  // function to render the image every time when the page loaded or get the default image
   const renderUserImage = () =>
-  imageUrl?
-     { uri: `${imageUrl}?date=${Date.now()}` }
-    : {uri:`http://proj14.ruppin-tech.co.il/uploads/foodFindDefaultLogo.png`};
+    imageUrl ?
+      { uri: `${imageUrl}?date=${Date.now()}` }
+      : { uri: `http://proj14.ruppin-tech.co.il/uploads/foodFindDefaultLogo.png` };
 
 
-
+// check if all data is not empty and is valid to insert business user to database
   const handleRegisterBusinessUser = async () => {
     try {
       if (user.userID === null || !data.isValidPass) {
@@ -131,8 +113,10 @@ const BusinessForm = () => {
         data.businessAddress === "")
         alert("אחד או יותר מהשדות ריקים");
       const returnBU = await insertBusinessUser(data);
-      if (returnBU === "Conflict")
+      if (returnBU === "Conflict") {
         alert("רשום בעל עסק אם אותו מייל")
+        return;
+      }
       if (returnBU !== null && returnBU !== undefined && returnBU !== "Conflict") {
         alert('נרשמת בהצלחה!!!')
         navigation.navigate('Home')
@@ -142,11 +126,8 @@ const BusinessForm = () => {
       console.log(error);
     }
   }
-  useEffect(() => {
 
-  }, [imageUrl]);
   return (
-    // <KeyboardAwareScrollView contentContainerStyle={styles.businessForm}>
     <ScrollView style={styles.businessForm}>
       <View style={{ flex: 1, alignItems: "center", marginBottom: "10%" }}>
         <Text style={{ fontSize: 15, fontWeight: "bold" }}>
@@ -228,18 +209,17 @@ const BusinessForm = () => {
       >
         <Text>תמונת עסק</Text>
         <FontAwesome onPress={HandleUploadImage} name="image" size={40} color="black" />
-        
-          {imageUrl? 
-            <Image style={styles.image} source={renderUserImage()} />
-            :<Text></Text>} 
+
+        {imageUrl ?
+          <Image style={styles.image} source={renderUserImage()} />
+          : <Text></Text>}
       </View>
 
       <TouchableOpacity style={styles.signUpBtn} onPress={handleRegisterBusinessUser}>
         <Text style={styles.btnTxt}>הרשם</Text>
       </TouchableOpacity>
-      
+
     </ScrollView>
-    // </KeyboardAwareScrollView>
   );
 };
 
@@ -288,10 +268,10 @@ const styles = StyleSheet.create({
     color: '#FF0000',
     fontSize: 14,
   },
-  image:{
+  image: {
     width: 300,
     height: 280,
-  
+
   },
 
 });

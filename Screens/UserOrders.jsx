@@ -26,13 +26,11 @@ const UserOrders = () => {
   const fetchOrders = async () => {
     let res = await getAllOrdersByUserID(user.userID);
     setUserOrders(res);
-    console.log("res", res);
   };
 
 
   //fliter the orders that didnt finished
   const filterOrdersInProcess = async () => {
-    console.log("inProcess", inProcess);
     if (ifLastOrder && inProcess.length > 0) {
       setIfLastOrder(!ifLastOrder);
       return;
@@ -41,7 +39,6 @@ const UserOrders = () => {
       (order) => order.orderStatus === false
     );
     setInProcess(filteredInProcess);
-    console.log("filteredInProcess", filteredInProcess);
   };
 
 
@@ -55,7 +52,6 @@ const UserOrders = () => {
       (order) => order.orderStatus === true
     );
     setPrevOrder(filterPrevOrders);
-    console.log("filterPrevOrders", filterPrevOrders);
   };
 
   //fetching orders data onload page

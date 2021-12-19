@@ -1,22 +1,9 @@
 import React, { useEffect, useContext, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  Dimensions,
-  TextInput,
-  ActivityIndicator,
-  BackHandler,
-} from "react-native";
+import {StyleSheet,Text,View,TouchableOpacity,Image,ScrollView,Dimensions,ActivityIndicator} from "react-native";
 import { FoodFindContext } from "../context";
-import Logo from "../assets/foodFindLogoSmall2.png";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../utility/colors";
 import { FlatGrid } from "react-native-super-grid";
-import { render } from "react-dom";
 import { AutoGrowingTextInput } from "react-native-autogrow-textinput";
 
 const ItemScreen = ({ navigation, route }) => {
@@ -45,6 +32,7 @@ const ItemScreen = ({ navigation, route }) => {
     filterToppingHandler();
   }, []);
 
+  // filtering the data by itemID and if active or not
   const filterToppingHandler = async () => {
     const topfil = selectedBusinessToppings.filter(
       (item) => itemID === item.itemID && item.isActive
@@ -81,19 +69,12 @@ const ItemScreen = ({ navigation, route }) => {
 
   const insertItemToOrder = async () => {
     let totalPriceForItem = (itemPrice + totalToppingsPrice) * itemAmount;
-    orderList.push({
-      itemName,
-      itemID,
-      itemAmount,
-      toppingsString,
-      itemPrice,
-      addComment,
-      totalPriceForItem,
-    });
+    orderList.push({itemName,itemID,itemAmount,toppingsString,itemPrice,addComment,totalPriceForItem});
     await setShowLoader(true);
     await closeLoaderIn5Seconds();
   };
 
+  // set loader and and send you to businessMenu page 
   const closeLoaderIn5Seconds = () => {
     setTimeout(() => {
       setShowLoader(false);
@@ -106,6 +87,11 @@ const ItemScreen = ({ navigation, route }) => {
       });
     }, 3000);
   };
+
+  const renderItemImage = () =>
+    itemImg ?
+      { uri: `${itemImg}?date=${Date.now()}` }
+      : {uri:`http://proj14.ruppin-tech.co.il/uploads/foodFindDefaultLogo.png?date=${Date.now()}`};
 
 
   return (
@@ -137,7 +123,7 @@ const ItemScreen = ({ navigation, route }) => {
       >
 
         <Image
-          source={{ uri: itemImg }}
+          source={renderItemImage()}
           style={{ width: "100%", height: 200 }}
         />
       </View>
@@ -256,7 +242,6 @@ const ItemScreen = ({ navigation, route }) => {
             placeholder={"הוסף הערה למוצר"}
             onChangeText={(val) => {
               setAddComment(val)
-              console.log(val)
             }}
           />
         </View>

@@ -30,10 +30,12 @@ export const DrawerContent = (props) => {
     }
 
     const handleLogOut = async () => {
+        navigation.navigate('Home')
         if (user !== undefined && user !== null) {
             await setUser(null);
         } 
         removeAsyncStorageData('user')
+        
     }
 
     const _handleSetGreeting = () => {

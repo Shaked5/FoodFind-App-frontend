@@ -13,7 +13,7 @@ import { DrawerContent } from "./DrawerContent";
 import BusinessRegister from "../Screens/BusinessRegister";
 
 export const MainNavigator = (navigation, route) => {
-  var stam = true;
+  
 
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
@@ -63,9 +63,6 @@ export const MainNavigator = (navigation, route) => {
           <Stack.Screen name="ItemScreen" component={itemScreen} options={{ headerShown: false }} />
           <Stack.Screen name="UserCart" component={UserCart} options={{ headerShown: false }} />
         </Stack.Navigator>
-    
-
-      {/* {stam ? StackAuthentication : StackLoggedIn} */}
     </>
   );
 };

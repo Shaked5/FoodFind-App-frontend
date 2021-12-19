@@ -17,6 +17,7 @@ const Order = ({ userOrder }) => {
   const [lastOrder, setLastOrder] = useState([]);
   const [expand, setExpand] = useState(false);
 
+  //fecth items of order by order id
   const GetItemsOfOrder = async () => {
     setExpand((expand) => !expand);
     if (userOrder !== null && userOrder.orderID !== 0) {
@@ -25,7 +26,6 @@ const Order = ({ userOrder }) => {
     }
   };
 
-  console.log("lastOrder", lastOrder);
   return (
     <TouchableOpacity
       onPress={() => {
@@ -49,7 +49,6 @@ const Order = ({ userOrder }) => {
               }}
             >
               <Text>{userOrder.orderDate}</Text>
-              {/* <Text>19:32</Text> */}
             </View>
             <View
               style={{

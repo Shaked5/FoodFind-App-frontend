@@ -29,12 +29,9 @@ const UserCart = ({ route, navigation }) => {
   const [userPhoneNumber, setUserPhoneNumber] = useState("");
 
 
-
   //handle delete items in cart
   const  deleteItemFromCart =  (index) => {
-    console.log("index is",index);
     const items = orderList.filter((item , i) => i !== index)
-    console.log("items=",items);
     setOrderList(items);
   }
 
@@ -50,7 +47,6 @@ const UserCart = ({ route, navigation }) => {
       total += item.totalPriceForItem;
     });
     setTotalPrice(total);
-    console.log("totalPrice=", total);
   };
 
 
@@ -78,13 +74,11 @@ const UserCart = ({ route, navigation }) => {
           orderPaidUp: false,
           shippingAddress: "",
         });
-        console.log("orderID", orderID);
       }
 
       if (orderID !== undefined && orderID !== null) {
         //mapping orderlist and arrange the list to send
         orderList.map((item) => {
-          // console.log("obj: ",obj);
           listToSend.push({
             orderID: orderID,
             itemID: item.itemID,
@@ -93,11 +87,8 @@ const UserCart = ({ route, navigation }) => {
             itemTotalPrice: item.totalPriceForItem,
           });
         });
-        console.log("listToSend", listToSend);
         let orderItems = await insertItemToOrder(listToSend);
-        console.log("orderItems=", orderItems);
       }
-      console.log("totalPriceHook", totalPrice);
       const result = await UpdateTotalPrice({
         orderID,
         totalPrice: totalPrice,
@@ -243,7 +234,6 @@ const UserCart = ({ route, navigation }) => {
             onChangeText={(val) => setUserPhoneNumber(val)}
             keyboardType="numeric"
           />
-          <Text>{userPhoneNumber}</Text>
         </View>
       )}
 
@@ -299,8 +289,8 @@ export default UserCart;
 
 const styles = StyleSheet.create({
   goBackIcon: {
-    margin: 5,
-    marginTop: 20,
+    margin: 8,
+    paddingTop: "10%",
   },
   container: {
     flex: 1,
