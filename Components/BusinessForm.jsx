@@ -26,7 +26,7 @@ const BusinessForm = () => {
     businessLogo: "",
     menuImage: "",
     businessDescription: "",
-    isValidPass: true,
+    isValidPass: false,
     secureTextEntry: true,
   });
   const [imageUrl, setImageUrl] = useState('');
@@ -108,10 +108,14 @@ const BusinessForm = () => {
     try {
       if (user.userID === null || !data.isValidPass) {
         alert("אחד או יותר מהשדות אינם נכונים")
+        return;
       }
       if (data.businessName === "" || data.businessPhone === "" || data.businessLicense === "" ||
-        data.businessAddress === "")
-        alert("אחד או יותר מהשדות ריקים");
+        data.businessAddress === ""|| data.password==="")
+        {
+          alert("אחד או יותר מהשדות ריקים");
+          return;
+        }
       const returnBU = await insertBusinessUser(data);
       if (returnBU === "Conflict") {
         alert("רשום בעל עסק אם אותו מייל")
@@ -173,7 +177,7 @@ const BusinessForm = () => {
       <Text>ת.ז / ח"פ</Text>
       <View style={styles.action}>
         <AntDesign name="idcard" size={24} color="black" />
-        <TextInput style={styles.textInput}
+        <TextInput keyboardType="numeric" style={styles.textInput}
           onChangeText={(val) => setData({ ...data, businessLicense: val })}
         />
       </View>
