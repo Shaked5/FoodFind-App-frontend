@@ -95,6 +95,7 @@ const UserCart = ({ route, navigation }) => {
       });
       if (result == 1) {
         Alert.alert("ההזמנה נשלחה לבעל העסק , בתאבון");
+        setOrderList([])
         navigation.navigate("UserOrders"); ///need to move the order in params
       } else {
         Alert.alert("תקלה זמנית");
