@@ -156,7 +156,7 @@ const ItemScreen = ({ navigation, route }) => {
               setItemAmount(itemAmount => itemAmount + 1);
             }}
           >
-            <AntDesign name="plus" size={30} color="black" />
+            <AntDesign name="plus" size={28} color="black" />
           </TouchableOpacity>
 
           <Text style={styles.input} value={itemAmount} keyboardType="numeric">
@@ -166,7 +166,7 @@ const ItemScreen = ({ navigation, route }) => {
           <TouchableOpacity style={{backgroundColor:colors.backgroundApp, borderRadius:50}}>
             <AntDesign
               name="minus"
-              size={30}
+              size={28}
               color="black"
               onPress={() => {
                 if (itemAmount == 0) return;
@@ -186,10 +186,10 @@ const ItemScreen = ({ navigation, route }) => {
       </View>
 
       <FlatGrid
-        itemDimension={130}
+        itemDimension={150}
         data={filteredTopping}
         style={styles.gridView}
-        spacing={5}
+        spacing={3}
         renderItem={({ item }) => (
           <View
             style={{
@@ -203,11 +203,11 @@ const ItemScreen = ({ navigation, route }) => {
                 flex: 1,
                 backgroundColor: item.selected ? colors.backgroundApp : "white",
                 margin: 10,
-                maxWidth: 150,
+                maxWidth: 320,
                 borderRadius: 25,
                 padding: 10,
                 flexDirection: "row",
-                justifyContent: "space-around",
+                justifyContent: "space-evenly",
                 alignItems: "center",
               }}
               keyExtractor={(item) => item.id}
