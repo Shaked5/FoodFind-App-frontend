@@ -15,6 +15,7 @@ const UserOrders = () => {
   const [inProcess, setInProcess] = useState([]);
   const [prevOrder, setPrevOrder] = useState([]);
   const [ifLastOrder, setIfLastOrder] = useState(false);
+  
 
 
 
@@ -52,6 +53,7 @@ const UserOrders = () => {
       (order) => order.orderStatus === true
     );
     setPrevOrder(filterPrevOrders);
+    
   };
 
   //fetching orders data onload page
